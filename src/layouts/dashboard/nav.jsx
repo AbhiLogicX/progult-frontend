@@ -195,7 +195,6 @@ function NavItem({ item }) {
   };
 
   const active = item.path === pathname;
-  console.log('This is Item', item);
   return (
     <ListItemButton
       onClick={item.subNav ? handleClick : null}

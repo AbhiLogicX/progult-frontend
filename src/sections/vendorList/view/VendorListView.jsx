@@ -6,16 +6,22 @@ import Stack from '@mui/material/Stack';
 
 import TableView from 'src/components/tableView';
 import Iconify from 'src/components/iconify';
+import { getReq } from 'src/api/api';
 
 export default function VendorListView() {
-  const [rowData, setRowData] = useState();
+  const [rowData, setRowData] = useState([]);
+  const [fetchedData, setFetchedData] = useState(false);
 
-  // useEffect(()=>{
-  //   function fetchRowData
-  // })
+  useEffect(() => {
+    async function fetchRowData() {
+      const result = await getReq('vendor/all');
+      setRowData(result);
+      setFetchedData(true);
+    }
+    fetchRowData();
+  }, []);
   const tableColumns = ['Name', 'Email', 'Mobile', 'Status'];
   const actionCol = ['View & Edit', 'Delete'];
-
   return (
     <>
       <Container sx={{ mx: '8%' }}>
@@ -27,7 +33,9 @@ export default function VendorListView() {
           </Button>
         </Stack>
 
-        <TableView columns={tableColumns} actionbtn={actionCol} />
+        {fetchedData ? (
+          <TableView columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
+        ) : null}
       </Container>
     </>
   );
