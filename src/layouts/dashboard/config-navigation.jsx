@@ -28,8 +28,8 @@ const navConfig = [
     icon: icon('ic_cart'),
     subNav: [
       { title: 'Category', icon: icon(), path: '/master/category' },
-      { title: 'Activities', icon: icon(), path: '/products/category' },
-      { title: 'Aminities', icon: icon(), path: '/products/category' },
+      { title: 'Activities', icon: icon(), path: '/master/activites' },
+      { title: 'Aminities', icon: icon(), path: '/master/aminites' },
       { title: 'Unit', icon: icon(), path: '/products/category' },
     ],
   },

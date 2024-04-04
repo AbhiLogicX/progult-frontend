@@ -10,11 +10,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import { Image } from '@mui/icons-material';
 
 import { patchReq } from 'src/api/api';
 import FormDialogue from '../dialogueForm/DialogueForm';
 
-export default function TableViewMaster({ columns, actionbtn, tableData }) {
+export default function TableViewMaster({ columns, actionbtn, tableData, fromCall }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -31,12 +33,14 @@ export default function TableViewMaster({ columns, actionbtn, tableData }) {
   };
 
   async function handleDeleteClick(id) {
-    const result = await patchReq(`domain/category/detail?Id=${id}&status=delete`);
+    const result = await patchReq(`domain/${fromCall}/detail?Id=${id}&status=delete`);
+    window.location.reload();
   }
 
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
+  const BASE_IMG_URL = 'https://proglut.onrender.com/';
   console.log('data table view', tableData);
 
   return (
@@ -57,8 +61,11 @@ export default function TableViewMaster({ columns, actionbtn, tableData }) {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.title}
+                    <Box>
+                      <Image src="/assets/images/images(1).png" alt="Image is rendering" />
+                    </Box>
                   </TableCell>
+                  <TableCell>{row.title}</TableCell>
                   <TableCell>{row.status}</TableCell>
                   <TableCell>
                     {actionbtn.map((btnItm) => {
@@ -83,6 +90,7 @@ export default function TableViewMaster({ columns, actionbtn, tableData }) {
                             open={open}
                             handleClose={handleClose}
                             handleSubmit={handleSubmit}
+                            fromCall="Edit"
                           />
                         </>
                       );
@@ -111,4 +119,5 @@ TableViewMaster.propTypes = {
   columns: PropTypes.array,
   actionbtn: PropTypes.array,
   tableData: PropTypes.array,
+  fromCall: PropTypes.string,
 };

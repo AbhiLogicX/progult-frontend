@@ -10,7 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export default function FormDialogue({ open, handleClose, handleSubmit }) {
+export default function FormDialogue({ open, handleClose, handleSubmit, fromCall }) {
   const [title, setTitle] = useState('');
   const [description, setdescription] = useState('');
 
@@ -41,7 +41,7 @@ export default function FormDialogue({ open, handleClose, handleSubmit }) {
           },
         }}
       >
-        <DialogTitle>Edit</DialogTitle>
+        <DialogTitle>{fromCall}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -88,4 +88,5 @@ FormDialogue.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  fromCall: PropTypes.string,
 };
