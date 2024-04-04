@@ -9,3 +9,21 @@ export async function getReq(reqStr, paramObj) {
     return error;
   }
 }
+
+export async function postReq(reqStr, data) {
+  try {
+    const response = await axios.post(`${properties.BASE_URL}/${reqStr}`, data);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function patchReq(reqStr, data) {
+  try {
+    const response = await axios.patchForm(`${properties.BASE_URL}/${reqStr}`, data);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}

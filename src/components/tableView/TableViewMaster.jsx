@@ -10,6 +10,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+
+import { patchReq } from 'src/api/api';
 import FormDialogue from '../dialogueForm/DialogueForm';
 
 export default function TableViewMaster({ columns, actionbtn, tableData }) {
@@ -23,12 +25,16 @@ export default function TableViewMaster({ columns, actionbtn, tableData }) {
     setOpen(false);
   };
 
-  const handleSubmit = (email, selectedFile) => {
-    console.log(email, selectedFile); // Here you can do whatever you want with the email
+  const handleSubmit = (titleName, selectedFile, description) => {
+    console.log(titleName, selectedFile, description);
     handleClose();
   };
 
-  if (actionbtn) {
+  async function handleDeleteClick(id) {
+    const result = await patchReq(`domain/category/detail?Id=${id}&status=delete`);
+  }
+
+  if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
   console.log('data table view', tableData);
@@ -58,7 +64,12 @@ export default function TableViewMaster({ columns, actionbtn, tableData }) {
                     {actionbtn.map((btnItm) => {
                       if (btnItm === 'Delete') {
                         return (
-                          <Button variant="contained" sx={{ mr: 2 }} color="error">
+                          <Button
+                            variant="contained"
+                            sx={{ mr: 2 }}
+                            color="error"
+                            onClick={() => handleDeleteClick(row._id)}
+                          >
                             {btnItm}
                           </Button>
                         );

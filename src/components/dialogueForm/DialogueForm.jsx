@@ -11,11 +11,17 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 export default function FormDialogue({ open, handleClose, handleSubmit }) {
-  const [email, setEmail] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setdescription] = useState('');
+
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleChange = (event) => {
-    setEmail(event.target.value);
+    setTitle(event.target.value);
+  };
+
+  const handleDescriptionChange = (event) => {
+    setdescription(event.target.value);
   };
 
   const handleFileChange = (event) => {
@@ -31,7 +37,7 @@ export default function FormDialogue({ open, handleClose, handleSubmit }) {
           component: 'form',
           onSubmit: (event) => {
             event.preventDefault();
-            handleSubmit(email, selectedFile);
+            handleSubmit(title, selectedFile, description);
           },
         }}
       >
@@ -42,12 +48,26 @@ export default function FormDialogue({ open, handleClose, handleSubmit }) {
             required
             margin="dense"
             id="name"
-            name="email"
-            label="Email Address"
-            type="email"
+            name="title"
+            label="Title"
+            type="text"
             fullWidth
             variant="standard"
             onChange={handleChange}
+            sx={{ mb: 2 }}
+          />
+
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name="description"
+            label="Description"
+            type="text"
+            fullWidth
+            variant="standard"
+            onChange={handleDescriptionChange}
             sx={{ mb: 2 }}
           />
 
