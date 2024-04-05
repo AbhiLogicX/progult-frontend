@@ -144,9 +144,8 @@ export default function LoginView() {
             </Button>
           </Stack> */}
 
-          <Divider sx={{ my: 3 }}>
+          <Divider sx={{ my: 3 }}/>
 
-          </Divider>
 
           {renderForm}
         </Card>

@@ -17,15 +17,24 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 // ----------------------------------------------------------------------
 
 export default function Router() {
+
   const routes = useRoutes([
     {
-      element: (
-        <DashboardLayout>
-          <Suspense>
-            <Outlet />
-          </Suspense>
-        </DashboardLayout>
-      ),
+      path: "/",
+      element: <LoginPage />,
+      children: [
+        {
+          path: "login",
+          element: <LoginPage />,
+        },
+
+      ],
+    }, {
+      path: "dashboard", element: (<DashboardLayout>
+        <Suspense>
+          <Outlet />
+        </Suspense>
+      </DashboardLayout>),
       children: [
         { element: <IndexPage />, index: true },
         { path: 'vendors', element: <VendorPage /> },
@@ -36,21 +45,46 @@ export default function Router() {
         // { path: 'bussiness-list', element: <BussinessListPage /> },
         // { path: 'bussiness-list', element: <BussinessListPage /> },
         // { path: 'app-setting', element: <AppSettingPage /> },
-      ],
+      ]
     },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
-    {
-      path: '404',
-      element: <Page404 />,
-    },
-    // {
-    //   path: '*',
-    //   element: <Navigate to="/404" replace />,
-    // },
+    { path: "*", element: <Page404 /> },
   ]);
+
+  // const routes = useRoutes([
+  //   {
+  //     element: (
+  //       <DashboardLayout>
+  //         <Suspense>
+  //           <Outlet />
+  //         </Suspense>
+  //       </DashboardLayout>
+  //     ),
+  //     children: [
+  //       { element: <IndexPage /> },
+  //       { path: 'vendors', element: <VendorPage /> },
+  //       // { path: 'products', element: <ProductsPage /> },
+  //       { path: 'master/category', element: <MasterCategoreyPage /> },
+  //       // { path: 'blog', element: <BlogPage /> },
+  //       // { path: 'Master', element: <Master /> },
+  //       // { path: 'bussiness-list', element: <BussinessListPage /> },
+  //       // { path: 'bussiness-list', element: <BussinessListPage /> },
+  //       // { path: 'app-setting', element: <AppSettingPage /> },
+  //     ],
+  //   },
+  //   {
+  //     path: 'login',
+  //     element: <LoginPage />,
+  //     index:true
+  //   },
+  //   {
+  //     path: '404',
+  //     element: <Page404 />,
+  //   },
+  //   // {
+  //   //   path: '*',
+  //   //   element: <Navigate to="/404" replace />,
+  //   // },
+  // ]);
 
   return routes;
 }
