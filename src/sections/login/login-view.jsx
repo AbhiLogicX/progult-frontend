@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -35,7 +35,7 @@ export default function LoginView() {
 
   const renderForm = (
     <>
-      <Stack spacing={3}>
+      <Stack spacing={3} marginBottom="2rem">
         <TextField name="email" label="Email address" />
 
         <TextField
@@ -54,11 +54,11 @@ export default function LoginView() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
+      {/* <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
-      </Stack>
+      </Stack> */}
 
       <LoadingButton
         fullWidth
@@ -93,23 +93,27 @@ export default function LoginView() {
 
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
         <Card
+
           sx={{
             p: 5,
             width: 1,
             maxWidth: 420,
+            justifyItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
           }}
         >
-          <Typography variant="h4">Sign in to Minimal</Typography>
+          <Typography alignItems="center" justifySelf="center" marginBottom="1rem" variant="h5">Welcome To Proglut Admin</Typography>
 
-          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
+          {/* <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?
             <Link variant="subtitle2" sx={{ ml: 0.5 }}>
               Get started
             </Link>
-          </Typography>
+          </Typography> */}
 
-          <Stack direction="row" spacing={2}>
-            <Button
+          {/* <Stack direction="row" spacing={2}> */}
+          {/* <Button
               fullWidth
               size="large"
               color="inherit"
@@ -117,9 +121,9 @@ export default function LoginView() {
               sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
             >
               <Iconify icon="eva:google-fill" color="#DF3E30" />
-            </Button>
+            </Button> */}
 
-            <Button
+          {/* <Button
               fullWidth
               size="large"
               color="inherit"
@@ -127,9 +131,9 @@ export default function LoginView() {
               sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
             >
               <Iconify icon="eva:facebook-fill" color="#1877F2" />
-            </Button>
+            </Button> */}
 
-            <Button
+          {/* <Button
               fullWidth
               size="large"
               color="inherit"
@@ -138,12 +142,10 @@ export default function LoginView() {
             >
               <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
             </Button>
-          </Stack>
+          </Stack> */}
 
           <Divider sx={{ my: 3 }}>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              OR
-            </Typography>
+
           </Divider>
 
           {renderForm}
