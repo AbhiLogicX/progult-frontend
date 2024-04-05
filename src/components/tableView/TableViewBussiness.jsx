@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import Table from '@mui/material/Table';
@@ -11,41 +9,29 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { Image } from '@mui/icons-material';
+import { Image, Margin } from '@mui/icons-material';
 
-import { patchReq } from 'src/api/api';
-import FormDialogue from '../dialogueForm/DialogueForm';
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
 
-export default function TableViewMaster({ columns, actionbtn, tableData, fromCall }) {
-  const [open, setOpen] = useState(false);
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (titleName, selectedFile, description) => {
-    console.log(titleName, selectedFile, description);
-    handleClose();
-  };
-
-  async function handleDeleteClick(id) {
-    const result = await patchReq(`domain/${fromCall}/detail?Id=${id}&status=delete`);
-    window.location.reload();
-  }
-
+export default function TableViewBussiness({ columns, actionbtn, tableData }) {
+  console.log('This is table data', tableData);
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
-  const BASE_IMG_URL = 'https://proglut.onrender.com/';
-  console.log('data table view', tableData);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{ mx: 0 }}>
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             {columns.map((colItem) => (
@@ -56,43 +42,34 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
         <TableBody>
           {actionbtn
             ? tableData.map((row) => (
-                <TableRow
-                  key={row.title}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
+                <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell component="th" scope="row">
                     <Box>
                       <Image src="/assets/images/images(1).png" alt="Image is rendering" />
                     </Box>
                   </TableCell>
-                  <TableCell>{row.title}</TableCell>
+                  <TableCell component="th" scope="row">
+                    {row.title}
+                  </TableCell>
+                  <TableCell>{row.domain[0].title}</TableCell>
+                  <TableCell>{`${row.address.city} / ${row.address.state}`}</TableCell>
                   <TableCell>{row.status}</TableCell>
+                  <TableCell>{row.owner[0].fullName}</TableCell>
+                  <TableCell>Active</TableCell>
+                  <TableCell>{`${row.rating} / ${row.reviewcount}`}</TableCell>
                   <TableCell>
                     {actionbtn.map((btnItm) => {
                       if (btnItm === 'Delete') {
                         return (
-                          <Button
-                            variant="contained"
-                            sx={{ mr: 2 }}
-                            color="error"
-                            onClick={() => handleDeleteClick(row._id)}
-                          >
+                          <Button variant="contained" sx={{ mr: 2 }} color="error">
                             {btnItm}
                           </Button>
                         );
                       }
                       return (
-                        <>
-                          <Button variant="contained" sx={{ mr: 2 }} onClick={handleClickOpen}>
-                            {btnItm}
-                          </Button>
-                          <FormDialogue
-                            open={open}
-                            handleClose={handleClose}
-                            handleSubmit={handleSubmit}
-                            fromCall="Edit"
-                          />
-                        </>
+                        <Button variant="contained" sx={{ mr: 2 }}>
+                          {btnItm}
+                        </Button>
                       );
                     })}
                   </TableCell>
@@ -100,12 +77,14 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
               ))
             : tableData.map((row) => (
                 <TableRow
-                  key={row.title}
+                  key={row.fullName}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {row.title}
+                    {row.fullName}
                   </TableCell>
+                  <TableCell>{row.email}</TableCell>
+                  <TableCell>{row.mobile}</TableCell>
                   <TableCell>{row.status}</TableCell>
                 </TableRow>
               ))}
@@ -115,9 +94,8 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
   );
 }
 
-TableViewMaster.propTypes = {
+TableViewBussiness.propTypes = {
   columns: PropTypes.array,
   actionbtn: PropTypes.array,
   tableData: PropTypes.array,
-  fromCall: PropTypes.string,
 };

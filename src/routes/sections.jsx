@@ -37,7 +37,7 @@ export default function Router() {
       </DashboardLayout>),
       children: [
         { element: <IndexPage />, index: true },
-        { path: 'vendors', element: <VendorPage /> },
+        { path: 'dashboard/vendors', element: <VendorPage /> },
         // { path: 'products', element: <ProductsPage /> },
         { path: 'master/category', element: <MasterCategoreyPage /> },
         // { path: 'blog', element: <BlogPage /> },

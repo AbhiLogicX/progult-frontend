@@ -4,20 +4,21 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 
 import TableViewMaster from 'src/components/tableView/TableViewMaster';
 import Iconify from 'src/components/iconify/iconify';
 import { getReq, postReq } from 'src/api/api';
 import FormDialogue from 'src/components/dialogueForm/DialogueForm';
 
-export default function CategoeryListView() {
+export default function ActivityListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     async function fetchRowData() {
-      const result = await getReq('domain/category');
+      const result = await getReq('domain/activity');
       setRowData(result);
       setFetchedData(true);
     }
@@ -37,9 +38,8 @@ export default function CategoeryListView() {
     formData.append('title', titleName);
     formData.append('description', descriptionTopic);
     formData.append('image', selectedFile);
-    const result = await postReq('domain/category', formData); // we have to handle the success and error
+    const result = await postReq('domain/activity', formData); // we have to handle the success and error
     handleClose();
-    window.location.reload();
   };
 
   const tableColumns = ['Image', 'Title', 'Status'];
@@ -49,7 +49,7 @@ export default function CategoeryListView() {
     <Container sx={{ mx: '8%' }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Categoeries
+          Activites
         </Typography>
         <Button
           variant="contained"
@@ -57,7 +57,7 @@ export default function CategoeryListView() {
           onClick={handleClickOpen}
           startIcon={<Iconify icon="eva:plus-fill" />}
         >
-          New Categoery
+          Add Activity
         </Button>
         <FormDialogue
           open={open}
@@ -72,7 +72,7 @@ export default function CategoeryListView() {
           columns={tableColumns}
           actionbtn={actionCol}
           tableData={rowData}
-          fromCall="category"
+          fromCall="activity"
         />
       ) : null}
     </Container>
