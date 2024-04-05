@@ -7,7 +7,7 @@ export default function MasterCategoeryPage() {
   return (
     <>
       <Helmet>
-        <title> Master Activiy | Minimal UI </title>
+        <title> Progult | Master Avctivity </title>
       </Helmet>
 
       <ActiviyListView />

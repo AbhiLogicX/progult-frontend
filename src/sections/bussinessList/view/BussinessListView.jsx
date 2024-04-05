@@ -27,15 +27,20 @@ export default function BussinessListView() {
     'Categoery',
     'City / State',
     'Owner Name',
-    'Mobile',
     'Status',
     'Rating/ReviewCount',
   ];
   const actionCol = ['View & Edit', 'Delete'];
   return (
     <>
-      <Container sx={{ mx: '5%' }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container sx={{ mx: '1%' }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+          sx={{ mb: 5, width: 1400 }}
+        >
           <Typography variant="h4">Bussiness List</Typography>
 
           <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>

@@ -7,7 +7,7 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> BussinessList | Minimal UI </title>
+        <title> Progult | Bussiness List </title>
       </Helmet>
 
       <BussinessListView />

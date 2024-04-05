@@ -4,7 +4,6 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
 
 import TableViewMaster from 'src/components/tableView/TableViewMaster';
 import Iconify from 'src/components/iconify/iconify';
@@ -46,8 +45,8 @@ export default function ActivityListView() {
   const actionCol = ['Edit', 'Delete'];
 
   return (
-    <Container sx={{ mx: '8%' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+    <Container sx={{ mx: '1%' }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width={1400}>
         <Typography variant="h4" sx={{ mb: 5 }}>
           Activites
         </Typography>

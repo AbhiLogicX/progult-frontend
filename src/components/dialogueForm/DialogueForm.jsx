@@ -10,7 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export default function FormDialogue({ open, handleClose, handleSubmit, fromCall }) {
+export default function FormDialogue({ open, handleClose, handleSubmit, fromCall, idEdit }) {
   const [title, setTitle] = useState('');
   const [description, setdescription] = useState('');
 
@@ -37,7 +37,7 @@ export default function FormDialogue({ open, handleClose, handleSubmit, fromCall
           component: 'form',
           onSubmit: (event) => {
             event.preventDefault();
-            handleSubmit(title, selectedFile, description);
+            handleSubmit(title, selectedFile, description, idEdit);
           },
         }}
       >
@@ -89,4 +89,5 @@ FormDialogue.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   fromCall: PropTypes.string,
+  idEdit: PropTypes.string,
 };

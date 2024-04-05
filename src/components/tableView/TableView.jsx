@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 function createData(name, calories, fat, carbs, protein) {
@@ -22,13 +23,13 @@ const rows = [
 ];
 
 export default function TableView({ columns, actionbtn, tableData }) {
-  if (actionbtn) {
+  if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Box} sx={{ width: 1400 }}>
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             {columns.map((colItem) => (

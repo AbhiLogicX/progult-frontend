@@ -45,8 +45,8 @@ export default function AminiteListView() {
   const actionCol = ['Edit', 'Delete'];
 
   return (
-    <Container sx={{ mx: '8%' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+    <Container sx={{ mx: '1%' }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width={1400}>
         <Typography variant="h4" sx={{ mb: 5 }}>
           Aminities
         </Typography>

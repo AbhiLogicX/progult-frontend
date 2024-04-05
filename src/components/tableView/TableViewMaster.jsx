@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { Image } from '@mui/icons-material';
@@ -27,25 +27,44 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
     setOpen(false);
   };
 
-  const handleSubmit = (titleName, selectedFile, description) => {
-    console.log(titleName, selectedFile, description);
+  const handleSubmit = async (titleName, selectedFile, description, idEdit) => {
+    console.log('Edit btn', titleName, selectedFile, description);
+    const formData = new FormData();
+    formData.append('title', titleName);
+    formData.append('description', description);
+    formData.append('image', selectedFile);
+    formData.append('domainId', idEdit);
+    const result = await patchReq(`domain/${fromCall}`, formData); // we have to handle the success and error
+    console.log('this is the edit res', result);
     handleClose();
+    // window.location.reload();
   };
 
   async function handleDeleteClick(id) {
     const result = await patchReq(`domain/${fromCall}/detail?Id=${id}&status=delete`);
-    window.location.reload();
+    // window.location.reload();
+  }
+
+  async function statusButtonHandler(id, status) {
+    console.log('status patch working');
+    if (status === 'active') {
+      const result = await patchReq(`domain/${fromCall}/detail?Id=${id}&status=in-active`);
+      console.log('Patch call', result);
+    }
+    const result = await patchReq(`domain/${fromCall}/detail?Id=${id}&status=in-active`);
+    console.log('Patch call', result);
+    // window.location.reload();
   }
 
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
-  const BASE_IMG_URL = 'https://proglut.onrender.com/';
+  // const BASE_IMG_URL = 'https://proglut.onrender.com/';
   console.log('data table view', tableData);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Box} sx={{ mx: 0, width: 1400 }}>
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             {columns.map((colItem) => (
@@ -66,7 +85,25 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
                     </Box>
                   </TableCell>
                   <TableCell>{row.title}</TableCell>
-                  <TableCell>{row.status}</TableCell>
+                  <TableCell>
+                    {row.status === 'in-active' ? (
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onclick={() => statusButtonHandler(row._id, row.status)}
+                      >
+                        {row.status}
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        color="success"
+                        onclick={() => statusButtonHandler(row._id, row.status)}
+                      >
+                        {row.status}
+                      </Button>
+                    )}
+                  </TableCell>
                   <TableCell>
                     {actionbtn.map((btnItm) => {
                       if (btnItm === 'Delete') {
@@ -90,7 +127,8 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
                             open={open}
                             handleClose={handleClose}
                             handleSubmit={handleSubmit}
-                            fromCall="Edit"
+                            fromCall={`Edit ${fromCall}`}
+                            idEdit={row._id}
                           />
                         </>
                       );

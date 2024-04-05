@@ -7,7 +7,7 @@ export default function VendorListPage() {
   return (
     <>
       <Helmet>
-        <title> AppSettingView | Minimal UI </title>
+        <title> Progult | Vendor List </title>
       </Helmet>
 
       <VendorListView />

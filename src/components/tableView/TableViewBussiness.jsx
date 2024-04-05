@@ -30,7 +30,7 @@ export default function TableViewBussiness({ columns, actionbtn, tableData }) {
   }
 
   return (
-    <TableContainer component={Paper} sx={{ mx: 0 }}>
+    <TableContainer component={Box} sx={{ mx: 0, width: 1400 }}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -53,7 +53,6 @@ export default function TableViewBussiness({ columns, actionbtn, tableData }) {
                   </TableCell>
                   <TableCell>{row.domain[0].title}</TableCell>
                   <TableCell>{`${row.address.city} / ${row.address.state}`}</TableCell>
-                  <TableCell>{row.status}</TableCell>
                   <TableCell>{row.owner[0].fullName}</TableCell>
                   <TableCell>Active</TableCell>
                   <TableCell>{`${row.rating} / ${row.reviewcount}`}</TableCell>

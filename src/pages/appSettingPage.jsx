@@ -7,7 +7,7 @@ export default function AppSettingPage() {
   return (
     <>
       <Helmet>
-        <title> AppSettingView | Minimal UI </title>
+        <title> Progult | App Settings </title>
       </Helmet>
 
       <AppSettingView />

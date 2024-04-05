@@ -13,46 +13,67 @@ const navConfig = [
     icon: icon('ic_analytics'),
   },
   {
-    title: 'vendors',
-    path: '/vendors',
-    icon: icon('ic_user'),
+    title: 'bookings',
+    path: '/',
+    icon: icon('ic_booking'),
   },
   {
-    title: 'users',
-    path: '/users',
-    icon: icon('ic_user'),
-  },
-  {
-    title: 'Master',
-    path: '/master ',
-    icon: icon('ic_cart'),
-    subNav: [
-      { title: 'Category', icon: icon(), path: '/master/category' },
-      { title: 'Activities', icon: icon(), path: '/master/activites' },
-      { title: 'Aminities', icon: icon(), path: '/master/aminites' },
-      { title: 'Unit', icon: icon(), path: '/products/category' },
-    ],
+    title: 'subscription',
+    path: '/',
+    icon: icon('ic_subscription'),
   },
   {
     title: 'bussiness list',
     path: '/bussiness-list',
-    icon: icon('ic_cart'),
+    icon: icon('ic_city'),
   },
+  {
+    title: 'coustmers',
+    path: '/users',
+    icon: icon('ic_userslist'),
+  },
+  {
+    title: 'vendors',
+    path: '/vendors',
+    icon: icon('ic_vendor'),
+  },
+  {
+    title: 'reports',
+    path: '/',
+    icon: icon('ic_reports'),
+  },
+  {
+    title: 'notification',
+    path: '/',
+    icon: icon('ic_bell'),
+  },
+  {
+    title: 'Master',
+    path: '/master ',
+    icon: icon('ic_sitemap'),
+    subNav: [
+      { title: 'Category', icon: icon('ic_masterCategoery'), path: '/master/category' },
+      { title: 'Activities', icon: icon(), path: '/master/activites' },
+      { title: 'Aminities', icon: icon('ic_magic'), path: '/master/aminites' },
+      { title: 'Unit', icon: icon(), path: '/products/category' },
+    ],
+  },
+
   {
     title: 'app settings',
     path: '/app-setting',
-    icon: icon('ic_cart'),
+    icon: icon('ic_appSettings'),
   },
-  {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
-  },
+  // {
+  //   title: 'login',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // },
+  // {
+  //   title: 'Not found',
+  //   path: '/404',
+  //   icon: icon('ic_disabled'),
+  // },
 ];
 
 export default navConfig;
