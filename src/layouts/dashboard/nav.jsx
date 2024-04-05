@@ -76,34 +76,34 @@ export default function Nav({ openNav, onCloseNav }) {
     </Stack>
   );
 
-  const renderUpgrade = (
-    <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-      <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-        <Box
-          component="img"
-          src="/assets/illustrations/illustration_avatar.png"
-          sx={{ width: 100, position: 'absolute', top: -50 }}
-        />
+  // const renderUpgrade = (
+  //   <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+  //     <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
+  //       <Box
+  //         component="img"
+  //         src="/assets/illustrations/illustration_avatar.png"
+  //         sx={{ width: 100, position: 'absolute', top: -50 }}
+  //       />
 
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6">Get more?</Typography>
+  //       <Box sx={{ textAlign: 'center' }}>
+  //         <Typography variant="h6">Get more?</Typography>
 
-          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-            From only $69
-          </Typography>
-        </Box>
+  //         <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
+  //           From only $69
+  //         </Typography>
+  //       </Box>
 
-        <Button
-          href="https://material-ui.com/store/items/minimal-dashboard/"
-          target="_blank"
-          variant="contained"
-          color="inherit"
-        >
-          Upgrade to Pro
-        </Button>
-      </Stack>
-    </Box>
-  );
+  //       <Button
+  //         href="https://material-ui.com/store/items/minimal-dashboard/"
+  //         target="_blank"
+  //         variant="contained"
+  //         color="inherit"
+  //       >
+  //         Upgrade to Pro
+  //       </Button>
+  //     </Stack>
+  //   </Box>
+  // );
 
   const renderContent = (
     <Scrollbar
@@ -116,15 +116,13 @@ export default function Nav({ openNav, onCloseNav }) {
         },
       }}
     >
-      <Logo sx={{ mt: 3, ml: 4 }} />
+      <Logo sx={{ mt: 3, ml: 4, mb: 5 }} />
 
-      {renderAccount}
+      {/* {renderAccount} */}
 
       {renderMenu}
 
       <Box sx={{ flexGrow: 1 }} />
-
-      {renderUpgrade}
     </Scrollbar>
   );
 
@@ -133,6 +131,7 @@ export default function Nav({ openNav, onCloseNav }) {
       sx={{
         flexShrink: { lg: 0 },
         width: { lg: NAV.WIDTH },
+        backgroundColor: '#212b36',
       }}
     >
       {upLg ? (
@@ -174,7 +173,11 @@ function CollapseableMenu({ propItem }) {
   const pathname = usePathname();
   const active = propItem.path === pathname;
   return (
-    <Box component="div" disablePadding sx={{ width: '100%', borderRadius: 0.75 }}>
+    <Box
+      component="div"
+      disablePadding
+      sx={{ width: '100%', borderRadius: 0.75, color: '#ffffff' }}
+    >
       <ListItemButton component={RouterLink} href={propItem.path}>
         <ListItemIcon>
           <StarBorder />
@@ -204,7 +207,7 @@ function NavItem({ item }) {
         minHeight: 44,
         borderRadius: 0.75,
         typography: 'body2',
-        color: 'text.secondary',
+        color: 'text.white',
         textTransform: 'capitalize',
         fontWeight: 'fontWeightMedium',
         ...(active && {

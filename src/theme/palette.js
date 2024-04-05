@@ -108,6 +108,7 @@ export function palette() {
     text: {
       primary: grey[800],
       secondary: grey[600],
+      white: common.white,
       disabled: grey[500],
     },
     background: {

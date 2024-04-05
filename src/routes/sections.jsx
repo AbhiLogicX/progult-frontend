@@ -11,7 +11,7 @@ export const LoginPage = lazy(() => import('src/pages/login'));
 export const AppSettingPage = lazy(() => import('src/pages/appSettingPage'));
 // export const ProductsPage = lazy(() => import('src/pages/products'));
 export const MasterCategoreyPage = lazy(() => import('src/pages/masterCategorey'));
-// export const BussinessListPage = lazy(() => import('src/pages/bussinessList'));
+export const BussinessListPage = lazy(() => import('src/pages/bussinessList'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
@@ -35,8 +35,7 @@ export default function Router() {
         { path: 'master/aminites', element: <MasterAminitePage /> },
         // { path: 'blog', element: <BlogPage /> },
         // { path: 'Master', element: <Master /> },
-        // { path: 'bussiness-list', element: <BussinessListPage /> },
-        // { path: 'bussiness-list', element: <BussinessListPage /> },
+        { path: 'bussiness-list', element: <BussinessListPage /> },
         { path: 'app-setting', element: <AppSettingPage /> },
       ],
     },
