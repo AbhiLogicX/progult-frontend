@@ -1,7 +1,8 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
+import CustomerListPage from 'src/pages/CustomerListPage';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const VendorPage = lazy(() => import('src/pages/vendorListPage'));
@@ -18,73 +19,55 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 export default function Router() {
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const authStatus = JSON.parse(localStorage.getItem("items"))
+  useEffect(() => {
+
+    if (authStatus) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+
+  }, [authStatus,isLoggedIn])
+
   const routes = useRoutes([
     {
-      path: "/",
-      element: <LoginPage />,
-      children: [
-        {
-          path: "login",
-          element: <LoginPage />,
-        },
-
-      ],
-    }, {
-      path: "dashboard", element: (<DashboardLayout>
-        <Suspense>
-          <Outlet />
-        </Suspense>
-      </DashboardLayout>),
+      element: isLoggedIn ? (
+        <DashboardLayout>
+          <Suspense>
+            <Outlet />
+          </Suspense>
+        </DashboardLayout>
+      ) : (
+        <LoginPage />
+      ),
       children: [
         { element: <IndexPage />, index: true },
-        { path: 'dashboard/vendors', element: <VendorPage /> },
+        { path: 'vendors', element: <VendorPage /> },
         // { path: 'products', element: <ProductsPage /> },
         { path: 'master/category', element: <MasterCategoreyPage /> },
+        { path: 'customers', element: <CustomerListPage /> },
         // { path: 'blog', element: <BlogPage /> },
         // { path: 'Master', element: <Master /> },
         // { path: 'bussiness-list', element: <BussinessListPage /> },
         // { path: 'bussiness-list', element: <BussinessListPage /> },
         // { path: 'app-setting', element: <AppSettingPage /> },
-      ]
+      ],
     },
-    { path: "*", element: <Page404 /> },
+    {
+      path: 'login',
+      element: <LoginPage />,
+    },
+    {
+      path: '404',
+      element: <Page404 />,
+    },
+    // {
+    //   path: '*',
+    //   element: <Navigate to="/404" replace />,
+    // },
   ]);
-
-  // const routes = useRoutes([
-  //   {
-  //     element: (
-  //       <DashboardLayout>
-  //         <Suspense>
-  //           <Outlet />
-  //         </Suspense>
-  //       </DashboardLayout>
-  //     ),
-  //     children: [
-  //       { element: <IndexPage /> },
-  //       { path: 'vendors', element: <VendorPage /> },
-  //       // { path: 'products', element: <ProductsPage /> },
-  //       { path: 'master/category', element: <MasterCategoreyPage /> },
-  //       // { path: 'blog', element: <BlogPage /> },
-  //       // { path: 'Master', element: <Master /> },
-  //       // { path: 'bussiness-list', element: <BussinessListPage /> },
-  //       // { path: 'bussiness-list', element: <BussinessListPage /> },
-  //       // { path: 'app-setting', element: <AppSettingPage /> },
-  //     ],
-  //   },
-  //   {
-  //     path: 'login',
-  //     element: <LoginPage />,
-  //     index:true
-  //   },
-  //   {
-  //     path: '404',
-  //     element: <Page404 />,
-  //   },
-  //   // {
-  //   //   path: '*',
-  //   //   element: <Navigate to="/404" replace />,
-  //   // },
-  // ]);
 
   return routes;
 }

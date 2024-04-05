@@ -1,1 +1,1 @@
-// export { default as customerListView } from './customerListView';
+export { default as CustomerListView } from './CustomerListView';

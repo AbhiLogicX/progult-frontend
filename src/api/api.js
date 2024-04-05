@@ -15,7 +15,7 @@ export async function postReq(reqStr, data) {
     const response = await axios.post(`${properties.BASE_URL}/${reqStr}`, data);
     return response.data;
   } catch (error) {
-    return error;
+    return error.response.data;
   }
 }
 

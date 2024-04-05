@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -48,6 +48,7 @@ export default function TableView({ columns, actionbtn, tableData }) {
                   </TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.mobile}</TableCell>
+                  {columns.includes("City/State") && <TableCell>{`${row?.address?.city || " "} , ${row?.address?.state || " "}`}</TableCell>}
                   <TableCell>{row.status}</TableCell>
                   <TableCell>
                     {actionbtn.map((btnItm) => {
