@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 
-import TableViewMaster from 'src/components/tableView/TableViewMaster';
-import Iconify from 'src/components/iconify/iconify';
 import { getReq, postReq } from 'src/api/api';
+
+import Iconify from 'src/components/iconify/iconify';
 import FormDialogue from 'src/components/dialogueForm/DialogueForm';
+import TableViewMaster from 'src/components/tableView/TableViewMaster';
 
 export default function ActivityListView() {
   const [rowData, setRowData] = useState([]);
@@ -16,13 +17,16 @@ export default function ActivityListView() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    async function fetchRowData() {
-      const result = await getReq('domain/activity');
-      setRowData(result);
-      setFetchedData(true);
+    if (!fetchedData) {
+      fetchRowData();
     }
-    fetchRowData();
-  }, []);
+  }, [fetchedData]);
+
+  async function fetchRowData() {
+    const result = await getReq('domain/activity');
+    setRowData(result);
+    setFetchedData(true);
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,8 +41,11 @@ export default function ActivityListView() {
     formData.append('title', titleName);
     formData.append('description', descriptionTopic);
     formData.append('image', selectedFile);
-    const result = await postReq('domain/activity', formData); // we have to handle the success and error
-    handleClose();
+    const result = await postReq('domain/activity', formData);
+    if (result.statusCode === 200) {
+      handleClose();
+      setFetchedData(false);
+    }
   };
 
   const tableColumns = ['Image', 'Title', 'Status'];
@@ -62,7 +69,7 @@ export default function ActivityListView() {
           open={open}
           handleClose={handleClose}
           handleSubmit={handleSubmit}
-          fromCall="Add"
+          fromCall="Add Activity"
         />
       </Stack>
 
@@ -71,7 +78,8 @@ export default function ActivityListView() {
           columns={tableColumns}
           actionbtn={actionCol}
           tableData={rowData}
-          fromCall="activity"
+          fromCall="domain/activity"
+          handleReload={setFetchedData}
         />
       ) : null}
     </Container>

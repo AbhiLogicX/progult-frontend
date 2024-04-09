@@ -1,26 +1,14 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import PropTypes from 'prop-types';
+
 import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
+import TableContainer from '@mui/material/TableContainer';
 
 export default function TableView({ columns, actionbtn, tableData }) {
   if (actionbtn && !columns.includes('Action')) {
@@ -49,6 +37,11 @@ export default function TableView({ columns, actionbtn, tableData }) {
                   </TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.mobile}</TableCell>
+                  {columns.includes('City/State') && (
+                    <TableCell>{`${row?.address?.city || ' '} , ${
+                      row?.address?.state || ' '
+                    }`}</TableCell>
+                  )}
                   <TableCell>{row.status}</TableCell>
                   <TableCell>
                     {actionbtn.map((btnItm) => {

@@ -1,28 +1,25 @@
-import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Drawer from '@mui/material/Drawer';
+import { Image } from '@mui/icons-material';
+import { alpha } from '@mui/material/styles';
+import Collapse from '@mui/material/Collapse';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import { alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import Collapse from '@mui/material/Collapse';
-import ListItemButton from '@mui/material/ListItemButton';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
-import { Image } from '@mui/icons-material';
+import ListItemButton from '@mui/material/ListItemButton';
 
 import { usePathname } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { account } from 'src/_mock/account';
+// import { account } from 'src/_mock/account';
 
 import Scrollbar from 'src/components/scrollbar';
 
@@ -43,30 +40,30 @@ export default function Nav({ openNav, onCloseNav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  const renderAccount = (
-    <Box
-      sx={{
-        my: 3,
-        mx: 2.5,
-        py: 2,
-        px: 2.5,
-        display: 'flex',
-        borderRadius: 1.5,
-        alignItems: 'center',
-        bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
-      }}
-    >
-      <Avatar src={account.photoURL} alt="photoURL" />
+  // const renderAccount = (
+  //   <Box
+  //     sx={{
+  //       my: 3,
+  //       mx: 2.5,
+  //       py: 2,
+  //       px: 2.5,
+  //       display: 'flex',
+  //       borderRadius: 1.5,
+  //       alignItems: 'center',
+  //       bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
+  //     }}
+  //   >
+  //     <Avatar src={account.photoURL} alt="photoURL" />
 
-      <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+  //     <Box sx={{ ml: 2 }}>
+  //       <Typography variant="subtitle2">{account.displayName}</Typography>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
-        </Typography>
-      </Box>
-    </Box>
-  );
+  //       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+  //         {account.role}
+  //       </Typography>
+  //     </Box>
+  //   </Box>
+  // );
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
@@ -172,8 +169,8 @@ Nav.propTypes = {
 // ----------------------------------------------------------------------
 
 function CollapseableMenu({ propItem }) {
-  const pathname = usePathname();
-  const active = propItem.path === pathname;
+  // const pathname = usePathname();
+  // const active = propItem.path === pathname;
   return (
     <Box
       component="div"

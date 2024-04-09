@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 
-import TableViewBussiness from 'src/components/tableView/TableViewBussiness';
-import Iconify from 'src/components/iconify';
 import { getReq } from 'src/api/api';
+
+import Iconify from 'src/components/iconify';
+import TableViewBussiness from 'src/components/tableView/TableViewBussiness';
 
 export default function BussinessListView() {
   const [rowData, setRowData] = useState([]);
@@ -32,26 +34,24 @@ export default function BussinessListView() {
   ];
   const actionCol = ['View & Edit', 'Delete'];
   return (
-    <>
-      <Container sx={{ mx: '1%' }}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
-          sx={{ mb: 5, width: 1400 }}
-        >
-          <Typography variant="h4">Bussiness List</Typography>
+    <Container sx={{ mx: '1%' }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={5}
+        sx={{ mb: 5, width: 1400 }}
+      >
+        <Typography variant="h4">Bussiness List</Typography>
 
-          <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Bussinesss
-          </Button>
-        </Stack>
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+          New Bussinesss
+        </Button>
+      </Stack>
 
-        {fetchedData ? (
-          <TableViewBussiness columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
-        ) : null}
-      </Container>
-    </>
+      {fetchedData ? (
+        <TableViewBussiness columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
+      ) : null}
+    </Container>
   );
 }

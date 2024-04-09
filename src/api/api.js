@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import properties from 'src/config/properties';
 
 export async function getReq(reqStr, paramObj) {
@@ -15,7 +16,7 @@ export async function postReq(reqStr, data) {
     const response = await axios.post(`${properties.BASE_URL}/${reqStr}`, data);
     return response.data;
   } catch (error) {
-    return error;
+    return error.response.data;
   }
 }
 

@@ -11,7 +11,7 @@ import Iconify from 'src/components/iconify/iconify';
 import FormDialogue from 'src/components/dialogueForm/DialogueForm';
 import TableViewMaster from 'src/components/tableView/TableViewMaster';
 
-export default function CategoeryListView() {
+export default function UnitListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
   const [open, setOpen] = useState(false);
@@ -23,7 +23,7 @@ export default function CategoeryListView() {
   }, [fetchedData]);
 
   async function fetchRowData() {
-    const result = await getReq('domain/category');
+    const result = await getReq('master/unit');
     setRowData(result);
     setFetchedData(true);
   }
@@ -41,21 +41,21 @@ export default function CategoeryListView() {
     formData.append('title', titleName);
     formData.append('description', descriptionTopic);
     formData.append('image', selectedFile);
-    const result = await postReq('domain/category', formData); // we have to handle the success and error
+    const result = await postReq('master/unit', formData); // we have to handle the success and error
     if (result.statusCode === 200) {
       handleClose();
       setFetchedData(false);
     }
   };
 
-  const tableColumns = ['Image', 'Title', 'Status'];
+  const tableColumns = ['Title', 'Status'];
   const actionCol = ['Edit', 'Delete'];
 
   return (
     <Container sx={{ mx: '1%' }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width={1400}>
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Categoeries
+          Unit
         </Typography>
         <Button
           variant="contained"
@@ -63,13 +63,13 @@ export default function CategoeryListView() {
           onClick={handleClickOpen}
           startIcon={<Iconify icon="eva:plus-fill" />}
         >
-          New Categoery
+          New Unit
         </Button>
         <FormDialogue
           open={open}
           handleClose={handleClose}
           handleSubmit={handleSubmit}
-          fromCall="Add Categoery"
+          fromCall="Add unit"
         />
       </Stack>
 
@@ -78,7 +78,7 @@ export default function CategoeryListView() {
           columns={tableColumns}
           actionbtn={actionCol}
           tableData={rowData}
-          fromCall="domain/category"
+          fromCall="master/unit"
           handleReload={setFetchedData}
         />
       ) : null}

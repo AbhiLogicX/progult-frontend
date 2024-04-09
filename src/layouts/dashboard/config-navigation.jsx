@@ -18,7 +18,7 @@ const navConfig = [
     icon: icon('ic_booking'),
   },
   {
-    title: 'subscription',
+    title: 'Subscriptions',
     path: '/',
     icon: icon('ic_subscription'),
   },
@@ -28,8 +28,8 @@ const navConfig = [
     icon: icon('ic_city'),
   },
   {
-    title: 'coustmers',
-    path: '/users',
+    title: 'customers',
+    path: '/customers',
     icon: icon('ic_userslist'),
   },
   {
@@ -54,8 +54,8 @@ const navConfig = [
     subNav: [
       { title: 'Category', icon: icon('ic_masterCategoery'), path: '/master/category' },
       { title: 'Activities', icon: icon(), path: '/master/activites' },
-      { title: 'Aminities', icon: icon('ic_magic'), path: '/master/aminites' },
-      { title: 'Unit', icon: icon(), path: '/products/category' },
+      { title: 'Aminities', icon: icon('ic_magic'), path: '/master/aminities' },
+      { title: 'Unit', icon: icon(), path: '/master/unit' },
     ],
   },
 

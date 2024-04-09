@@ -8,7 +8,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Progult | Login </title>
+        <title> Login | Proglut </title>
       </Helmet>
 
       <LoginView />

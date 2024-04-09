@@ -1,10 +1,9 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -15,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { postReq } from 'src/api/api';
 import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
@@ -27,21 +27,63 @@ export default function LoginView() {
 
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/dashboard');
+  // const handleClick = () => {
+  //   router.push('/dashboard');
+  // };
+
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const loginsubmit = async (data) => {
+    // console.log(data)
+    setLoading(true);
+    setError('');
+    try {
+      const session = await postReq('admin/login', data);
+      if (session.success) {
+        // console.log(session);
+        localStorage.setItem('items', JSON.stringify(session.data));
+        setLoading(false);
+        router.push('/');
+      } else {
+        setLoading(false);
+        setError(session.message);
+      }
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+    }
   };
 
   const renderForm = (
-    <>
-      <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+    <form onSubmit={handleSubmit(loginsubmit)}>
+      <Stack spacing={3} marginBottom="2rem">
+        <TextField
+          name="email"
+          label="Email address"
+          {...register('email', {
+            required: 'Email is required',
+            validate: {
+              matchPatern: (value) =>
+                /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+                'Email address must be a valid address',
+            },
+          })}
+        />
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          {...register('password', { required: true, minLength: 6 })}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -54,23 +96,12 @@ export default function LoginView() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack>
-
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        color="inherit"
-        onClick={handleClick}
-      >
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" color="inherit">
         Login
       </LoadingButton>
-    </>
+
+      {error && <Typography color="error">{error}</Typography>}
+    </form>
   );
 
   return (
@@ -97,56 +128,18 @@ export default function LoginView() {
             p: 5,
             width: 1,
             maxWidth: 420,
+            justifyItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
           }}
         >
-          <Typography variant="h4">Sign in to Minimal</Typography>
-
-          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-              Get started
-            </Link>
+          <Typography alignItems="center" justifySelf="center" marginBottom="1rem" variant="h5">
+            Welcome To Proglut Admin
           </Typography>
 
-          <Stack direction="row" spacing={2}>
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:google-fill" color="#DF3E30" />
-            </Button>
+          <Divider sx={{ my: 3 }} />
 
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:facebook-fill" color="#1877F2" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
-            </Button>
-          </Stack>
-
-          <Divider sx={{ my: 3 }}>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              OR
-            </Typography>
-          </Divider>
-
-          {renderForm}
+          {!loading ? renderForm : 'Verifying...'}
         </Card>
       </Stack>
     </Box>
