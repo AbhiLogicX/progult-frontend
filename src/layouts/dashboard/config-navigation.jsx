@@ -28,6 +28,11 @@ const navConfig = [
     icon: icon('ic_city'),
   },
   {
+    title: 'event list',
+    path: '/evnet-list',
+    icon: icon('ic_city'),
+  },
+  {
     title: 'customers',
     path: '/customers',
     icon: icon('ic_userslist'),

@@ -9,12 +9,18 @@ import Button from '@mui/material/Button';
 import { Image } from '@mui/icons-material';
 import ImageList from '@mui/material/ImageList';
 import TextField from '@mui/material/TextField';
+import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 import ImageListItem from '@mui/material/ImageListItem';
 
-import { mockData, itemData } from './mockData';
+import { warning } from 'src/theme/palette';
+
 import MasterViewCard from 'src/components/cards/MasterViewCard';
 import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
+
+import { mockData, itemData } from './mockData';
+import { BussinessActivityView } from './BussinessActivityView';
 
 function BussinessInfoView() {
   const [open, setOpen] = useState(false);
@@ -33,6 +39,7 @@ function BussinessInfoView() {
     //   handleClose();
     //   handleReload(false);
     // }
+    setOpen(false);
   };
 
   return (
@@ -106,13 +113,18 @@ function BussinessInfoView() {
               Bussiness Hours
             </Typography>
             <Button variant="contained" onClick={handleClickOpen}>
-              Manage
+              Add Timings
             </Button>
-            <BussinessTimeForm open={open} handleClose={handleClose} handleSubmit={handleSubmit} />
+            <BussinessTimeForm
+              open={open}
+              handleClose={handleClose}
+              handleSubmit={handleSubmit}
+              fromCall="Add Timings"
+            />
           </Box>
           <Box display="flex">
             {mockData.bussinessHour.map((itm) => (
-              <TimingCards timeData={itm} />
+              <TimingCards timeData={itm} key={`${itm.title}_${itm.id}`} />
             ))}
           </Box>
         </Box>
@@ -122,11 +134,21 @@ function BussinessInfoView() {
         <Typography variant="h5" mb={5}>
           Activities
         </Typography>
+        <Box>
+          <BussinessActivityView />
+        </Box>
       </Paper>
-      <Paper elevation={3} sx={{ p: '1%', mb: 5, width: 1400 }}>
+      <Paper elevation={3} sx={{ py: '1%', px: '2%', mb: 5, width: 1400 }}>
         <Typography variant="h5" mb={5}>
           Aminities
         </Typography>
+        <Grid container spacing={2}>
+          {mockData.amenities_list.map((item) => (
+            <Grid item xs={2}>
+              <MasterViewCard cardData={item} />
+            </Grid>
+          ))}
+        </Grid>
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 5 }}>
@@ -174,7 +196,7 @@ function ContactDetailform() {
         <Box mb={3} display="flex" sx={{ borderRadius: 0.75 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Box display="flex" alignItems="center" mb={2}>
+              <Box display="flex" alignItems="center">
                 {editOption ? (
                   <Typography sx={{ fontWeight: 600, mr: 1 }}>Titile :</Typography>
                 ) : null}
@@ -187,6 +209,29 @@ function ContactDetailform() {
                   />
                 ) : (
                   <Typography variant="h3">{mockData?.title ? mockData.title : ''}</Typography>
+                )}
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box display="flex" alignItems="center" mb={2}>
+                {editOption ? (
+                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Domain :</Typography>
+                ) : (
+                  <Typography variant="h6" sx={{ mr: 1 }}>
+                    Domain :
+                  </Typography>
+                )}
+                {editOption ? (
+                  <TextField
+                    name="title"
+                    variant="outlined"
+                    {...register('title')}
+                    defaultValue={mockData?.domain[0]?.title ? mockData.domain[0].title : ''}
+                  />
+                ) : (
+                  <Typography variant="h6">
+                    {mockData?.domain[0]?.title ? mockData.domain[0].title : ''}
+                  </Typography>
                 )}
               </Box>
             </Grid>
@@ -296,6 +341,52 @@ function ContactDetailform() {
                 )}
               </Box>
             </Grid>
+            <Grid item xs={6}>
+              <Box display="flex" alignItems="center">
+                <Typography sx={{ fontWeight: 600, mr: 1 }}>Bussiness Logo :</Typography>
+                {editOption ? (
+                  <TextField
+                    name="brandLogo"
+                    variant="outlined"
+                    {...register('brandLogo')}
+                    type="file"
+                  />
+                ) : (
+                  <Typography>{mockData?.brandLogo ? mockData?.brandLogo : ''}</Typography>
+                )}
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box display="flex" alignItems="center">
+                <Typography sx={{ fontWeight: 600, mr: 1 }}>Cover Image :</Typography>
+                {editOption ? (
+                  <TextField
+                    name="coverImage"
+                    variant="outlined"
+                    {...register('coverImage')}
+                    type="file"
+                  />
+                ) : (
+                  <Typography>{mockData?.coverImage ? mockData.coverImage : ''}</Typography>
+                )}
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box display="flex" alignItems="center">
+                <Typography sx={{ fontWeight: 600, mr: 1 }}>Description :</Typography>
+                {editOption ? (
+                  <TextField
+                    name="description"
+                    variant="outlined"
+                    {...register('description')}
+                    type="text"
+                    defaultValue={mockData?.description ? mockData.description : ''}
+                  />
+                ) : (
+                  <Typography>{mockData?.description ? mockData.description : ''}</Typography>
+                )}
+              </Box>
+            </Grid>
           </Grid>
         </Box>
         <Box textAlign="right">
@@ -324,10 +415,39 @@ function ContactDetailform() {
 }
 
 function TimingCards({ timeData }) {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = async () => {
+    console.log('Edit btn');
+    // if (result.statusCode === 200) {
+    //   handleClose();
+    //   handleReload(false);
+    // }
+    setOpen(false);
+  };
   return (
-    <Box elevation={3} p={2} component={Paper} mr={2}>
+    <Box elevation={3} p={2} component={Paper} mr={2} sx={{ backgroundColor: warning.light }}>
       <Typography>{`${timeData.startTime} to ${timeData.endTime}`}</Typography>
-      <Typography>{timeData.days.map((itm) => `${itm} `)}</Typography>
+      <Typography mb={1}>{timeData.days.map((itm) => `${itm} `)}</Typography>
+      <Box textAlign="right">
+        <IconButton variant="contained" onClick={handleClickOpen}>
+          <EditIcon />
+        </IconButton>
+      </Box>
+      <BussinessTimeForm
+        open={open}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit}
+        fromCall="Edit Timings"
+      />
     </Box>
   );
 }

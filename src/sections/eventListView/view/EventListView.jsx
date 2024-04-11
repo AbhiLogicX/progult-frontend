@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react';
 
 import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { getReq } from 'src/api/api';
 
+import Iconify from 'src/components/iconify';
 import TableViewBussiness from 'src/components/tableView/TableViewBussiness';
 
-export default function BussinessListView() {
+export default function EventListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
 
   useEffect(() => {
     async function fetchRowData() {
-      const result = await getReq('bussiness');
+      const result = await getReq('event');
       setRowData(result.data);
-      console.log('bussiness', result);
+      console.log('event', result.data);
       setFetchedData(true);
     }
     fetchRowData();
@@ -25,9 +26,9 @@ export default function BussinessListView() {
   const tableColumns = [
     'Image',
     'Titie',
-    'Categoery',
     'Owner Name',
     'City / State',
+    'Host Name',
     'Status',
     'Rating/ReviewCount',
   ];
@@ -41,11 +42,11 @@ export default function BussinessListView() {
         mb={5}
         sx={{ mb: 5, width: 1400 }}
       >
-        <Typography variant="h4">Bussiness List</Typography>
+        <Typography variant="h4">Event List</Typography>
 
-        {/* <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-          New Bussinesss
-        </Button> */}
+        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+          New Event
+        </Button>
       </Stack>
 
       {fetchedData ? (
