@@ -10,11 +10,12 @@ export const MasterActivityPage = lazy(() => import('src/pages/masterActivityLis
 export const MasterAminitiesPage = lazy(() => import('src/pages/masterAminiteList'));
 export const MasterUnitPage = lazy(() => import('src/pages/masterUnitList'));
 export const LoginPage = lazy(() => import('src/pages/login'));
-// export const AppSettingPage = lazy(() => import('src/pages/appSettingPage'));
-// export const ProductsPage = lazy(() => import('src/pages/products'));
+export const AppSettingPage = lazy(() => import('src/pages/appSettingPage'));
+export const ProfileViewPage = lazy(() => import('src/pages/profileViewPage'));
 export const MasterCategoreyPage = lazy(() => import('src/pages/masterCategorey'));
 export const BussinessListPage = lazy(() => import('src/pages/bussinessList'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
+export const BussinessDetailPage = lazy(() => import('src/pages/BussinessDetailPage'));
 
 // ----------------------------------------------------------------------
 
@@ -48,9 +49,11 @@ export default function Router() {
         { path: 'master/activites', element: <MasterActivityPage /> },
         { path: 'customers', element: <CustomerListPage /> },
         { path: 'master/unit', element: <MasterUnitPage /> },
-        // { path: 'Master', element: <Master /> },
+        { path: 'customers/detail/:Id', element: <ProfileViewPage /> },
+        { path: 'vendors/detail/:Id', element: <ProfileViewPage /> },
+        { path: 'bussiness/detail/:bussinessId', element: <BussinessDetailPage /> },
         { path: 'bussiness-list', element: <BussinessListPage /> },
-        // { path: 'app-setting', element: <AppSettingPage /> },
+        { path: 'app-setting', element: <AppSettingPage /> },
       ],
     },
     {

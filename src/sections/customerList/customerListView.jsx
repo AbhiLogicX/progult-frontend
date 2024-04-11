@@ -15,7 +15,7 @@ export default function CustomerListView() {
   useEffect(() => {
     async function fetchRowData() {
       const result = await getReq('user/all');
-      setRowData(result);
+      setRowData(result.data);
       setFetchedData(true);
     }
     fetchRowData();

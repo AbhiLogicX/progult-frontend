@@ -51,6 +51,7 @@ export default function LoginView() {
       if (session.success) {
         // console.log(session);
         localStorage.setItem('items', JSON.stringify(session.data));
+        localStorage.setItem('tokens', JSON.stringify(session.extra));
         setLoading(false);
         router.push('/');
       } else {

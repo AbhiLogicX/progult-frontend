@@ -17,7 +17,7 @@ export default function VendorListView() {
   useEffect(() => {
     async function fetchRowData() {
       const result = await getReq('vendor/all');
-      setRowData(result);
+      setRowData(result.data);
       setFetchedData(true);
     }
     fetchRowData();

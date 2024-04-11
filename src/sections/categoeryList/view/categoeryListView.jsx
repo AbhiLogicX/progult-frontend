@@ -24,7 +24,7 @@ export default function CategoeryListView() {
 
   async function fetchRowData() {
     const result = await getReq('domain/category');
-    setRowData(result);
+    setRowData(result.data);
     setFetchedData(true);
   }
 

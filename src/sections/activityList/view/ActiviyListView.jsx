@@ -24,7 +24,7 @@ export default function ActivityListView() {
 
   async function fetchRowData() {
     const result = await getReq('domain/activity');
-    setRowData(result);
+    setRowData(result.data);
     setFetchedData(true);
   }
 

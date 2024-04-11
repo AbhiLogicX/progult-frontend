@@ -5,24 +5,27 @@ import properties from 'src/config/properties';
 export async function getReq(reqStr, paramObj) {
   try {
     const response = await axios.get(`${properties.BASE_URL}/${reqStr}`, paramObj);
-    return response.data.data;
+    if (response.data.statusCode) {
+      return response.data;
+    }
+    return response.data;
   } catch (error) {
     return error;
   }
 }
 
-export async function postReq(reqStr, data) {
+export async function postReq(reqStr, data, headers) {
   try {
-    const response = await axios.post(`${properties.BASE_URL}/${reqStr}`, data);
+    const response = await axios.post(`${properties.BASE_URL}/${reqStr}`, data, headers);
     return response.data;
   } catch (error) {
     return error.response.data;
   }
 }
 
-export async function patchReq(reqStr, data) {
+export async function patchReq(reqStr, data, headers) {
   try {
-    const response = await axios.patchForm(`${properties.BASE_URL}/${reqStr}`, data);
+    const response = await axios.patch(`${properties.BASE_URL}/${reqStr}`, data, headers);
     return response.data;
   } catch (error) {
     return error;

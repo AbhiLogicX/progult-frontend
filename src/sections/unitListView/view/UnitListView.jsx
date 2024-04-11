@@ -24,7 +24,7 @@ export default function UnitListView() {
 
   async function fetchRowData() {
     const result = await getReq('master/unit');
-    setRowData(result);
+    setRowData(result.data);
     setFetchedData(true);
   }
 

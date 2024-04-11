@@ -24,7 +24,7 @@ export default function AminiteListView() {
 
   async function fetchRowData() {
     const result = await getReq('domain/aminities');
-    setRowData(result);
+    setRowData(result.data);
     setFetchedData(true);
   }
 

@@ -17,7 +17,7 @@ export default function BussinessListView() {
   useEffect(() => {
     async function fetchRowData() {
       const result = await getReq('bussiness');
-      setRowData(result);
+      setRowData(result.data);
       console.log('bussiness', result);
       setFetchedData(true);
     }
@@ -34,7 +34,7 @@ export default function BussinessListView() {
   ];
   const actionCol = ['View & Edit', 'Delete'];
   return (
-    <Container sx={{ mx: '1%' }}>
+    <Container component="div" sx={{ mx: '1%', width: 1500 }}>
       <Stack
         direction="row"
         alignItems="center"
