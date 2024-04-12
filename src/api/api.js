@@ -2,12 +2,19 @@ import axios from 'axios';
 
 import properties from 'src/config/properties';
 
-export async function getReq(reqStr, paramObj) {
+export async function getReq(reqStr) {
+  const heads = JSON.parse(localStorage.getItem('tokens'));
+  // console.log('heads', heads, `Bearer ${heads.accessToken}`);
   try {
-    const response = await axios.get(`${properties.BASE_URL}/${reqStr}`, paramObj);
+    const response = await axios.get(`${properties.BASE_URL}/${reqStr}`, {
+      headers: {
+        Authorization: `Bearer ${heads.accessToken}`,
+      },
+    });
     if (response.data.statusCode) {
       return response.data;
     }
+
     return response.data;
   } catch (error) {
     return error;

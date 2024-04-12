@@ -9,13 +9,10 @@ import Button from '@mui/material/Button';
 import { Image } from '@mui/icons-material';
 import ImageList from '@mui/material/ImageList';
 import TextField from '@mui/material/TextField';
-import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import ImageListItem from '@mui/material/ImageListItem';
 
-import { warning } from 'src/theme/palette';
-
+import TimingCards from 'src/components/cards/TimingSlotCard';
 import MasterViewCard from 'src/components/cards/MasterViewCard';
 import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
 
@@ -138,7 +135,7 @@ function BussinessInfoView() {
           <BussinessActivityView />
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ py: '1%', px: '2%', mb: 5, width: 1400 }}>
+      <Paper elevation={3} sx={{ p: '1%', mb: 5, width: 1400 }}>
         <Typography variant="h5" mb={5}>
           Aminities
         </Typography>
@@ -410,44 +407,6 @@ function ContactDetailform() {
           )}
         </Box>
       </form>
-    </Box>
-  );
-}
-
-function TimingCards({ timeData }) {
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = async () => {
-    console.log('Edit btn');
-    // if (result.statusCode === 200) {
-    //   handleClose();
-    //   handleReload(false);
-    // }
-    setOpen(false);
-  };
-  return (
-    <Box elevation={3} p={2} component={Paper} mr={2} sx={{ backgroundColor: warning.light }}>
-      <Typography>{`${timeData.startTime} to ${timeData.endTime}`}</Typography>
-      <Typography mb={1}>{timeData.days.map((itm) => `${itm} `)}</Typography>
-      <Box textAlign="right">
-        <IconButton variant="contained" onClick={handleClickOpen}>
-          <EditIcon />
-        </IconButton>
-      </Box>
-      <BussinessTimeForm
-        open={open}
-        handleClose={handleClose}
-        handleSubmit={handleSubmit}
-        fromCall="Edit Timings"
-      />
     </Box>
   );
 }

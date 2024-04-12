@@ -84,6 +84,65 @@ export const mockData = {
   rating: null,
 };
 
+export const mockDataActivity = {
+  statusCode: 200,
+  data: [
+    {
+      _id: '660808664f214cbdbec22e31',
+      activityId: {
+        _id: '66051d90631714dedd3e8530',
+        image: '1711611279822discount.png',
+        title: 'zumba',
+      },
+      bussinessId: '66069bfe7f083dba90191320',
+      status: 'active',
+      owner: '6603ef0cb99af9eecec0ce9e',
+      slots: [
+        {
+          days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+          startTime: '11:00 AM',
+          endTime: '07:00 PM',
+          maxseat: '30',
+          duration: '90',
+          rate: '3000',
+          _id: '660e4956047f170fbdaec6bc',
+        },
+      ],
+      __v: 0,
+      createdAt: '2024-03-30T12:41:10.512Z',
+      updatedAt: '2024-04-04T06:31:50.161Z',
+    },
+    {
+      _id: '660808664f214cbdbec22e30',
+      activityId: {
+        _id: '66051dbb631714dedd3e8534',
+        image: '1711611323741budget.png',
+        title: 'yoga',
+      },
+      bussinessId: '66069bfe7f083dba90191320',
+      status: 'active',
+      owner: '6603ef0cb99af9eecec0ce9e',
+      slots: [
+        {
+          days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+          startTime: '06:00 PM',
+          endTime: '08:00 PM',
+          maxseat: '50',
+          duration: '30',
+          rate: '3000',
+          _id: '6617c4b921b0c91be7042689',
+        },
+      ],
+      __v: 0,
+      createdAt: '2024-03-30T12:41:10.512Z',
+      updatedAt: '2024-04-11T11:09:20.884Z',
+    },
+  ],
+  message: 'Activities List Fetched successfully',
+  success: true,
+  extra: {},
+};
+
 export const itemData = [
   {
     img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
