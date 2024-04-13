@@ -20,8 +20,12 @@ export default function VendorListView() {
       setRowData(result.data);
       setFetchedData(true);
     }
-    fetchRowData();
-  }, []);
+
+    if (!fetchedData) {
+      fetchRowData();
+    }
+  }, [fetchedData]);
+
   const tableColumns = ['Name', 'Email', 'Mobile', 'Status'];
   const actionCol = ['View & Edit', 'Delete'];
   return (
@@ -35,7 +39,13 @@ export default function VendorListView() {
       </Stack>
 
       {fetchedData ? (
-        <TableView columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
+        <TableView
+          columns={tableColumns}
+          actionbtn={actionCol}
+          tableData={rowData}
+          fromCall="vendor"
+          handleReload={setFetchedData}
+        />
       ) : null}
     </Container>
   );

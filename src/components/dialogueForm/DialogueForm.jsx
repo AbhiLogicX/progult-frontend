@@ -60,7 +60,6 @@ export default function FormDialogue({ open, handleClose, handleSubmit, fromCall
 
         <TextField
           autoFocus
-          required
           margin="dense"
           id="name"
           name="description"

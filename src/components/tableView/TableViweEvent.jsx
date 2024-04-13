@@ -1,32 +1,28 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
+import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import { Image } from '@mui/icons-material';
 import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 
 import { RouterLink } from 'src/routes/components';
 
-import DialogComponent from '../dialogueForm/DialogComponent';
-
-export default function TableView({ columns, actionbtn, tableData, fromCall, handleReload }) {
-  const location = useLocation().pathname.split('/');
-  console.log(location);
-
+export default function TableViewEvent({ columns, actionbtn, tableData }) {
+  console.log('This is table data', tableData);
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
 
   return (
     <Paper elevation={3} sx={{ width: 1400 }}>
-      <TableContainer component={Box} sx={{ width: 1400 }}>
+      <TableContainer sx={{ mx: 0, width: 1400 }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -39,32 +35,29 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
             {actionbtn
               ? tableData.map((row) => (
                   <TableRow
-                    key={row.fullName}
+                    key={row._id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.fullName}
+                      <Box>
+                        <Image src="/assets/images/images(1).png" alt="Image is rendering" />
+                      </Box>
                     </TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.mobile}</TableCell>
-                    {columns.includes('City/State') && (
-                      <TableCell>{`${row?.address?.city || ' '} , ${
-                        row?.address?.state || ' '
-                      }`}</TableCell>
-                    )}
-                    <TableCell>{row.status}</TableCell>
-                    <TableCell sx={{ display: 'flex' }}>
+                    <TableCell component="th" scope="row">
+                      {row.title}
+                    </TableCell>
+                    <TableCell>{`${row.address.city} / ${row.address.state}`}</TableCell>
+                    <TableCell>{row.owner[0].fullName}</TableCell>
+                    <TableCell>{row.bussinessId.title}</TableCell>
+                    <TableCell>Active</TableCell>
+                    <TableCell>{`${row.rating} / ${row.reviewcount}`}</TableCell>
+                    <TableCell>
                       {actionbtn.map((btnItm) => {
                         if (btnItm === 'Delete') {
                           return (
-                            <DialogComponent
-                              deleteVar="Delete"
-                              btnTitle={btnItm}
-                              msgTitle={row.title}
-                              domainId={row._id}
-                              domainCall={`${fromCall}/update-status`}
-                              handleReload={handleReload}
-                            />
+                            <Button variant="contained" sx={{ mr: 2 }} color="error">
+                              {btnItm}
+                            </Button>
                           );
                         }
                         return (
@@ -72,7 +65,7 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
                             variant="contained"
                             sx={{ mr: 2 }}
                             component={RouterLink}
-                            href={`/${location[1]}/detail/${row._id}`}
+                            href={`/event/detail/${row._id}`}
                           >
                             {btnItm}
                           </Button>
@@ -101,10 +94,8 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
   );
 }
 
-TableView.propTypes = {
+TableViewEvent.propTypes = {
   columns: PropTypes.array,
   actionbtn: PropTypes.array,
   tableData: PropTypes.array,
-  handleReload: PropTypes.func,
-  fromCall: PropTypes.func,
 };

@@ -69,7 +69,7 @@ function RenderCard({ crdData }) {
             sx={{ height: 150, width: 150 }}
           />
         </Box>
-        <Typography>{crdData.activityId.title}</Typography>
+        <Typography variant="h6">{crdData.activityId.title}</Typography>
         <Button onClick={handleClickOpen} variant="contained" sx={{ width: '100%' }}>
           Edit
         </Button>

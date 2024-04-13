@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { getReq } from 'src/api/api';
 
 import Iconify from 'src/components/iconify';
-import TableViewBussiness from 'src/components/tableView/TableViewBussiness';
+import TableViewEvent from 'src/components/tableView/TableViweEvent';
 
 export default function EventListView() {
   const [rowData, setRowData] = useState([]);
@@ -26,8 +26,8 @@ export default function EventListView() {
   const tableColumns = [
     'Image',
     'Titie',
-    'Owner Name',
     'City / State',
+    'Owner Name',
     'Host Name',
     'Status',
     'Rating/ReviewCount',
@@ -50,7 +50,7 @@ export default function EventListView() {
       </Stack>
 
       {fetchedData ? (
-        <TableViewBussiness columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
+        <TableViewEvent columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
       ) : null}
     </Container>
   );

@@ -29,12 +29,22 @@ export default function DialogComponent({
   const handleCloseDialog = () => {
     setOpen(false);
   };
+  const splitDomain = domainCall.split('/');
+  console.log(splitDomain);
 
   async function handleDeleteClose(id) {
-    const result = await patchReq(`${domainCall}/detail?Id=${id}&status=delete`);
-    if (result.statusCode === 200) {
-      handleReload(false);
-      setOpen(false);
+    if (splitDomain[0] === 'user' || splitDomain[0] === 'vendor') {
+      const result = await patchReq(`${domainCall}?Id=${id}&status=delete`);
+      if (result.statusCode === 200) {
+        handleReload(false);
+        setOpen(false);
+      }
+    } else {
+      const result = await patchReq(`${domainCall}/detail?Id=${id}&status=delete`);
+      if (result.statusCode === 200) {
+        handleReload(false);
+        setOpen(false);
+      }
     }
   }
 
@@ -90,7 +100,9 @@ export default function DialogComponent({
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog}>Disagree</Button>
+            <Button onClick={handleCloseDialog} color="error">
+              Disagree
+            </Button>
             <Button
               onClick={() => {
                 handleDeleteClose(domainId);
@@ -119,7 +131,9 @@ export default function DialogComponent({
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog}>Disagree</Button>
+            <Button onClick={handleCloseDialog} color="error">
+              Disagree
+            </Button>
             <Button
               onClick={() => {
                 handleStatusClose(domainId);

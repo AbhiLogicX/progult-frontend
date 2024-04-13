@@ -14,6 +14,7 @@ import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 
 import { patchReq } from 'src/api/api';
+import properties from 'src/config/properties';
 
 import FormDialogue from '../dialogueForm/DialogueForm';
 import DialogComponent from '../dialogueForm/DialogComponent';
@@ -90,7 +91,11 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
                     {row.image ? (
                       <TableCell component="th" scope="row">
                         <Box>
-                          <Image src="/assets/images/images(1).png" alt="Image is rendering" />
+                          <img
+                            src={`${properties.BASE_IMAGE_URL}${row.image}`}
+                            alt="Cover Images"
+                            style={{ width: '25px', height: '25px' }}
+                          />
                         </Box>
                       </TableCell>
                     ) : null}

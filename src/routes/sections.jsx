@@ -15,6 +15,7 @@ export const ProfileViewPage = lazy(() => import('src/pages/profileViewPage'));
 export const MasterCategoreyPage = lazy(() => import('src/pages/masterCategorey'));
 export const BussinessListPage = lazy(() => import('src/pages/bussinessList'));
 export const EventListPage = lazy(() => import('src/pages/EventListView'));
+export const EventDetailViewPage = lazy(() => import('src/pages/eventDetailPage'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const BussinessDetailPage = lazy(() => import('src/pages/BussinessDetailPage'));
 
@@ -55,6 +56,7 @@ export default function Router() {
         { path: 'bussiness/detail/:bussinessId', element: <BussinessDetailPage /> },
         { path: 'bussiness-list', element: <BussinessListPage /> },
         { path: 'evnet-list', element: <EventListPage /> },
+        { path: 'event/detail/:eventId', element: <EventDetailViewPage /> },
         { path: 'app-setting', element: <AppSettingPage /> },
       ],
     },

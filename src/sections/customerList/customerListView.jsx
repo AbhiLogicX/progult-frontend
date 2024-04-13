@@ -13,13 +13,15 @@ export default function CustomerListView() {
   const [fetchedData, setFetchedData] = useState(false);
 
   useEffect(() => {
+    if (!fetchedData) {
+      fetchRowData();
+    }
     async function fetchRowData() {
       const result = await getReq('user/all');
       setRowData(result.data);
       setFetchedData(true);
     }
-    fetchRowData();
-  }, []);
+  }, [fetchedData]);
   const tableColumns = ['Name', 'Email', 'Mobile', 'City/State', 'Status'];
   const actionCol = ['View & Edit', 'Delete'];
   return (
@@ -29,7 +31,13 @@ export default function CustomerListView() {
       </Stack>
 
       {fetchedData ? (
-        <TableView columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
+        <TableView
+          columns={tableColumns}
+          actionbtn={actionCol}
+          tableData={rowData}
+          fromCall="user"
+          handleReload={setFetchedData}
+        />
       ) : null}
     </Container>
   );

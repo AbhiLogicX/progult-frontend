@@ -28,7 +28,15 @@ export default function BussinessActivityDialog({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">Edit Bussiness Activity</DialogTitle>
+      <DialogTitle
+        id="alert-dialog-title"
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <Box>Edit Bussiness Activity</Box>
+        <Button color="error" variant="contained">
+          Delete Bussiness
+        </Button>
+      </DialogTitle>
       <DialogContent>
         <Box width={500}>
           <Box>

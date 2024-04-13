@@ -7,10 +7,11 @@ import { Image } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 
 function MasterViewCard({ cardData }) {
+  console.log('Card', cardData);
   return (
     <Paper
       elevation={3}
-      sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 1 }}
     >
       <Box>
         <Image
