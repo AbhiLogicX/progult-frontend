@@ -8,8 +8,8 @@ import Typography from '@mui/material/Typography';
 import { getReq, postReq } from 'src/api/api';
 
 import Iconify from 'src/components/iconify/iconify';
-import FormDialogue from 'src/components/dialogueForm/DialogueForm';
 import TableViewMaster from 'src/components/tableView/TableViewMaster';
+import AddMasterDialog from 'src/components/dialogueForm/DialogueForm';
 
 export default function CategoeryListView() {
   const [rowData, setRowData] = useState([]);
@@ -65,11 +65,12 @@ export default function CategoeryListView() {
         >
           New Categoery
         </Button>
-        <FormDialogue
+        <AddMasterDialog
           open={open}
           handleClose={handleClose}
           handleSubmit={handleSubmit}
-          fromCall="Add Categoery"
+          domainCall="domain/category"
+          handleReload={setFetchedData}
         />
       </Stack>
 

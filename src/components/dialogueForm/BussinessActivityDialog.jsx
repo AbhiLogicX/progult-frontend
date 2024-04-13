@@ -20,7 +20,6 @@ export default function BussinessActivityDialog({
   handleSubmit,
   dialogData,
 }) {
-  console.log('dialog data', dialogData);
   return (
     <Dialog
       open={openDialog}

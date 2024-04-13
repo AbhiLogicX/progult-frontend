@@ -18,7 +18,7 @@ export default function EventListView() {
     async function fetchRowData() {
       const result = await getReq('event');
       setRowData(result.data);
-      console.log('event', result.data);
+
       setFetchedData(true);
     }
     fetchRowData();

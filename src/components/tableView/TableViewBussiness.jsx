@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { Image } from '@mui/icons-material';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,6 +12,8 @@ import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 
 import { RouterLink } from 'src/routes/components';
+
+import properties from 'src/config/properties';
 
 export default function TableViewBussiness({ columns, actionbtn, tableData }) {
   console.log('This is table data', tableData);
@@ -40,7 +41,11 @@ export default function TableViewBussiness({ columns, actionbtn, tableData }) {
                   >
                     <TableCell component="th" scope="row">
                       <Box>
-                        <Image src="/assets/images/images(1).png" alt="Image is rendering" />
+                        <img
+                          src={`${properties.BASE_IMAGE_URL}${row.image}`}
+                          alt="Cover Images"
+                          style={{ width: '100px', height: '100px' }}
+                        />
                       </Box>
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -52,25 +57,27 @@ export default function TableViewBussiness({ columns, actionbtn, tableData }) {
                     <TableCell>Active</TableCell>
                     <TableCell>{`${row.rating} / ${row.reviewcount}`}</TableCell>
                     <TableCell>
-                      {actionbtn.map((btnItm) => {
-                        if (btnItm === 'Delete') {
+                      <Box display="flex">
+                        {actionbtn.map((btnItm) => {
+                          if (btnItm === 'Delete') {
+                            return (
+                              <Button variant="contained" sx={{ mr: 2 }} color="error">
+                                {btnItm}
+                              </Button>
+                            );
+                          }
                           return (
-                            <Button variant="contained" sx={{ mr: 2 }} color="error">
+                            <Button
+                              variant="contained"
+                              sx={{ mr: 2 }}
+                              component={RouterLink}
+                              href={`/bussiness/detail/${row._id}`}
+                            >
                               {btnItm}
                             </Button>
                           );
-                        }
-                        return (
-                          <Button
-                            variant="contained"
-                            sx={{ mr: 2 }}
-                            component={RouterLink}
-                            href={`/bussiness/detail/${row._id}`}
-                          >
-                            {btnItm}
-                          </Button>
-                        );
-                      })}
+                        })}
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))

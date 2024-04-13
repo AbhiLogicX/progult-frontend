@@ -17,7 +17,7 @@ export default function BussinessListView() {
     async function fetchRowData() {
       const result = await getReq('bussiness');
       setRowData(result.data);
-      console.log('bussiness', result);
+
       setFetchedData(true);
     }
     fetchRowData();

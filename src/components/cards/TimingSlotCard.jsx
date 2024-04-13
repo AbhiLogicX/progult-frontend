@@ -23,7 +23,6 @@ export default function TimingCards({ timeData }) {
   };
 
   const handleSubmit = async () => {
-    console.log('Edit btn');
     // if (result.statusCode === 200) {
     //   handleClose();
     //   handleReload(false);

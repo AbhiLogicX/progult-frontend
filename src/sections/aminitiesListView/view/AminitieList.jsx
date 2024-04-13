@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { getReq, postReq } from 'src/api/api';
 
 import Iconify from 'src/components/iconify/iconify';
-import FormDialogue from 'src/components/dialogueForm/DialogueForm';
+import AddMasterDialog from 'src/components/dialogueForm/DialogueForm';
 import TableViewMaster from 'src/components/tableView/TableViewMaster';
 
 export default function AminiteListView() {
@@ -65,11 +65,12 @@ export default function AminiteListView() {
         >
           Add Aminities
         </Button>
-        <FormDialogue
+        <AddMasterDialog
           open={open}
           handleClose={handleClose}
           handleSubmit={handleSubmit}
-          fromCall="Add Aminities"
+          domainCall="domain/aminities"
+          handleReload={setFetchedData}
         />
       </Stack>
 

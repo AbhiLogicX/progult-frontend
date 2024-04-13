@@ -27,10 +27,10 @@ export function BussinessActivityView({ bussinessId }) {
     await getReq(`bussinessActivity?bussinessId=${bussinessId}`).then((res) => {
       setActivityData(res);
       setFetchedData(true);
-      console.log(activityData);
     });
   }
 
+  console.log(activityData);
   return (
     <Grid container>
       {mockDataActivity.data.map((itm) => (
@@ -52,7 +52,6 @@ function RenderCard({ crdData }) {
   };
 
   const handleSumit = () => {
-    console.log('Activity edit dialog');
     setOpen(false);
   };
 

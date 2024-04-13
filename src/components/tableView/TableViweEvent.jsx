@@ -15,7 +15,6 @@ import TableContainer from '@mui/material/TableContainer';
 import { RouterLink } from 'src/routes/components';
 
 export default function TableViewEvent({ columns, actionbtn, tableData }) {
-  console.log('This is table data', tableData);
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }

@@ -30,7 +30,6 @@ export default function DialogComponent({
     setOpen(false);
   };
   const splitDomain = domainCall.split('/');
-  console.log(splitDomain);
 
   async function handleDeleteClose(id) {
     if (splitDomain[0] === 'user' || splitDomain[0] === 'vendor') {

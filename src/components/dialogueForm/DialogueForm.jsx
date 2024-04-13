@@ -1,19 +1,19 @@
+import * as React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import { Box, TextField, Typography } from '@mui/material';
 
-export default function FormDialogue({ open, handleClose, handleSubmit, fromCall, idEdit }) {
+import { postReq } from 'src/api/api';
+
+export default function AddMasterDialog({ open, domainCall, handleClose, handleReload }) {
   const [title, setTitle] = useState('');
   const [description, setdescription] = useState('');
-
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleChange = (event) => {
@@ -28,21 +28,28 @@ export default function FormDialogue({ open, handleClose, handleSubmit, fromCall
     setSelectedFile(event.target.files[0]);
   };
 
-  const splitFromCall = fromCall.split(' ');
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('image', selectedFile);
+    const result = await postReq(`${domainCall}`, formData);
+    if (result.statusCode === 200) {
+      handleClose();
+      handleReload(false);
+    }
+  };
+
+  const splitFromCall = domainCall.split('/');
 
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      PaperProps={{
-        component: 'form',
-        onSubmit: (event) => {
-          event.preventDefault();
-          handleSubmit(title, selectedFile, description, idEdit);
-        },
-      }}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
     >
-      <DialogTitle>{fromCall}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">Add</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -57,7 +64,6 @@ export default function FormDialogue({ open, handleClose, handleSubmit, fromCall
           onChange={handleChange}
           sx={{ mb: 2 }}
         />
-
         <TextField
           autoFocus
           margin="dense"
@@ -70,7 +76,6 @@ export default function FormDialogue({ open, handleClose, handleSubmit, fromCall
           onChange={handleDescriptionChange}
           sx={{ mb: 2 }}
         />
-
         {splitFromCall[1] === 'unit' ? null : (
           <Box>
             <Typography>Upload Image</Typography>
@@ -79,16 +84,20 @@ export default function FormDialogue({ open, handleClose, handleSubmit, fromCall
         )}
       </DialogContent>
       <DialogActions>
-        <Button type="submit">Save</Button>
+        <Button color="error" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button onClick={handleSubmit} autoFocus>
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-FormDialogue.propTypes = {
-  open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  fromCall: PropTypes.string,
-  idEdit: PropTypes.string,
+AddMasterDialog.propTypes = {
+  open: PropTypes.bool,
+  handleClose: PropTypes.string,
+  handleReload: PropTypes.func,
+  domainCall: PropTypes.string,
 };

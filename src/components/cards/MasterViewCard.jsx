@@ -7,7 +7,6 @@ import { Image } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 
 function MasterViewCard({ cardData }) {
-  console.log('Card', cardData);
   return (
     <Paper
       elevation={3}

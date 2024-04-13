@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { getReq, postReq } from 'src/api/api';
 
 import Iconify from 'src/components/iconify/iconify';
-import FormDialogue from 'src/components/dialogueForm/DialogueForm';
+import AddMasterDialog from 'src/components/dialogueForm/DialogueForm';
 import TableViewMaster from 'src/components/tableView/TableViewMaster';
 
 export default function UnitListView() {
@@ -65,11 +65,12 @@ export default function UnitListView() {
         >
           New Unit
         </Button>
-        <FormDialogue
+        <AddMasterDialog
           open={open}
           handleClose={handleClose}
           handleSubmit={handleSubmit}
-          fromCall="Add unit"
+          domainCall="master/unit"
+          handleReload={setFetchedData}
         />
       </Stack>
 

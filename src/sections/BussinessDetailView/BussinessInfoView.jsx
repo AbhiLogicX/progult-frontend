@@ -31,7 +31,6 @@ function BussinessInfoView() {
   };
 
   const handleSubmit = async () => {
-    console.log('Edit btn');
     // if (result.statusCode === 200) {
     //   handleClose();
     //   handleReload(false);
@@ -183,7 +182,6 @@ function ContactDetailform() {
     setEditOption(false);
   };
   async function onSubmit(data) {
-    console.log(data);
     setEditOption(false);
   }
 

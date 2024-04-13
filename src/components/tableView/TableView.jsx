@@ -18,7 +18,6 @@ import DialogComponent from '../dialogueForm/DialogComponent';
 
 export default function TableView({ columns, actionbtn, tableData, fromCall, handleReload }) {
   const location = useLocation().pathname.split('/');
-  console.log(location);
 
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');

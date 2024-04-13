@@ -23,8 +23,6 @@ import { patchReq } from 'src/api/api';
 import { primary, warning } from 'src/theme/palette';
 
 function BasicInfoView({ profiledata, handleReload }) {
-  console.log('pf dt', profiledata);
-
   return (
     <Box display="flex" width={1500}>
       <Box mr={5}>
@@ -59,7 +57,6 @@ function ContatactDetails({ profileData, handleReload }) {
   const { register, handleSubmit } = useForm({});
 
   const location = useLocation().pathname.split('/');
-  console.log(location);
 
   const handleSetEditOption = () => {
     setEditOption(true);
@@ -71,7 +68,6 @@ function ContatactDetails({ profileData, handleReload }) {
   async function onSubmit(data) {
     data.fullName = profileData.data.fullName;
     data.Id = profileData.data._id;
-    console.log(data, typeof data);
     if (location[1] === 'vendors') {
       await patchReq('vendor/detail', data);
       setEditOption(false);

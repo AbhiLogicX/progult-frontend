@@ -1,11 +1,8 @@
-// import * as React from 'react';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import { Image } from '@mui/icons-material';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
@@ -13,40 +10,29 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 
-import { patchReq } from 'src/api/api';
 import properties from 'src/config/properties';
 
-import FormDialogue from '../dialogueForm/DialogueForm';
+import EditDialogForm from '../dialogueForm/EditDialogForm';
 import DialogComponent from '../dialogueForm/DialogComponent';
 
 export default function TableViewMaster({ columns, actionbtn, tableData, fromCall, handleReload }) {
-  const [open, setOpen] = useState(false);
+  // const splitFromCall = fromCall.split('/');
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleSubmit = async (titleName, selectedFile, description, idEdit) => {
+  //   console.log('Edit btn', titleName, selectedFile, description);
+  //   const formData = new FormData();
+  //   formData.append('title', titleName);
+  //   formData.append('description', description);
+  //   formData.append('image', selectedFile);
+  //   formData.append('domainId', idEdit);
+  //   const result = await patchReq(`${fromCall}`, formData); // we have to handle the success and error
+  //   if (result.statusCode === 200) {
+  //     handleClose();
+  //     handleReload(false);
+  //   }
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const splitFromCall = fromCall.split('/');
-
-  const handleSubmit = async (titleName, selectedFile, description, idEdit) => {
-    console.log('Edit btn', titleName, selectedFile, description);
-    const formData = new FormData();
-    formData.append('title', titleName);
-    formData.append('description', description);
-    formData.append('image', selectedFile);
-    formData.append('domainId', idEdit);
-    const result = await patchReq(`${fromCall}`, formData); // we have to handle the success and error
-    if (result.statusCode === 200) {
-      handleClose();
-      handleReload(false);
-    }
-
-    // window.location.reload();
-  };
+  //   // window.location.reload();
+  // };
 
   // async function handleDeleteClick(id) {
   //   const result = await patchReq(`domain/${fromCall}/detail?Id=${id}&status=delete`);
@@ -83,7 +69,7 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
           </TableHead>
           <TableBody>
             {actionbtn
-              ? tableData.map((row) => (
+              ? tableData?.map((row) => (
                   <TableRow
                     key={row.title}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -94,7 +80,7 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
                           <img
                             src={`${properties.BASE_IMAGE_URL}${row.image}`}
                             alt="Cover Images"
-                            style={{ width: '25px', height: '25px' }}
+                            style={{ width: '150px', height: '150px' }}
                           />
                         </Box>
                       </TableCell>
@@ -129,43 +115,54 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
                         />
                       </TableCell>
                     ) : null}
-                    <TableCell sx={{ display: 'flex' }}>
-                      {actionbtn.map((btnItm) => {
-                        if (btnItm === 'Delete') {
+                    <TableCell>
+                      <Box sx={{ display: 'flex' }}>
+                        {actionbtn.map((btnItm) => {
+                          if (btnItm === 'Delete') {
+                            return (
+                              // <Button
+                              //   variant="contained"
+                              //   sx={{ mr: 2 }}
+                              //   color="error"
+                              //   onClick={() => handleDeleteClick(row._id)}
+                              // >
+                              //   {btnItm}
+                              // </Button>
+                              <DialogComponent
+                                deleteVar="Delete"
+                                btnTitle={btnItm}
+                                msgTitle={row.title}
+                                domainId={row._id}
+                                domainCall={fromCall}
+                                handleReload={handleReload}
+                              />
+                            );
+                          }
                           return (
-                            // <Button
-                            //   variant="contained"
-                            //   sx={{ mr: 2 }}
-                            //   color="error"
-                            //   onClick={() => handleDeleteClick(row._id)}
-                            // >
-                            //   {btnItm}
-                            // </Button>
-                            <DialogComponent
-                              deleteVar="Delete"
-                              btnTitle={btnItm}
-                              msgTitle={row.title}
-                              domainId={row._id}
-                              domainCall={fromCall}
-                              handleReload={handleReload}
-                            />
+                            <>
+                              {/* <Button variant="contained" sx={{ mr: 2 }} onClick={handleClickOpen}>
+                                {btnItm}
+                              </Button>
+                              <FormDialogue
+                                open={open}
+                                handleClose={handleClose}
+                                handleSubmit={handleSubmit}
+                                fromCall={`Edit ${splitFromCall[1]}`}
+                                idEdit={row._id}
+                              /> */}
+                              <Box mr={1}>
+                                <EditDialogForm
+                                  domainCall={fromCall}
+                                  mId={row._id}
+                                  mdescription={row?.description}
+                                  mtitle={row.title}
+                                  handleReload={handleReload}
+                                />
+                              </Box>
+                            </>
                           );
-                        }
-                        return (
-                          <>
-                            <Button variant="contained" sx={{ mr: 2 }} onClick={handleClickOpen}>
-                              {btnItm}
-                            </Button>
-                            <FormDialogue
-                              open={open}
-                              handleClose={handleClose}
-                              handleSubmit={handleSubmit}
-                              fromCall={`Edit ${splitFromCall[1]}`}
-                              idEdit={row._id}
-                            />
-                          </>
-                        );
-                      })}
+                        })}
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))
