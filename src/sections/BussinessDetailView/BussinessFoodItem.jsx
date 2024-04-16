@@ -27,9 +27,10 @@ export function FoodAndItem({ bussinessId, fromCall }) {
         {data?.map((dataItm) => (
           <Grid xs={4} mb={1}>
             <AddonCards
-              data={dataItm}
+              addOnData={dataItm}
               key={`${dataItm.title}${bussinessId}`}
-              handleAddonReload={dataFetched}
+              handleReload={setDataFetched}
+              fromCall={fromCall}
             />
           </Grid>
         ))}

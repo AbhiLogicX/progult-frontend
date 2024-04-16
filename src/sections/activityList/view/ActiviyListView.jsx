@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Backdrop from '@mui/material/Backdrop';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { getReq, postReq } from 'src/api/api';
 
@@ -15,6 +17,7 @@ export default function ActivityListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!fetchedData) {
@@ -26,6 +29,7 @@ export default function ActivityListView() {
     const result = await getReq('domain/activity');
     setRowData(result.data);
     setFetchedData(true);
+    setLoading(false);
   }
 
   const handleClickOpen = () => {
@@ -82,7 +86,11 @@ export default function ActivityListView() {
           fromCall="domain/activity"
           handleReload={setFetchedData}
         />
-      ) : null}
+      ) : (
+        <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
     </Container>
   );
 }

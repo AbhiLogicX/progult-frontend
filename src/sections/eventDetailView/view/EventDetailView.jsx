@@ -9,7 +9,11 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 
 import { getReq } from 'src/api/api';
 
+import RulesForm from 'src/components/dialogueForm/RulesAndRegulationForm';
+
+import AddPackageForm from '../PackageForm';
 import EventCarousel from '../EventCarousel';
+import PackageCard from '../RenderPackageCard';
 import AmenitiesManageForm from '../AminitesManage';
 import { EventAminitieCard } from '../EventAminitieCard';
 import EventInfoDialogForm from '../EditEventDialogInfoForm';
@@ -19,6 +23,15 @@ export default function EventDetailview() {
   const [data, setData] = useState();
   const [openDialog, setOpenDialog] = useState(false);
   const [openAminiteDialog, setOpenAminiteDialog] = useState(false);
+  const [openRulesForm, setOpenRulesForm] = useState(false);
+
+  const handleClickOpenRule = () => {
+    setOpenRulesForm(true);
+  };
+
+  const handleClickCloseRule = () => {
+    setOpenRulesForm(false);
+  };
 
   const handleDialogClose = () => {
     setOpenDialog(false);
@@ -36,21 +49,19 @@ export default function EventDetailview() {
   const handleAminitieDialogOpen = () => {
     setOpenAminiteDialog(true);
   };
+  const id = useParams().eventId;
 
   useEffect(() => {
     if (!dataFetched) {
       fetchEventData();
     }
-  });
-
-  const id = useParams().eventId;
-
-  async function fetchEventData() {
-    await getReq(`event/detail?Id=${id}`).then((res) => {
-      setData(res.data);
-      setDataFetched(true);
-    });
-  }
+    async function fetchEventData() {
+      await getReq(`event/detail?Id=${id}`).then((res) => {
+        setData(res.data);
+        setDataFetched(true);
+      });
+    }
+  }, [dataFetched, id]);
 
   const date = new Date();
 
@@ -119,7 +130,7 @@ export default function EventDetailview() {
         <Typography>{data?.description}</Typography>
       </Paper>
 
-      <Paper elevation={3} sx={{ px: '2%', py: '1%', mb: 1 }}>
+      <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
           <Typography variant="h5" mb={3}>
             Event Highlights
@@ -134,7 +145,7 @@ export default function EventDetailview() {
             handleSubmit={handleAminitieDialogSubmit}
           />
         </Box>
-        <Box>
+        <Box sx={{ px: '1%' }}>
           <Grid container spacing={2}>
             {data?.amenities.map((itm) => (
               <EventAminitieCard cardData={itm} />
@@ -144,9 +155,20 @@ export default function EventDetailview() {
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
-        <Typography variant="h5" mb={1}>
-          Rules and Regulations
-        </Typography>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h5" mb={1}>
+            Rules and Regulations
+          </Typography>
+          <Button variant="contained" onClick={handleClickOpenRule}>
+            Manage Rules
+          </Button>
+          <RulesForm
+            Id={data?._id}
+            handleClose={handleClickCloseRule}
+            open={openRulesForm}
+            rules={data?.rules}
+          />
+        </Box>
         <Box>
           <ul>
             {data?.rules?.map((itm) => (
@@ -157,9 +179,17 @@ export default function EventDetailview() {
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
-        <Typography variant="h5" mb={3}>
-          Packages
-        </Typography>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h5" mb={1}>
+            Packages
+          </Typography>
+          <AddPackageForm eventId={data?._id} handleReload={setDataFetched} />
+        </Box>
+        <PackageCard
+          packagesData={data?.packages}
+          eventId={data?._id}
+          handleReload={setDataFetched}
+        />
       </Paper>
     </Box>
   );

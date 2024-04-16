@@ -160,6 +160,7 @@ export default function Nav({ openNav, onCloseNav }) {
           PaperProps={{
             sx: {
               width: NAV.WIDTH,
+              backgroundColor: '#212b36',
             },
           }}
         >

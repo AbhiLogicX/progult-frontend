@@ -7,18 +7,18 @@ import properties from 'src/config/properties';
 
 export function EventAminitieCard({ cardData }) {
   return (
-    <Grid xs={2}>
+    <Grid xs={3}>
       <Paper
         elevation={3}
-        sx={{ p: '1%', backgroundColor: warning.lighter, color: warning.main, mr: 1 }}
+        sx={{ p: '2%', backgroundColor: warning.lighter, color: warning.main, mr: 1 }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box>
+          <Box mr={1.5}>
             {/* <img sx={{ height: 125, width: 100 }} /> */}
             <img
               src={`${properties.BASE_DOMAIN_IMAGE_URL}${cardData.image}`}
               alt="Aminitie Cover"
-              style={{ width: 125, height: 100, borderRadius: 150 }}
+              style={{ width: 125, height: 125, borderRadius: 25 }}
             />
           </Box>
           <Box>

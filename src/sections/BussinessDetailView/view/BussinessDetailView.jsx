@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Typography } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
 import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { getReq } from 'src/api/api';
 
@@ -11,6 +12,7 @@ import BussinessInfoView from '../BussinessInfoView';
 export default function BussinessDetailView() {
   const [fetchedData, setFetchedData] = useState(false);
   const [bussinessData, setBussinessData] = useState();
+  const [loading, setLoading] = useState(true);
   const currLocation = useLocation().pathname.split('/');
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export default function BussinessDetailView() {
       await getReq(`bussiness/detail?Id=${currLocation[3]}`).then((res) => {
         setBussinessData(res.data[0]);
         setFetchedData(true);
+        setLoading(false);
       });
     }
     if (!fetchedData) {
@@ -30,7 +33,9 @@ export default function BussinessDetailView() {
       {fetchedData ? (
         <BussinessInfoView bussinessData={bussinessData} />
       ) : (
-        <Typography variant="h3">Data Fetching</Typography>
+        <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       )}
     </Container>
   );

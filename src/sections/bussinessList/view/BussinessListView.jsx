@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 
 import Stack from '@mui/material/Stack';
 // import Button from '@mui/material/Button';
+import Backdrop from '@mui/material/Backdrop';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { getReq } from 'src/api/api';
 
@@ -12,13 +14,14 @@ import TableViewBussiness from 'src/components/tableView/TableViewBussiness';
 export default function BussinessListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchRowData() {
       const result = await getReq('bussiness');
       setRowData(result.data);
-
       setFetchedData(true);
+      setLoading(false);
     }
     fetchRowData();
   }, []);
@@ -50,7 +53,11 @@ export default function BussinessListView() {
 
       {fetchedData ? (
         <TableViewBussiness columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
-      ) : null}
+      ) : (
+        <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
     </Container>
   );
 }

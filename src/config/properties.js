@@ -9,7 +9,7 @@ const properties = {
   BASE_VENDOR_IMAGE_URL: 'https://api.proglut.com/vendorImages/',
   BASE_ADMIN_IMAGE_URL: 'https://api.proglut.com/adminImages/',
   // https://proglut.onrender.com/api/v1
-  // http://api.proglut.com/api/v1
+  // https://api.proglut.com/api/v1
 };
 
 export default properties;

@@ -13,6 +13,7 @@ import properties from 'src/config/properties';
 
 import TimingCards from 'src/components/cards/TimingSlotCard';
 import MasterViewCard from 'src/components/cards/MasterViewCard';
+import RulesForm from 'src/components/dialogueForm/RulesAndRegulationForm';
 import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
 
 import { itemData } from './mockData';
@@ -22,6 +23,15 @@ import { BussinessActivityView } from './BussinessActivityView';
 
 function BussinessInfoView({ bussinessData }) {
   const [open, setOpen] = useState(false);
+  const [openRulesForm, setOpenRulesForm] = useState(false);
+
+  const handleClickOpenRule = () => {
+    setOpenRulesForm(true);
+  };
+
+  const handleClickCloseRule = () => {
+    setOpenRulesForm(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -81,7 +91,7 @@ function BussinessInfoView({ bussinessData }) {
 
         <Box mb={5}>
           <Box>
-            <Typography variant="h5" mb={5}>
+            <Typography variant="h5" mb={3}>
               Owner Details
             </Typography>
           </Box>
@@ -107,7 +117,7 @@ function BussinessInfoView({ bussinessData }) {
           </Box>
         </Box>
         <Box mb={3}>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex" justifyContent="space-between" alignItems="start">
             <Typography variant="h5" mb={3}>
               Bussiness Hours
             </Typography>
@@ -130,14 +140,14 @@ function BussinessInfoView({ bussinessData }) {
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
-        <Typography variant="h5" mb={5}>
+        <Typography variant="h5" mb={3}>
           {`About ${bussinessData?.title}`}
         </Typography>
         <Typography>{bussinessData?.description}</Typography>
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', mb: 2, width: 1400 }}>
-        <Typography variant="h5" mb={5}>
+        <Typography variant="h5" mb={3}>
           Aminities
         </Typography>
         <Grid container spacing={2}>
@@ -150,7 +160,7 @@ function BussinessInfoView({ bussinessData }) {
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', mb: 2, width: 1400 }}>
-        <Typography variant="h5" mb={5}>
+        <Typography variant="h5" mb={3}>
           Activities
         </Typography>
         <Box>
@@ -159,9 +169,21 @@ function BussinessInfoView({ bussinessData }) {
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
-        <Typography variant="h5" mb={5}>
-          Rules & Regulations
-        </Typography>
+        <Box display="flex" alignItems="start" justifyContent="space-between">
+          <Typography variant="h5" mb={3}>
+            Rules & Regulations
+          </Typography>
+          <Button onClick={handleClickOpenRule} variant="contained">
+            Manage Rules
+          </Button>
+          <RulesForm
+            Id={bussinessData._id}
+            handleClose={handleClickCloseRule}
+            open={openRulesForm}
+            rules={bussinessData?.rules}
+          />
+        </Box>
+
         <Box>
           <ul>
             {bussinessData?.rules?.map((itm) => (
@@ -172,7 +194,7 @@ function BussinessInfoView({ bussinessData }) {
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
-        <Typography variant="h5" mb={5}>
+        <Typography variant="h5" mb={3}>
           Gallery
         </Typography>
         <ImageList sx={{ width: 1375, height: 600 }} cols={3} rowHeight={500}>
@@ -190,7 +212,7 @@ function BussinessInfoView({ bussinessData }) {
       </Paper>
 
       <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
-        <Typography variant="h5" mb={5}>
+        <Typography variant="h5" mb={3}>
           AddOns
         </Typography>
         <Box sx={{ px: '1%' }}>
@@ -198,7 +220,7 @@ function BussinessInfoView({ bussinessData }) {
         </Box>
       </Paper>
       <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
-        <Typography variant="h5" mb={5}>
+        <Typography variant="h5" mb={3}>
           Food & Bevrages
         </Typography>
         <Box sx={{ px: '1%' }}>

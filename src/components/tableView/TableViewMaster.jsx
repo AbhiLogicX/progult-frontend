@@ -7,6 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
+import Container from '@mui/material/Container';
 import TableContainer from '@mui/material/TableContainer';
 
 import properties from 'src/config/properties';
@@ -55,138 +56,140 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
   // const BASE_IMG_URL = 'https://proglut.onrender.com/';
 
   return (
-    <Paper elevation={3} sx={{ width: 1400 }}>
-      <TableContainer component={Box} sx={{ mx: 0, width: 1400 }}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              {columns.map((colItem) => (
-                <TableCell>{colItem}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {actionbtn
-              ? tableData?.map((row) => (
-                  <TableRow
-                    key={row.title}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    {row.image ? (
-                      <TableCell component="th" scope="row">
-                        <Box>
-                          <img
-                            src={`${properties.BASE_DOMAIN_IMAGE_URL}${row.image}`}
-                            alt="Cover of master"
-                            style={{ width: '150px', height: '150px', borderRadius: '50%' }}
+    <Container>
+      <Paper elevation={3} sx={{ width: 1400 }}>
+        <TableContainer component={Box} sx={{ mx: 0, width: 1400 }}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                {columns.map((colItem) => (
+                  <TableCell>{colItem}</TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {actionbtn
+                ? tableData?.map((row) => (
+                    <TableRow
+                      key={row.title}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      {row.image ? (
+                        <TableCell component="th" scope="row">
+                          <Box>
+                            <img
+                              src={`${properties.BASE_DOMAIN_IMAGE_URL}${row.image}`}
+                              alt="Cover of master"
+                              style={{ width: '150px', height: '150px', borderRadius: '50%' }}
+                            />
+                          </Box>
+                        </TableCell>
+                      ) : null}
+                      <TableCell>{row.title}</TableCell>
+                      {row.status ? (
+                        <TableCell>
+                          {/* {row.status === 'in-active' ? (
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            onclick={() => statusButtonHandler(row._id, row.status)}
+                          >
+                            {row.status}
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            color="success"
+                            onclick={() => statusButtonHandler(row._id, row.status)}
+                          >
+                            {row.status}
+                          </Button>
+                        )} */}
+                          <DialogComponent
+                            btnTitle={row.status}
+                            msgTitle={row.title}
+                            statusActive={row.status === 'active' ? row.status : null}
+                            domainId={row._id}
+                            domainCall={fromCall}
+                            handleReload={handleReload}
                           />
-                        </Box>
-                      </TableCell>
-                    ) : null}
-                    <TableCell>{row.title}</TableCell>
-                    {row.status ? (
+                        </TableCell>
+                      ) : null}
                       <TableCell>
-                        {/* {row.status === 'in-active' ? (
-                        <Button
-                          variant="outlined"
-                          color="error"
-                          onclick={() => statusButtonHandler(row._id, row.status)}
-                        >
-                          {row.status}
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="outlined"
-                          color="success"
-                          onclick={() => statusButtonHandler(row._id, row.status)}
-                        >
-                          {row.status}
-                        </Button>
-                      )} */}
-                        <DialogComponent
-                          btnTitle={row.status}
-                          msgTitle={row.title}
-                          statusActive={row.status === 'active' ? row.status : null}
-                          domainId={row._id}
-                          domainCall={fromCall}
-                          handleReload={handleReload}
-                        />
-                      </TableCell>
-                    ) : null}
-                    <TableCell>
-                      <Box sx={{ display: 'flex' }}>
-                        {actionbtn.map((btnItm) => {
-                          if (btnItm === 'Delete') {
-                            return (
-                              // <Button
-                              //   variant="contained"
-                              //   sx={{ mr: 2 }}
-                              //   color="error"
-                              //   onClick={() => handleDeleteClick(row._id)}
-                              // >
-                              //   {btnItm}
-                              // </Button>
-                              <DialogComponent
-                                deleteVar="Delete"
-                                btnTitle={btnItm}
-                                msgTitle={row.title}
-                                domainId={row._id}
-                                domainCall={fromCall}
-                                handleReload={handleReload}
-                              />
-                            );
-                          }
-                          return (
-                            <>
-                              {/* <Button variant="contained" sx={{ mr: 2 }} onClick={handleClickOpen}>
-                                {btnItm}
-                              </Button>
-                              <FormDialogue
-                                open={open}
-                                handleClose={handleClose}
-                                handleSubmit={handleSubmit}
-                                fromCall={`Edit ${splitFromCall[1]}`}
-                                idEdit={row._id}
-                              /> */}
-                              <Box mr={1}>
-                                <EditDialogForm
+                        <Box sx={{ display: 'flex' }}>
+                          {actionbtn.map((btnItm) => {
+                            if (btnItm === 'Delete') {
+                              return (
+                                // <Button
+                                //   variant="contained"
+                                //   sx={{ mr: 2 }}
+                                //   color="error"
+                                //   onClick={() => handleDeleteClick(row._id)}
+                                // >
+                                //   {btnItm}
+                                // </Button>
+                                <DialogComponent
+                                  deleteVar="Delete"
+                                  btnTitle={btnItm}
+                                  msgTitle={row.title}
+                                  domainId={row._id}
                                   domainCall={fromCall}
-                                  mId={row._id}
-                                  mdescription={row?.description}
-                                  mtitle={row.title}
                                   handleReload={handleReload}
                                 />
-                              </Box>
-                            </>
-                          );
-                        })}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : tableData.map((row) => (
-                  <TableRow
-                    key={row.title}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    {row.image ? (
-                      <TableCell component="th" scope="row">
-                        <Box>
-                          <img src="/assets/images/images(1).png" alt="master Cover" />
+                              );
+                            }
+                            return (
+                              <>
+                                {/* <Button variant="contained" sx={{ mr: 2 }} onClick={handleClickOpen}>
+                                  {btnItm}
+                                </Button>
+                                <FormDialogue
+                                  open={open}
+                                  handleClose={handleClose}
+                                  handleSubmit={handleSubmit}
+                                  fromCall={`Edit ${splitFromCall[1]}`}
+                                  idEdit={row._id}
+                                /> */}
+                                <Box mr={1}>
+                                  <EditDialogForm
+                                    domainCall={fromCall}
+                                    mId={row._id}
+                                    mdescription={row?.description}
+                                    mtitle={row.title}
+                                    handleReload={handleReload}
+                                  />
+                                </Box>
+                              </>
+                            );
+                          })}
                         </Box>
                       </TableCell>
-                    ) : null}
-                    <TableCell component="th" scope="row">
-                      {row.title}
-                    </TableCell>
-                    {row.status ? <TableCell>{row.status}</TableCell> : null}
-                    {row.description ? <TableCell>{row.description}</TableCell> : null}
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+                    </TableRow>
+                  ))
+                : tableData.map((row) => (
+                    <TableRow
+                      key={row.title}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      {row.image ? (
+                        <TableCell component="th" scope="row">
+                          <Box>
+                            <img src="/assets/images/images(1).png" alt="master Cover" />
+                          </Box>
+                        </TableCell>
+                      ) : null}
+                      <TableCell component="th" scope="row">
+                        {row.title}
+                      </TableCell>
+                      {row.status ? <TableCell>{row.status}</TableCell> : null}
+                      {row.description ? <TableCell>{row.description}</TableCell> : null}
+                    </TableRow>
+                  ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </Container>
   );
 }
 

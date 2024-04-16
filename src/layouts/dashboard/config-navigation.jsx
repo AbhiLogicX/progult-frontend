@@ -30,7 +30,7 @@ const navConfig = [
   {
     title: 'event list',
     path: '/evnet-list',
-    icon: icon('ic_city'),
+    icon: icon('ic_celenderday'),
   },
   {
     title: 'customers',

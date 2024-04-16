@@ -42,3 +42,12 @@ export async function patchReq(reqStr, data) {
     return error;
   }
 }
+
+export async function deleteReq(reqStr) {
+  try {
+    const response = await axiosInstance.delete(`/${reqStr}`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}
