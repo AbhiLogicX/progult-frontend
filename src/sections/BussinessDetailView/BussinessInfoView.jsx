@@ -1,25 +1,26 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { Image } from '@mui/icons-material';
 import ImageList from '@mui/material/ImageList';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ImageListItem from '@mui/material/ImageListItem';
+
+import properties from 'src/config/properties';
 
 import TimingCards from 'src/components/cards/TimingSlotCard';
 import MasterViewCard from 'src/components/cards/MasterViewCard';
 import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
 
-import { mockData, itemData } from './mockData';
+import { itemData } from './mockData';
+import ContactDetailform from './ContactForm';
+import { FoodAndItem } from './BussinessFoodItem';
 import { BussinessActivityView } from './BussinessActivityView';
 
-function BussinessInfoView() {
+function BussinessInfoView({ bussinessData }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -42,15 +43,15 @@ function BussinessInfoView() {
     <>
       <Paper component="div" elevation={3} sx={{ p: '1%', mb: 1, width: 1400 }}>
         <Box sx={{ borderRadius: 0.75, textAlign: 'center' }}>
-          <Image
-            src="/assets/images/images(1).png"
-            alt="Image is rendering"
-            sx={{ height: 300, width: 300 }}
+          <img
+            src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.coverImage}`}
+            alt="Bussiness Cover"
+            style={{ width: 1200, height: 300 }}
           />
         </Box>
       </Paper>
 
-      <Paper elevation={3} sx={{ px: '2%', py: '1%', width: 1400, mb: 5 }}>
+      <Paper elevation={3} sx={{ px: '2%', py: '1%', width: 1400, mb: 2 }}>
         <Box mb={5}>
           <Box
             component={Paper}
@@ -66,13 +67,15 @@ function BussinessInfoView() {
               justifyContent: 'center',
             }}
           >
-            <Typography variant="h3" sx={{ textAlign: 'center' }}>
-              LOGO
-            </Typography>
+            <img
+              src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.brandLogo}`}
+              alt="Bussiness Brond Cover "
+              style={{ width: 150, height: 150, borderRadius: '50%' }}
+            />
           </Box>
 
           <Box>
-            <ContactDetailform />
+            <ContactDetailform fData={bussinessData} />
           </Box>
         </Box>
 
@@ -89,7 +92,7 @@ function BussinessInfoView() {
                   <Typography mr={1} fontWeight={600}>
                     Full Name :
                   </Typography>
-                  <Typography>{mockData.owner[0].fullName}</Typography>
+                  <Typography>{bussinessData.owner[0].fullName}</Typography>
                 </Box>
               </Grid>
               <Grid item xs={6}>
@@ -97,7 +100,7 @@ function BussinessInfoView() {
                   <Typography mr={1} fontWeight={600}>
                     Status:
                   </Typography>
-                  <Typography>{mockData.owner[0].status}</Typography>
+                  <Typography>{bussinessData.owner[0].status}</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -119,27 +122,26 @@ function BussinessInfoView() {
             />
           </Box>
           <Box display="flex">
-            {mockData.bussinessHour.map((itm) => (
+            {bussinessData.bussinessHour.map((itm) => (
               <TimingCards timeData={itm} key={`${itm.title}_${itm.id}`} />
             ))}
           </Box>
         </Box>
       </Paper>
 
-      <Paper elevation={3} sx={{ p: '1%', mb: 5, width: 1400 }}>
+      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
         <Typography variant="h5" mb={5}>
-          Activities
+          {`About ${bussinessData?.title}`}
         </Typography>
-        <Box>
-          <BussinessActivityView />
-        </Box>
+        <Typography>{bussinessData?.description}</Typography>
       </Paper>
-      <Paper elevation={3} sx={{ p: '1%', mb: 5, width: 1400 }}>
+
+      <Paper elevation={3} sx={{ p: '1%', mb: 2, width: 1400 }}>
         <Typography variant="h5" mb={5}>
           Aminities
         </Typography>
         <Grid container spacing={2}>
-          {mockData.amenities_list.map((item) => (
+          {bussinessData.amenities_list.map((item) => (
             <Grid item xs={2}>
               <MasterViewCard cardData={item} />
             </Grid>
@@ -147,7 +149,29 @@ function BussinessInfoView() {
         </Grid>
       </Paper>
 
-      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 5 }}>
+      <Paper elevation={3} sx={{ p: '1%', mb: 2, width: 1400 }}>
+        <Typography variant="h5" mb={5}>
+          Activities
+        </Typography>
+        <Box>
+          <BussinessActivityView />
+        </Box>
+      </Paper>
+
+      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
+        <Typography variant="h5" mb={5}>
+          Rules & Regulations
+        </Typography>
+        <Box>
+          <ul>
+            {bussinessData?.rules?.map((itm) => (
+              <li key={`${itm}`}>{itm}</li>
+            ))}
+          </ul>
+        </Box>
+      </Paper>
+
+      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
         <Typography variant="h5" mb={5}>
           Gallery
         </Typography>
@@ -164,6 +188,23 @@ function BussinessInfoView() {
           ))}
         </ImageList>
       </Paper>
+
+      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
+        <Typography variant="h5" mb={5}>
+          AddOns
+        </Typography>
+        <Box sx={{ px: '1%' }}>
+          <FoodAndItem bussinessId={bussinessData._id} fromCall="item" />
+        </Box>
+      </Paper>
+      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
+        <Typography variant="h5" mb={5}>
+          Food & Bevrages
+        </Typography>
+        <Box sx={{ px: '1%' }}>
+          <FoodAndItem bussinessId={bussinessData._id} fromCall="food" />
+        </Box>
+      </Paper>
     </>
   );
 }
@@ -172,243 +213,10 @@ export default BussinessInfoView;
 
 //------------------------------------------------------------------------------------
 
-function ContactDetailform() {
-  const [editOption, setEditOption] = useState(false);
-  const { register, handleSubmit } = useForm({});
-  const handleSetEditOption = () => {
-    setEditOption(true);
-  };
-  const handleSetEditOptionCancel = () => {
-    setEditOption(false);
-  };
-  async function onSubmit(data) {
-    setEditOption(false);
-  }
-
-  return (
-    <Box sx={{ p: '1%', borderRadius: 0.75 }} border={editOption ? '1px solid darkgrey' : null}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Box mb={3} display="flex" sx={{ borderRadius: 0.75 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Box display="flex" alignItems="center">
-                {editOption ? (
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Titile :</Typography>
-                ) : null}
-                {editOption ? (
-                  <TextField
-                    name="title"
-                    variant="outlined"
-                    {...register('title')}
-                    defaultValue={mockData?.title ? mockData.title : ''}
-                  />
-                ) : (
-                  <Typography variant="h3">{mockData?.title ? mockData.title : ''}</Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" alignItems="center" mb={2}>
-                {editOption ? (
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Domain :</Typography>
-                ) : (
-                  <Typography variant="h6" sx={{ mr: 1 }}>
-                    Domain :
-                  </Typography>
-                )}
-                {editOption ? (
-                  <TextField
-                    name="title"
-                    variant="outlined"
-                    {...register('title')}
-                    defaultValue={mockData?.domain[0]?.title ? mockData.domain[0].title : ''}
-                  />
-                ) : (
-                  <Typography variant="h6">
-                    {mockData?.domain[0]?.title ? mockData.domain[0].title : ''}
-                  </Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box>
-                <Typography variant="h5">Contact Details</Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>City :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="city"
-                    variant="outlined"
-                    {...register('city')}
-                    defaultValue={mockData?.address?.city ? mockData?.address?.city : ''}
-                  />
-                ) : (
-                  <Typography>{mockData?.address?.city ? mockData?.address?.city : ''}</Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>State :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="state"
-                    variant="outlined"
-                    {...register('state')}
-                    defaultValue={mockData?.address?.state ? mockData.address.city : ''}
-                  />
-                ) : (
-                  <Typography>{mockData?.address?.state ? mockData.address.city : ''}</Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>Street :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="street"
-                    variant="outlined"
-                    {...register('street')}
-                    defaultValue={
-                      mockData?.address?.city.street ? mockData.address.city.street : ''
-                    }
-                  />
-                ) : (
-                  <Typography>
-                    {mockData?.address?.city.street ? mockData.address.city.street : ''}
-                  </Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>Area :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="area"
-                    variant="outlined"
-                    {...register('area')}
-                    defaultValue={mockData?.address?.area ? mockData.address.area : ''}
-                  />
-                ) : (
-                  <Typography>{mockData?.address?.area ? mockData.address.area : ''}</Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>Pincode :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="pincode"
-                    variant="outlined"
-                    {...register('pincode')}
-                    defaultValue={mockData?.address?.pincode ? mockData.address.pincode : ''}
-                  />
-                ) : (
-                  <Typography>
-                    {mockData?.address?.pincode ? mockData.address.pincode : ''}
-                  </Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>Full Address :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="fullAddress"
-                    variant="outlined"
-                    {...register('fullAddress')}
-                    defaultValue={
-                      mockData?.address?.fullAddress ? mockData.address.fullAddress : ''
-                    }
-                    sx={{ width: 800 }}
-                  />
-                ) : (
-                  <Typography>
-                    {mockData?.address?.fullAddress ? mockData.address.fullAddress : ''}
-                  </Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>Bussiness Logo :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="brandLogo"
-                    variant="outlined"
-                    {...register('brandLogo')}
-                    type="file"
-                  />
-                ) : (
-                  <Typography>{mockData?.brandLogo ? mockData?.brandLogo : ''}</Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>Cover Image :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="coverImage"
-                    variant="outlined"
-                    {...register('coverImage')}
-                    type="file"
-                  />
-                ) : (
-                  <Typography>{mockData?.coverImage ? mockData.coverImage : ''}</Typography>
-                )}
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box display="flex" alignItems="center">
-                <Typography sx={{ fontWeight: 600, mr: 1 }}>Description :</Typography>
-                {editOption ? (
-                  <TextField
-                    name="description"
-                    variant="outlined"
-                    {...register('description')}
-                    type="text"
-                    defaultValue={mockData?.description ? mockData.description : ''}
-                  />
-                ) : (
-                  <Typography>{mockData?.description ? mockData.description : ''}</Typography>
-                )}
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-        <Box textAlign="right">
-          {editOption ? (
-            <Button color="error" onClick={handleSetEditOptionCancel} sx={{ mr: 1 }}>
-              Cancel
-            </Button>
-          ) : (
-            <Button onClick={handleSetEditOption} sx={{ mr: 1 }}>
-              Edit
-            </Button>
-          )}
-          {editOption ? (
-            <Button variant="contained" type="submit">
-              Save
-            </Button>
-          ) : (
-            <Button variant="contained" disabled>
-              Save
-            </Button>
-          )}
-        </Box>
-      </form>
-    </Box>
-  );
-}
-
-TimingCards.propType = {
-  timeData: PropTypes.object,
+BussinessInfoView.propTypes = {
+  bussinessData: PropTypes.object,
 };
+
+// TimingCards.propType = {
+//   timeData: PropTypes.object,
+// };

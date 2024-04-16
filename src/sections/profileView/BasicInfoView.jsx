@@ -7,7 +7,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { Image } from '@mui/icons-material';
 import SmsIcon from '@mui/icons-material/Sms';
 import TextField from '@mui/material/TextField';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -28,10 +27,10 @@ function BasicInfoView({ profiledata, handleReload }) {
       <Box mr={5}>
         <Box mb={3} component={Paper} elevation={3} p="1%" display="flex" alignItems="center">
           <Box mr={2}>
-            <Image
+            <img
               src="/assets/images/images(1).png"
-              alt="Image is rendering"
-              sx={{ height: 250, width: 250 }}
+              alt="profile person cvoer"
+              style={{ height: 250, width: 250 }}
             />
           </Box>
           <Box>

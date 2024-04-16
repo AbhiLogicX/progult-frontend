@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
-import { Image } from '@mui/icons-material';
 import { alpha } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -113,8 +112,18 @@ export default function Nav({ openNav, onCloseNav }) {
         },
       }}
     >
-      <Box sx={{ mt: 3, ml: 4, mb: 5 }}>
-        <Image src="/assets/logo/progultlogo.png" alt="Progult Logo" />
+      <Box
+        sx={{
+          mt: 3,
+          ml: 4,
+          mb: 5,
+          mr: 4,
+          p: '1%',
+          backgroundColor: 'whitesmoke',
+          borderRadius: 0.75,
+        }}
+      >
+        <img src="/assets/logo/progultlogo.png" alt="Progult Logo" />
       </Box>
 
       {/* {renderAccount} */}

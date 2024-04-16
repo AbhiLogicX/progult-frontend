@@ -14,11 +14,11 @@ export function EventAminitieCard({ cardData }) {
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box>
-            {/* <Image sx={{ height: 125, width: 100 }} /> */}
-            <image
-              src={`${properties.BASE_IMAGE_URL}${cardData.image}`}
-              alt="Aminitie Image"
-              style={{ width: 125, height: 100 }}
+            {/* <img sx={{ height: 125, width: 100 }} /> */}
+            <img
+              src={`${properties.BASE_DOMAIN_IMAGE_URL}${cardData.image}`}
+              alt="Aminitie Cover"
+              style={{ width: 125, height: 100, borderRadius: 150 }}
             />
           </Box>
           <Box>

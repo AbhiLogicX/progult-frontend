@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { Image } from '@mui/icons-material';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -32,14 +31,22 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
           </TableHead>
           <TableBody>
             {actionbtn
-              ? tableData.map((row) => (
+              ? tableData?.map((row) => (
                   <TableRow
                     key={row._id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
                       <Box>
-                        <Image src="/assets/images/images(1).png" alt="Image is rendering" />
+                        <img
+                          src="/assets/images/images(1).png"
+                          alt="event cover"
+                          style={{
+                            height: 75,
+                            width: 75,
+                            borderRadius: 25,
+                          }}
+                        />
                       </Box>
                     </TableCell>
                     <TableCell component="th" scope="row">

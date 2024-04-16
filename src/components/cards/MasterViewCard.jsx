@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { Image } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
+
+import properties from 'src/config/properties';
 
 function MasterViewCard({ cardData }) {
   return (
@@ -13,10 +14,10 @@ function MasterViewCard({ cardData }) {
       sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 1 }}
     >
       <Box>
-        <Image
-          src="/assets/images/images(1).png"
-          alt="Image is rendering"
-          sx={{ height: 150, width: 150 }}
+        <img
+          src={`${properties.BASE_DOMAIN_IMAGE_URL}${cardData.image}`}
+          alt="aminitie cover"
+          style={{ height: 150, width: 150 }}
         />
       </Box>
       <Typography variant="h6">{cardData.title}</Typography>

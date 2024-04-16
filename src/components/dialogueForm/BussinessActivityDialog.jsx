@@ -6,7 +6,6 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import { Typography } from '@mui/material';
-import { Image } from '@mui/icons-material';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -41,7 +40,7 @@ export default function BussinessActivityDialog({
           <Box>
             <Box display="flex" mb={2}>
               <Paper elevation={3} sx={{ textAlign: 'center', mr: 2 }}>
-                <Image sx={{ width: 150, height: 150 }} />
+                <img style={{ width: 150, height: 150 }} alt="" />
               </Paper>
               <Box>
                 <Box>

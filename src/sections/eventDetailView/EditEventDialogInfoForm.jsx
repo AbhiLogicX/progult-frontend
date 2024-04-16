@@ -15,7 +15,7 @@ import {
 export default function EventInfoDialogForm({ openDialog, handleClose, dValues }) {
   const { register, handleSubmit } = useForm({});
   async function onSubmit(data) {
-    console.log(data);
+    // pass
   }
 
   return (

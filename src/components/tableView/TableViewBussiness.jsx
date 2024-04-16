@@ -16,7 +16,6 @@ import { RouterLink } from 'src/routes/components';
 import properties from 'src/config/properties';
 
 export default function TableViewBussiness({ columns, actionbtn, tableData }) {
-  console.log('This is table data', tableData);
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
@@ -42,9 +41,13 @@ export default function TableViewBussiness({ columns, actionbtn, tableData }) {
                     <TableCell component="th" scope="row">
                       <Box>
                         <img
-                          src={`${properties.BASE_IMAGE_URL}${row.image}`}
-                          alt="Cover Images"
-                          style={{ width: '100px', height: '100px' }}
+                          src={`${properties.BASE_BUSSINESS_IMAGE_URL}${row.image}`}
+                          alt="Bussiness Cover"
+                          style={{
+                            width: 100,
+                            height: 100,
+                            borderRadius: 25,
+                          }}
                         />
                       </Box>
                     </TableCell>

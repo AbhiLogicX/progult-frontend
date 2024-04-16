@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
-import { Image } from '@mui/icons-material';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -54,7 +53,6 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
     columns.push('Action');
   }
   // const BASE_IMG_URL = 'https://proglut.onrender.com/';
-  console.log('data table view', tableData);
 
   return (
     <Paper elevation={3} sx={{ width: 1400 }}>
@@ -78,9 +76,9 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
                       <TableCell component="th" scope="row">
                         <Box>
                           <img
-                            src={`${properties.BASE_IMAGE_URL}${row.image}`}
-                            alt="Cover Images"
-                            style={{ width: '150px', height: '150px' }}
+                            src={`${properties.BASE_DOMAIN_IMAGE_URL}${row.image}`}
+                            alt="Cover of master"
+                            style={{ width: '150px', height: '150px', borderRadius: '50%' }}
                           />
                         </Box>
                       </TableCell>
@@ -174,7 +172,7 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
                     {row.image ? (
                       <TableCell component="th" scope="row">
                         <Box>
-                          <Image src="/assets/images/images(1).png" alt="Image is rendering" />
+                          <img src="/assets/images/images(1).png" alt="master Cover" />
                         </Box>
                       </TableCell>
                     ) : null}
