@@ -25,7 +25,7 @@ export default function CustomerListView() {
   const tableColumns = ['Name', 'Email', 'Mobile', 'City/State', 'Status'];
   const actionCol = ['View & Edit', 'Delete'];
   return (
-    <Container sx={{ mx: '1%' }}>
+    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Customer</Typography>
       </Stack>

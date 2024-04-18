@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { Container } from '@mui/material';
 import Backdrop from '@mui/material/Backdrop';
-import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { getReq } from 'src/api/api';
@@ -29,9 +29,9 @@ export default function BussinessDetailView() {
   }, [fetchedData, currLocation]);
 
   return (
-    <Container sx={{ mx: '1%' }}>
+    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       {fetchedData ? (
-        <BussinessInfoView bussinessData={bussinessData} />
+        <BussinessInfoView bussinessData={bussinessData} handleReload={setFetchedData} />
       ) : (
         <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
           <CircularProgress color="inherit" />

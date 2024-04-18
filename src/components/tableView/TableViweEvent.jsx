@@ -19,8 +19,8 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
   }
 
   return (
-    <Paper elevation={3} sx={{ width: 1400 }}>
-      <TableContainer sx={{ mx: 0, width: 1400 }}>
+    <Paper elevation={3} sx={{ width: '100%' }}>
+      <TableContainer>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -58,25 +58,27 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                     <TableCell>Active</TableCell>
                     <TableCell>{`${row.rating} / ${row.reviewcount}`}</TableCell>
                     <TableCell>
-                      {actionbtn.map((btnItm) => {
-                        if (btnItm === 'Delete') {
+                      <Box display="flex">
+                        {actionbtn.map((btnItm) => {
+                          if (btnItm === 'Delete') {
+                            return (
+                              <Button variant="contained" sx={{ mr: 1 }} color="error">
+                                {btnItm}
+                              </Button>
+                            );
+                          }
                           return (
-                            <Button variant="contained" sx={{ mr: 2 }} color="error">
+                            <Button
+                              variant="contained"
+                              sx={{ mr: 2 }}
+                              component={RouterLink}
+                              href={`/event/detail/${row._id}`}
+                            >
                               {btnItm}
                             </Button>
                           );
-                        }
-                        return (
-                          <Button
-                            variant="contained"
-                            sx={{ mr: 2 }}
-                            component={RouterLink}
-                            href={`/event/detail/${row._id}`}
-                          >
-                            {btnItm}
-                          </Button>
-                        );
-                      })}
+                        })}
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))

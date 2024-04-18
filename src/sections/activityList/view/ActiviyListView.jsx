@@ -56,8 +56,8 @@ export default function ActivityListView() {
   const actionCol = ['Edit', 'Delete'];
 
   return (
-    <Container sx={{ mx: '1%' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width={1400}>
+    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width="100%">
         <Typography variant="h4" sx={{ mb: 5 }}>
           Activites
         </Typography>

@@ -32,17 +32,11 @@ export default function EventListView() {
     'Status',
     'Rating/ReviewCount',
   ];
-  const actionCol = ['View & Edit', 'Delete'];
+  const actionCol = ['Edit', 'Delete'];
   return (
-    <Container component="div" sx={{ mx: '1%', width: 1500 }}>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        mb={5}
-        sx={{ mb: 5, width: 1400 }}
-      >
-        <Typography variant="h4">Event List</Typography>
+    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width="100%">
+        <Typography variant="h4">Events</Typography>
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
           New Event

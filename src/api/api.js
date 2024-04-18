@@ -30,7 +30,7 @@ export async function postReq(reqStr, data) {
     const response = await axiosInstance.post(`/${reqStr}`, data);
     return response.data;
   } catch (error) {
-    return error.response.data;
+    return error;
   }
 }
 

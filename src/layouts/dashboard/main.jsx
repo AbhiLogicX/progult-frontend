@@ -29,6 +29,7 @@ export default function Main({ children, sx, ...other }) {
         }),
         ...sx,
         backgroundColor: '#F5F5F5',
+        overflowX: 'hidden',
       }}
       {...other}
     >

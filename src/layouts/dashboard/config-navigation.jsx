@@ -14,21 +14,21 @@ const navConfig = [
   },
   {
     title: 'bookings',
-    path: '/',
+    path: '/bookings',
     icon: icon('ic_booking'),
   },
   {
     title: 'Subscriptions',
-    path: '/',
+    path: '/subscriptions',
     icon: icon('ic_subscription'),
   },
   {
-    title: 'bussiness list',
+    title: 'businesses',
     path: '/bussiness-list',
     icon: icon('ic_city'),
   },
   {
-    title: 'event list',
+    title: 'events',
     path: '/evnet-list',
     icon: icon('ic_celenderday'),
   },
@@ -38,18 +38,18 @@ const navConfig = [
     icon: icon('ic_userslist'),
   },
   {
-    title: 'vendors',
+    title: 'associate partners',
     path: '/vendors',
     icon: icon('ic_vendor'),
   },
   {
     title: 'reports',
-    path: '/',
+    path: '/reports',
     icon: icon('ic_reports'),
   },
   {
     title: 'notification',
-    path: '/',
+    path: '/notification',
     icon: icon('ic_bell'),
   },
   {

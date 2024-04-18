@@ -18,7 +18,10 @@ export const EventListPage = lazy(() => import('src/pages/EventListView'));
 export const EventDetailViewPage = lazy(() => import('src/pages/eventDetailPage'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const BussinessDetailPage = lazy(() => import('src/pages/BussinessDetailPage'));
-
+export const BookingsPage = lazy(() => import('src/pages/bookingsPage'));
+export const SubscriptionPage = lazy(() => import('src/pages/subscriptionPage'));
+export const NotificationPage = lazy(() => import('src/pages/NotificationPage'));
+export const ReportsPage = lazy(() => import('src/pages/reportsPage'));
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -58,6 +61,10 @@ export default function Router() {
         { path: 'evnet-list', element: <EventListPage /> },
         { path: 'event/detail/:eventId', element: <EventDetailViewPage /> },
         { path: 'app-setting', element: <AppSettingPage /> },
+        { path: 'bookings', element: <BookingsPage /> },
+        { path: 'subscriptions', element: <SubscriptionPage /> },
+        { path: 'notification', element: <NotificationPage /> },
+        { path: 'reports', element: <ReportsPage /> },
       ],
     },
     {

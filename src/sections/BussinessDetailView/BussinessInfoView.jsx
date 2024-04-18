@@ -18,13 +18,20 @@ import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
 
 import { itemData } from './mockData';
 import ContactDetailform from './ContactForm';
-import { FoodAndItem } from './BussinessFoodItem';
 import { BussinessActivityView } from './BussinessActivityView';
+import { FoodAndItem, AddFoodAndItem } from './BussinessFoodItem';
 
-function BussinessInfoView({ bussinessData }) {
+function BussinessInfoView({ bussinessData, handleReload }) {
   const [open, setOpen] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
+  const [openAddonForm, setopenAddonForm] = useState(false);
 
+  const handleCloseAddonForm = () => {
+    setopenAddonForm(false);
+  };
+  const handleOpenAddonForm = () => {
+    setopenAddonForm(true);
+  };
   const handleClickOpenRule = () => {
     setOpenRulesForm(true);
   };
@@ -50,8 +57,8 @@ function BussinessInfoView({ bussinessData }) {
   };
 
   return (
-    <>
-      <Paper component="div" elevation={3} sx={{ p: '1%', mb: 1, width: 1400 }}>
+    <Box>
+      <Paper component="div" elevation={3} sx={{ p: '1%', mb: 1, width: '100%' }}>
         <Box sx={{ borderRadius: 0.75, textAlign: 'center' }}>
           <img
             src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.coverImage}`}
@@ -60,8 +67,7 @@ function BussinessInfoView({ bussinessData }) {
           />
         </Box>
       </Paper>
-
-      <Paper elevation={3} sx={{ px: '2%', py: '1%', width: 1400, mb: 2 }}>
+      <Paper elevation={3} sx={{ px: '2%', py: '1%', width: '100%', mb: 2 }}>
         <Box mb={5}>
           <Box
             component={Paper}
@@ -83,12 +89,10 @@ function BussinessInfoView({ bussinessData }) {
               style={{ width: 150, height: 150, borderRadius: '50%' }}
             />
           </Box>
-
           <Box>
             <ContactDetailform fData={bussinessData} />
           </Box>
         </Box>
-
         <Box mb={5}>
           <Box>
             <Typography variant="h5" mb={3}>
@@ -138,15 +142,13 @@ function BussinessInfoView({ bussinessData }) {
           </Box>
         </Box>
       </Paper>
-
-      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
+      <Paper elevation={3} sx={{ p: '1%', width: '100%  ', mb: 2 }}>
         <Typography variant="h5" mb={3}>
           {`About ${bussinessData?.title}`}
         </Typography>
         <Typography>{bussinessData?.description}</Typography>
       </Paper>
-
-      <Paper elevation={3} sx={{ p: '1%', mb: 2, width: 1400 }}>
+      <Paper elevation={3} sx={{ p: '1%', mb: 2, width: '100%' }}>
         <Typography variant="h5" mb={3}>
           Aminities
         </Typography>
@@ -158,8 +160,7 @@ function BussinessInfoView({ bussinessData }) {
           ))}
         </Grid>
       </Paper>
-
-      <Paper elevation={3} sx={{ p: '1%', mb: 2, width: 1400 }}>
+      <Paper elevation={3} sx={{ p: '1%', mb: 2, width: '100%' }}>
         <Typography variant="h5" mb={3}>
           Activities
         </Typography>
@@ -167,8 +168,7 @@ function BussinessInfoView({ bussinessData }) {
           <BussinessActivityView />
         </Box>
       </Paper>
-
-      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
+      <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
         <Box display="flex" alignItems="start" justifyContent="space-between">
           <Typography variant="h5" mb={3}>
             Rules & Regulations
@@ -183,7 +183,6 @@ function BussinessInfoView({ bussinessData }) {
             rules={bussinessData?.rules}
           />
         </Box>
-
         <Box>
           <ul>
             {bussinessData?.rules?.map((itm) => (
@@ -192,12 +191,11 @@ function BussinessInfoView({ bussinessData }) {
           </ul>
         </Box>
       </Paper>
-
-      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
+      <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
         <Typography variant="h5" mb={3}>
           Gallery
         </Typography>
-        <ImageList sx={{ width: 1375, height: 600 }} cols={3} rowHeight={500}>
+        <ImageList sx={{ width: '100%', height: 600 }} cols={3} rowHeight={500}>
           {itemData.map((item) => (
             <ImageListItem key={item.img}>
               <img
@@ -210,16 +208,25 @@ function BussinessInfoView({ bussinessData }) {
           ))}
         </ImageList>
       </Paper>
-
-      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
-        <Typography variant="h5" mb={3}>
-          AddOns
-        </Typography>
+      <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
+        <Box mb={3} display="flex" justifyContent="space-between">
+          <Typography variant="h5">AddOns</Typography>
+          <Button variant="contained" onClick={handleOpenAddonForm}>
+            Add Items
+          </Button>
+          <AddFoodAndItem
+            open={openAddonForm}
+            fromCall="Item"
+            handleClose={handleCloseAddonForm}
+            bussinessId={bussinessData._id}
+            handleReload={handleReload}
+          />
+        </Box>
         <Box sx={{ px: '1%' }}>
           <FoodAndItem bussinessId={bussinessData._id} fromCall="item" />
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ p: '1%', width: 1400, mb: 2 }}>
+      <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
         <Typography variant="h5" mb={3}>
           Food & Bevrages
         </Typography>
@@ -227,7 +234,7 @@ function BussinessInfoView({ bussinessData }) {
           <FoodAndItem bussinessId={bussinessData._id} fromCall="food" />
         </Box>
       </Paper>
-    </>
+    </Box>
   );
 }
 
@@ -237,6 +244,7 @@ export default BussinessInfoView;
 
 BussinessInfoView.propTypes = {
   bussinessData: PropTypes.object,
+  handleReload: PropTypes.func,
 };
 
 // TimingCards.propType = {

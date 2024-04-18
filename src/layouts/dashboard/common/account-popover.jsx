@@ -15,10 +15,6 @@ import { account } from 'src/_mock/account';
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
     label: 'Profile',
     icon: 'eva:person-fill',
   },
@@ -40,6 +36,14 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const handleLogOut = () => {
+    localStorage.removeItem('items');
+    localStorage.removeItem('tokens');
+    window.location.href = '/';
+  };
+
+  const adminDetail = JSON.parse(localStorage.getItem('items'));
 
   return (
     <>
@@ -85,10 +89,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {adminDetail.fullName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {adminDetail.email}
           </Typography>
         </Box>
 
@@ -100,12 +104,12 @@ export default function AccountPopover() {
           </MenuItem>
         ))}
 
-        <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
+        {/* <Divider sx={{ borderStyle: 'dashed', m: 0 }} /> */}
 
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={handleLogOut}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

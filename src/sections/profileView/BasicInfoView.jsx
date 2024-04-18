@@ -23,7 +23,7 @@ import { primary, warning } from 'src/theme/palette';
 
 function BasicInfoView({ profiledata, handleReload }) {
   return (
-    <Box display="flex" width={1500}>
+    <Box display="flex" width="100%">
       <Box mr={5}>
         <Box mb={3} component={Paper} elevation={3} p="1%" display="flex" alignItems="center">
           <Box mr={2}>
@@ -79,7 +79,7 @@ function ContatactDetails({ profileData, handleReload }) {
     }
   }
   return (
-    <Paper elevation={3} sx={{ borderRadius: 0.75, p: '1%', width: 1000 }}>
+    <Paper elevation={3} sx={{ borderRadius: 0.75, p: '1%', width: '100%' }}>
       <Box mb={5}>
         <Typography variant="h5">Contact Details</Typography>
       </Box>
@@ -274,7 +274,7 @@ function ContatactDetails({ profileData, handleReload }) {
 
 function SidePanle() {
   return (
-    <Box>
+    <Box width="100%">
       <Box mb={3}>
         <Grid container spacing={1} sx={{ textAlign: 'center' }}>
           <Grid xs={12} mb={2}>

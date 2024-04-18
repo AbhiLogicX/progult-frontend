@@ -2,7 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
@@ -24,8 +23,8 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
   }
 
   return (
-    <Paper elevation={3} sx={{ width: 1400 }}>
-      <TableContainer component={Box} sx={{ width: 1400 }}>
+    <Paper elevation={3} sx={{ width: '100%' }}>
+      <TableContainer>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -80,7 +79,7 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
                     </TableCell>
                   </TableRow>
                 ))
-              : tableData.map((row) => (
+              : tableData?.map((row) => (
                   <TableRow
                     key={row.fullName}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

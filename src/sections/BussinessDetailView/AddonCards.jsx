@@ -23,7 +23,7 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
   const onSubmit = async (data) => {
     data.Id = addOnData._id;
     data.unitId = addOnData.unit;
-    data.image = data.image[0].name;
+    data.image = data?.image[0]?.name;
     await patchReq(`${fromCall}`, data).then((res) => {
       if (res.statusCode === 200) {
         setEdit(false);
@@ -40,10 +40,15 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
           <Box mr={1}>
             <img
               src={`${properties.BASE_ITEM_IMAGE_URL}${addOnData.image}}`}
-              style={{ height: 150, width: 150, borderRadius: 25 }}
+              style={{
+                height: 100,
+                width: 100,
+                borderRadius: 25,
+              }}
               alt="Addon Cover"
             />
           </Box>
+
           <Box>
             <Box>
               {edit ? (

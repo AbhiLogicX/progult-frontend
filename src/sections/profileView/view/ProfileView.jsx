@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
@@ -40,17 +39,17 @@ export default function ProfileView() {
   }
 
   return (
-    <Container component="div" sx={{ mx: '1%' }}>
-      <Stack sx={{ width: 1400 }}>
+    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !imporntant' }}>
+      <Box sx={{ width: '100%' }}>
         <Typography variant="h4" sx={{ mb: 5 }}>
           Profile View
         </Typography>
-        <Box>
-          {fetchedData ? (
-            <BasicInfoView profiledata={profileData} handleReload={setFetchedData} />
-          ) : null}
-        </Box>
-      </Stack>
+      </Box>
+      <Box>
+        {fetchedData ? (
+          <BasicInfoView profiledata={profileData} handleReload={setFetchedData} />
+        ) : null}
+      </Box>
     </Container>
   );
 }

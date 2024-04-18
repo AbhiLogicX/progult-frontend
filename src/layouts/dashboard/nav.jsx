@@ -115,15 +115,17 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box
         sx={{
           mt: 3,
-          ml: 4,
-          mb: 5,
-          mr: 4,
-          p: '1%',
-          backgroundColor: 'whitesmoke',
-          borderRadius: 0.75,
+          mb: 3,
+          width: '100%',
+          textAlign: 'center',
         }}
       >
-        <img src="/assets/logo/progultlogo.png" alt="Progult Logo" />
+        <img
+          src="/assets/logo/progultlogo.png"
+          alt="Progult Logo nav"
+          width={125}
+          style={{ backgroundColor: 'whitesmoke', borderRadius: '10px' }}
+        />
       </Box>
 
       {/* {renderAccount} */}

@@ -36,15 +36,15 @@ export default function BussinessListView() {
   ];
   const actionCol = ['View & Edit', 'Delete'];
   return (
-    <Container component="div" sx={{ mx: '1%', width: 1500 }}>
+    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Stack
         direction="row"
         alignItems="center"
         justifyContent="space-between"
         mb={5}
-        sx={{ mb: 5, width: 1400 }}
+        sx={{ mb: 5 }}
       >
-        <Typography variant="h4">Bussiness List</Typography>
+        <Typography variant="h4">Businesses</Typography>
 
         {/* <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
           New Bussinesss

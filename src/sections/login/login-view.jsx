@@ -17,7 +17,7 @@ import { useRouter } from 'src/routes/hooks';
 import { postReq } from 'src/api/api';
 import { bgGradient } from 'src/theme/css';
 
-import Logo from 'src/components/logo';
+// import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
@@ -115,13 +115,22 @@ export default function LoginView() {
         height: 1,
       }}
     >
-      <Logo
+      {/* <Logo
         sx={{
           position: 'fixed',
           top: { xs: 16, md: 24 },
           left: { xs: 16, md: 24 },
         }}
-      />
+      /> */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: { xs: 16, md: 24 },
+          left: { xs: 16, md: 24 },
+        }}
+      >
+        <img src="/assets/logo/progultlogo.png" alt="loginCover" width="100px" height="100px" />
+      </Box>
 
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
         <Card
