@@ -27,7 +27,7 @@ export default function VendorListView() {
   }, [fetchedData]);
 
   const tableColumns = ['Name', 'Email', 'Mobile', 'Status'];
-  const actionCol = ['View & Edit', 'Delete'];
+  const actionCol = ['View', 'Delete'];
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>

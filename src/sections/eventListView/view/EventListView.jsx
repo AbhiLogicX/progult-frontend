@@ -32,7 +32,7 @@ export default function EventListView() {
     'Status',
     'Rating/ReviewCount',
   ];
-  const actionCol = ['Edit', 'Delete'];
+  const actionCol = ['View', 'Delete'];
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width="100%">

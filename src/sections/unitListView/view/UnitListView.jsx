@@ -22,7 +22,8 @@ export default function UnitListView() {
     }
     async function fetchData() {
       const result = await getReq('master/unit');
-      // console.log(result);
+      // const resultBanner = await getReq('master/');
+      // console.log('this is n=banner', resultBanner);
       setRowData(result.data);
       setFetchedData(true);
     }

@@ -29,12 +29,12 @@ export default function BussinessListView() {
     'Image',
     'Titie',
     'Categoery',
-    'Owner Name',
     'City / State',
+    'Owner Name',
     'Status',
-    'Rating/ReviewCount',
+    'Ratings',
   ];
-  const actionCol = ['View & Edit', 'Delete'];
+  const actionCol = ['View', 'Delete'];
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Stack
@@ -44,7 +44,7 @@ export default function BussinessListView() {
         mb={5}
         sx={{ mb: 5 }}
       >
-        <Typography variant="h4">Businesses</Typography>
+        <Typography variant="h4">Bussinesses</Typography>
 
         {/* <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
           New Bussinesss

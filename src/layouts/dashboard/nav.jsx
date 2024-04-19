@@ -20,6 +20,8 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 // import { account } from 'src/_mock/account';
 
+import { customColors } from 'src/theme/palette';
+
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
@@ -141,7 +143,7 @@ export default function Nav({ openNav, onCloseNav }) {
       sx={{
         flexShrink: { lg: 0 },
         width: { lg: NAV.WIDTH },
-        backgroundColor: '#212b36',
+        backgroundColor: customColors.grey,
       }}
     >
       {upLg ? (
@@ -162,7 +164,7 @@ export default function Nav({ openNav, onCloseNav }) {
           PaperProps={{
             sx: {
               width: NAV.WIDTH,
-              backgroundColor: '#212b36',
+              backgroundColor: customColors.grey,
             },
           }}
         >
@@ -189,7 +191,7 @@ function CollapseableMenu({ propItem }) {
       disablePadding
       sx={{ width: '100%', borderRadius: 0.75, color: '#ffffff' }}
     >
-      <ListItemButton component={RouterLink} href={propItem.path}>
+      <ListItemButton component={RouterLink} href={propItem.path} sx={{ color: 'text.disabled' }}>
         <ListItemIcon>
           <StarBorder />
         </ListItemIcon>
@@ -218,15 +220,15 @@ function NavItem({ item }) {
         minHeight: 44,
         borderRadius: 0.75,
         typography: 'body2',
-        color: 'text.white',
+        color: 'text.disabled',
         textTransform: 'capitalize',
         fontWeight: 'fontWeightMedium',
         ...(active && {
-          color: 'primary.main',
+          color: 'customColors.orangePrimary',
           fontWeight: 'fontWeightSemiBold',
-          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08),
+          bgcolor: (theme) => alpha(theme.palette.customColors.orangePrimary, 0.08),
           '&:hover': {
-            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.16),
+            bgcolor: (theme) => alpha(theme.palette.customColors.orangePrimary, 0.16),
           },
         }),
       }}

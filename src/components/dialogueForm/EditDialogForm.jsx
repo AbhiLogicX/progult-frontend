@@ -11,6 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { Box, Alert, TextField, Typography } from '@mui/material';
 
 import { patchReq } from 'src/api/api';
+import { customColors } from 'src/theme/palette';
 
 export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, handleReload }) {
   const [open, setOpen] = useState(false);
@@ -77,7 +78,16 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
   const splitFromCall = domainCall.split('/');
   return (
     <>
-      <Button variant="contained" onClick={handleClickOpen}>
+      <Button
+        variant="contained"
+        onClick={handleClickOpen}
+        sx={{
+          backgroundColor: customColors.orangePrimary,
+          '&:hover': {
+            backgroundColor: customColors.darkOrange,
+          },
+        }}
+      >
         Edit
       </Button>
       <Dialog

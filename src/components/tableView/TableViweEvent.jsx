@@ -13,6 +13,8 @@ import TableContainer from '@mui/material/TableContainer';
 
 import { RouterLink } from 'src/routes/components';
 
+import { error, customColors } from 'src/theme/palette';
+
 export default function TableViewEvent({ columns, actionbtn, tableData }) {
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
@@ -62,7 +64,18 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                         {actionbtn.map((btnItm) => {
                           if (btnItm === 'Delete') {
                             return (
-                              <Button variant="contained" sx={{ mr: 1 }} color="error">
+                              <Button
+                                variant="contained"
+                                sx={{
+                                  mr: 1,
+                                  color: error.main,
+                                  backgroundColor: error.errorBackground,
+                                  '&:hover': {
+                                    backgroundColor: error.main,
+                                    color: error.errorBackground,
+                                  },
+                                }}
+                              >
                                 {btnItm}
                               </Button>
                             );
@@ -70,7 +83,13 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                           return (
                             <Button
                               variant="contained"
-                              sx={{ mr: 2 }}
+                              sx={{
+                                mr: 1,
+                                backgroundColor: customColors.orangePrimary,
+                                '&:hover': {
+                                  backgroundColor: customColors.darkOrange,
+                                },
+                              }}
                               component={RouterLink}
                               href={`/event/detail/${row._id}`}
                             >

@@ -19,9 +19,9 @@ export const grey = {
 
 export const primary = {
   lighter: '#D0ECFE',
-  light: '#73BAFB',
-  main: '#1877F2',
-  dark: '#0C44AE',
+  light: '#FFDAC3',
+  main: '#FE7723',
+  dark: '#BE4A02',
   darker: '#042174',
   contrastText: '#FFFFFF',
 };
@@ -65,10 +65,11 @@ export const warning = {
 export const error = {
   lighter: '#FFE9D5',
   light: '#FFAC82',
-  main: '#FF5630',
+  main: '#e30000',
   dark: '#B71D18',
   darker: '#7A0916',
   contrastText: '#FFFFFF',
+  errorBackground: '#EEE',
 };
 
 export const common = {
@@ -86,6 +87,16 @@ export const action = {
   disabledOpacity: 0.48,
 };
 
+export const customColors = {
+  darkOrange: '#BE4A02',
+  orangePrimary: '#FE7723',
+  orangeLight: '#FFDAC3',
+  grey: '#333',
+  darkDimGrey: '#737373',
+  inActiveGrey: '#9f9f9f',
+  containerBg: 'rgb(221, 221, 221)',
+};
+
 const base = {
   primary,
   secondary,
@@ -95,6 +106,7 @@ const base = {
   error,
   grey,
   common,
+  customColors,
   divider: alpha(grey[500], 0.2),
   action,
 };
@@ -109,7 +121,7 @@ export function palette() {
       primary: grey[800],
       secondary: grey[600],
       white: common.white,
-      disabled: grey[500],
+      disabled: '#9f9f9f',
     },
     background: {
       paper: '#FFFFFF',

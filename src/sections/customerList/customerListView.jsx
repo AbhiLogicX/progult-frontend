@@ -23,7 +23,7 @@ export default function CustomerListView() {
     }
   }, [fetchedData]);
   const tableColumns = ['Name', 'Email', 'Mobile', 'City/State', 'Status'];
-  const actionCol = ['View & Edit', 'Delete'];
+  const actionCol = ['View', 'Delete'];
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>

@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { customColors } from 'src/theme/palette';
+
 import { NAV, HEADER } from './config-layout';
 
 // ----------------------------------------------------------------------
@@ -28,7 +30,7 @@ export default function Main({ children, sx, ...other }) {
           width: `calc(100% - ${NAV.WIDTH}px)`,
         }),
         ...sx,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: customColors.containerBg,
         overflowX: 'hidden',
       }}
       {...other}

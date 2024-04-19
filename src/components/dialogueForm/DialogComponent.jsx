@@ -12,6 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContentText from '@mui/material/DialogContentText';
 
 import { patchReq } from 'src/api/api';
+import { error } from 'src/theme/palette';
 
 export default function DialogComponent({
   deleteVar,
@@ -87,7 +88,17 @@ export default function DialogComponent({
     <>
       {deleteVar ? (
         <Box>
-          <Button color="error" variant="contained" onClick={handleClickOpen}>
+          <Button
+            sx={{
+              color: error.main,
+              backgroundColor: error.errorBackground,
+              '&:hover': {
+                backgroundColor: error.main,
+                color: error.errorBackground,
+              },
+            }}
+            onClick={handleClickOpen}
+          >
             {btnTitle}
           </Button>
         </Box>

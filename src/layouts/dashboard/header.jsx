@@ -6,6 +6,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -35,12 +36,15 @@ export default function Header({ onOpenNav }) {
       )}
 
       {/* <Searchbar /> */}
-
+      {/* <Typography variant="h2">{title}</Typography> */}
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
         {/* <LanguagePopover />
         <NotificationsPopover /> */}
+        <IconButton size="large">
+          <NotificationsIcon fontSize="inherit" />
+        </IconButton>
         <AccountPopover />
       </Stack>
     </>
@@ -53,7 +57,7 @@ export default function Header({ onOpenNav }) {
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
         ...bgBlur({
-          color: theme.palette.background.default,
+          color: theme.palette.customColors.darkDimGrey,
         }),
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,
