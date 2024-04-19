@@ -91,7 +91,7 @@ export const mockDataActivity = {
       _id: '660808664f214cbdbec22e31',
       activityId: {
         _id: '66051d90631714dedd3e8530',
-        image: '1711611279822discount.png',
+        image: '1713534368854image_2024_04_13T11_38_14_160Z.png',
         title: 'zumba',
       },
       bussinessId: '66069bfe7f083dba90191320',
@@ -116,7 +116,7 @@ export const mockDataActivity = {
       _id: '660808664f214cbdbec22e30',
       activityId: {
         _id: '66051dbb631714dedd3e8534',
-        image: '1711611323741budget.png',
+        image: '1713534329084image_2024_04_13T11_37_56_681Z.png',
         title: 'yoga',
       },
       bussinessId: '66069bfe7f083dba90191320',
