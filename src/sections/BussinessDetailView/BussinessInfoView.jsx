@@ -58,68 +58,21 @@ function BussinessInfoView({ bussinessData, handleReload }) {
 
   return (
     <Box>
-      <Paper component="div" elevation={3} sx={{ p: '1%', mb: 1, width: '100%' }}>
-        <Box sx={{ borderRadius: 0.75, textAlign: 'center' }}>
-          <img
-            src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.coverImage}`}
-            alt="Bussiness Cover"
-            style={{ width: 1200, height: 300 }}
-          />
-        </Box>
-      </Paper>
       <Paper elevation={3} sx={{ px: '2%', py: '1%', width: '100%', mb: 2 }}>
         <Box mb={5}>
-          <Box
-            component={Paper}
-            elevation={4}
-            mb={3}
-            sx={{
-              p: '1%',
-              borderRadius: 50,
-              width: 150,
-              height: 150,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <Box sx={{ borderRadius: 0.75, textAlign: 'center', mb: 2 }}>
             <img
-              src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.brandLogo}`}
-              alt="Bussiness Brond Cover "
-              style={{ width: 150, height: 150, borderRadius: '50%' }}
+              src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.coverImage}`}
+              alt="Bussiness Cover"
+              style={{ width: '100%', aspectRatio: 4 / 1 }}
             />
           </Box>
+
           <Box>
             <ContactDetailform fData={bussinessData} />
           </Box>
         </Box>
-        <Box mb={5}>
-          <Box>
-            <Typography variant="h5" mb={3}>
-              Owner Details
-            </Typography>
-          </Box>
-          <Box>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="cneter">
-                  <Typography mr={1} fontWeight={600}>
-                    Full Name :
-                  </Typography>
-                  <Typography>{bussinessData.owner[0].fullName}</Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="cneter">
-                  <Typography mr={1} fontWeight={600}>
-                    Status:
-                  </Typography>
-                  <Typography>{bussinessData.owner[0].status}</Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
+
         <Box mb={3}>
           <Box display="flex" justifyContent="space-between" alignItems="start">
             <Typography variant="h5" mb={3}>
