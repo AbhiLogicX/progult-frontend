@@ -18,15 +18,15 @@ export default function UnitListView() {
 
   useEffect(() => {
     if (!fetchedData) {
-      fetchRowData();
+      fetchData();
     }
-  }, [fetchedData]);
-
-  async function fetchRowData() {
-    const result = await getReq('master/unit');
-    setRowData(result.data);
-    setFetchedData(true);
-  }
+    async function fetchData() {
+      const result = await getReq('master/unit');
+      // console.log(result);
+      setRowData(result.data);
+      setFetchedData(true);
+    }
+  });
 
   const handleClickOpen = () => {
     setOpen(true);

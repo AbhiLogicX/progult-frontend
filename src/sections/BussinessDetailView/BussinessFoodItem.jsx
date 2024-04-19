@@ -70,6 +70,7 @@ export function AddFoodAndItem({ open, bussinessId, fromCall, handleClose, handl
     formData.append('bussinessId', bussinessId);
     if (fromCall === 'Item') {
       await postReq(`item`, formData).then((res) => {
+        // console.log('hi code', res.statusCode);
         if (res.statusCode !== 200) {
           setErrRes(true);
           handleClose();

@@ -1,6 +1,7 @@
 import { Outlet, useRoutes } from 'react-router-dom';
 import { lazy, Suspense, useState, useEffect } from 'react';
 
+import { getReq } from 'src/api/api';
 import DashboardLayout from 'src/layouts/dashboard';
 import CustomerListPage from 'src/pages/CustomerListPage';
 
@@ -27,13 +28,25 @@ export const ReportsPage = lazy(() => import('src/pages/reportsPage'));
 export default function Router() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const authStatus = JSON.parse(localStorage.getItem('items'));
+
   useEffect(() => {
     if (authStatus) {
+      getVerify();
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
   }, [authStatus, isLoggedIn]);
+
+  function getVerify() {
+    let verified = false;
+    getReq(`admin/detail`).then((res) => {
+      if (res.statusCode === 200) {
+        verified = true;
+      }
+    });
+    return verified;
+  }
 
   const routes = useRoutes([
     {

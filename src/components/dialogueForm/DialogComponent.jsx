@@ -47,7 +47,7 @@ export default function DialogComponent({
         setTimeout(() => {
           handleReload(false);
           setOpen(false);
-        }, 3000);
+        }, 1000);
       }
     } else {
       const result = await patchReq(`${domainCall}/detail?Id=${id}&status=delete`);
@@ -56,7 +56,7 @@ export default function DialogComponent({
         setTimeout(() => {
           handleReload(false);
           setOpen(false);
-        }, 3000);
+        }, 1000);
       }
     }
   }
@@ -69,7 +69,7 @@ export default function DialogComponent({
         setTimeout(() => {
           handleReload(false);
           setOpen(false);
-        }, 3000);
+        }, 1000);
       }
     } else {
       const result = await patchReq(`${domainCall}/detail?Id=${id}&status=active`);
@@ -78,7 +78,7 @@ export default function DialogComponent({
         setTimeout(() => {
           handleReload(false);
           setOpen(false);
-        }, 3000);
+        }, 1000);
       }
     }
   }

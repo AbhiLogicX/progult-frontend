@@ -18,7 +18,6 @@ export async function getReq(reqStr) {
     if (response.data.statusCode) {
       return response.data;
     }
-
     return response.data;
   } catch (error) {
     return error;
@@ -29,8 +28,9 @@ export async function postReq(reqStr, data) {
   try {
     const response = await axiosInstance.post(`/${reqStr}`, data);
     return response.data;
-  } catch (error) {
-    return error;
+  } catch (err) {
+    // console.log(err);
+    return err;
   }
 }
 

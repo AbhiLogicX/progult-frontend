@@ -52,7 +52,7 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
         setTimeout(() => {
           handleReload(false);
           setOpen(false);
-        }, 3000);
+        }, 1000);
       }
     }
     const formData = new FormData();
@@ -70,7 +70,7 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
       setTimeout(() => {
         handleReload(false);
         setOpen(false);
-      }, 3000);
+      }, 1000);
     }
   };
 
