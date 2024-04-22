@@ -11,8 +11,26 @@ import properties from 'src/config/properties';
 import BussinessActivityDialog from 'src/components/dialogueForm/BussinessActivityDialog';
 
 import { mockDataActivity } from './mockData';
+// import { getReq } from 'src/api/api';
 
-export function BussinessActivityView() {
+//  bussinessActivity?bussinessId=66069bfe7f083dba90191320
+
+export function BussinessActivityView({ bussinessId }) {
+  // const [dataFetched, setDataFetched] = useState(false);
+  // const [activiteData, setActiviteData] = useState();
+  // useEffect(() => {
+  //   if (!dataFetched) {
+  //     fetchActivites();
+  //   }
+  //   async function fetchActivites() {
+  //     getReq(`bussinessActivity?bussinessId=${bussinessId}`).then((res) => {
+  //       if (res.statusCode === 200) {
+  //         setDataFetched(true);
+  //         console.log(res);
+  //       }
+  //     });
+  //   }
+  // });
   return (
     <Grid container>
       {mockDataActivity.data.map((itm) => (
@@ -48,7 +66,7 @@ function RenderCard({ crdData }) {
           <img
             src={`${properties.BASE_DOMAIN_IMAGE_URL}${crdData.activityId.image}`}
             alt="activity cover"
-            style={{ height: 150, width: 150 }}
+            style={{ aspectRatio: 4 / 3, width: '100%', borderRadius: 15 }}
           />
         </Box>
         <Typography variant="h6">{crdData.activityId.title}</Typography>
@@ -69,6 +87,10 @@ function RenderCard({ crdData }) {
 // BussinessActivityView.propTypes = {
 //   bussinessId: PropTypes.string,
 // };
+
+BussinessActivityView.propTypes = {
+  bussinessId: PropTypes.string,
+};
 
 RenderCard.propTypes = {
   crdData: PropTypes.object,

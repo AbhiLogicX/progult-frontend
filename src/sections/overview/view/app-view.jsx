@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 // import { faker } from '@faker-js/faker';
 
 import Container from '@mui/material/Container';
@@ -5,6 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 // import Iconify from 'src/components/iconify';
+import { TitleContext } from 'src/context/mainContext';
 
 // import AppTasks from '../app-tasks';
 // import AppNewsUpdate from '../app-news-update';
@@ -19,6 +21,8 @@ import AppWidgetSummary from '../app-widget-summary';
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+  const { setTitle } = useContext(TitleContext);
+  setTitle('Dashboard');
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>

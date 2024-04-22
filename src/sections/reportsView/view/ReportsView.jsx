@@ -1,9 +1,12 @@
-import { Container, Typography } from '@mui/material';
+import { useContext } from 'react';
+
+import { Container } from '@mui/material';
+
+import { TitleContext } from 'src/context/mainContext';
 
 export default function ReportsView() {
-  return (
-    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Typography variant="h4">Reports</Typography>
-    </Container>
-  );
+  const { setTitle } = useContext(TitleContext);
+
+  setTitle('Reports');
+  return <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }} />;
 }

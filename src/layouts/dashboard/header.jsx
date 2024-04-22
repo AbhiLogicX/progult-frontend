@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
+import { Typography } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -11,6 +13,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { bgBlur } from 'src/theme/css';
+import { TitleContext } from 'src/context/mainContext';
 
 import Iconify from 'src/components/iconify';
 
@@ -25,6 +28,8 @@ import AccountPopover from './common/account-popover';
 export default function Header({ onOpenNav }) {
   const theme = useTheme();
 
+  const { title } = useContext(TitleContext);
+
   const lgUp = useResponsive('up', 'lg');
 
   const renderContent = (
@@ -36,7 +41,7 @@ export default function Header({ onOpenNav }) {
       )}
 
       {/* <Searchbar /> */}
-      {/* <Typography variant="h2">{title}</Typography> */}
+      <Typography variant="h2">{title}</Typography>
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>

@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 
 import { Container } from '@mui/material';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { getReq } from 'src/api/api';
+import { TitleContext } from 'src/context/mainContext';
 
 import BussinessInfoView from '../BussinessInfoView';
 
@@ -14,6 +15,7 @@ export default function BussinessDetailView() {
   const [bussinessData, setBussinessData] = useState();
   const [loading, setLoading] = useState(true);
   const currLocation = useLocation().pathname.split('/');
+  const { setTitle } = useContext(TitleContext);
 
   useEffect(() => {
     async function fetchBussinessData() {
@@ -27,7 +29,7 @@ export default function BussinessDetailView() {
       fetchBussinessData();
     }
   }, [fetchedData, currLocation]);
-
+  setTitle('');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       {fetchedData ? (

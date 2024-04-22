@@ -56,6 +56,8 @@ function BussinessInfoView({ bussinessData, handleReload }) {
     setOpen(false);
   };
 
+  console.log(bussinessData);
+
   return (
     <Box>
       <Paper elevation={3} sx={{ px: '2%', py: '1%', width: '100%', mb: 2 }}>
@@ -113,14 +115,16 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           ))}
         </Grid>
       </Paper>
+
       <Paper elevation={3} sx={{ p: '1%', mb: 2, width: '100%' }}>
         <Typography variant="h5" mb={3}>
           Activities
         </Typography>
         <Box>
-          <BussinessActivityView />
+          <BussinessActivityView bussinessId={bussinessData._id} />
         </Box>
       </Paper>
+
       <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
         <Box display="flex" alignItems="start" justifyContent="space-between">
           <Typography variant="h5" mb={3}>

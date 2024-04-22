@@ -1,14 +1,21 @@
+import { useContext } from 'react';
+
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import { TitleContext } from 'src/context/mainContext';
+
 export default function AppSettingView() {
+  const { setTitle } = useContext(TitleContext);
+
+  setTitle('App Settings');
   return (
     <Container>
-      <Typography variant="h4" sx={{ mb: 5 }}>
+      {/* <Typography variant="h4" sx={{ mb: 5 }}>
         App Settings
-      </Typography>
+      </Typography> */}
       <Box>
         <Box sx={{ mb: 5, border: '1px darkgrey solid', borderRadius: 0.75, p: 2 }}>
           <Typography variant="h5" sx={{ mb: 2 }}>

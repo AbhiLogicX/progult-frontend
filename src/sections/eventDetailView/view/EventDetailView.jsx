@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -8,6 +8,7 @@ import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
 import { getReq } from 'src/api/api';
+import { TitleContext } from 'src/context/mainContext';
 
 import RulesForm from 'src/components/dialogueForm/RulesAndRegulationForm';
 
@@ -24,6 +25,7 @@ export default function EventDetailview() {
   const [openDialog, setOpenDialog] = useState(false);
   const [openAminiteDialog, setOpenAminiteDialog] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
+  const { setTitle } = useContext(TitleContext);
 
   const handleClickOpenRule = () => {
     setOpenRulesForm(true);
@@ -65,6 +67,7 @@ export default function EventDetailview() {
 
   const date = new Date();
 
+  setTitle('  ');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Box width="100%">

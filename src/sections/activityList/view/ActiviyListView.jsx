@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
-import Stack from '@mui/material/Stack';
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { getReq, postReq } from 'src/api/api';
+import { TitleContext } from 'src/context/mainContext';
 
 import Iconify from 'src/components/iconify/iconify';
 import AddMasterDialog from 'src/components/dialogueForm/DialogueForm';
@@ -18,6 +18,7 @@ export default function ActivityListView() {
   const [fetchedData, setFetchedData] = useState(false);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { setTitle } = useContext(TitleContext);
 
   useEffect(() => {
     if (!fetchedData) {
@@ -55,12 +56,13 @@ export default function ActivityListView() {
   const tableColumns = ['Image', 'Title', 'Status'];
   const actionCol = ['Edit', 'Delete'];
 
+  setTitle('Activites');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width="100%">
-        <Typography variant="h4" sx={{ mb: 5 }}>
+      <Box mb={5} width="100%" sx={{ textAlign: 'right' }}>
+        {/* <Typography variant="h4" sx={{ mb: 5 }}>
           Activites
-        </Typography>
+        </Typography> */}
         <Button
           variant="contained"
           color="inherit"
@@ -76,7 +78,7 @@ export default function ActivityListView() {
           domainCall="domain/activity"
           handleReload={setFetchedData}
         />
-      </Stack>
+      </Box>
 
       {fetchedData ? (
         <TableViewMaster

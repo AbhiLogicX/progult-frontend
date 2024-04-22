@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
-import Stack from '@mui/material/Stack';
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 
 import { getReq } from 'src/api/api';
+import { TitleContext } from 'src/context/mainContext';
 
 import Iconify from 'src/components/iconify';
 import TableViewEvent from 'src/components/tableView/TableViweEvent';
@@ -13,6 +13,7 @@ import TableViewEvent from 'src/components/tableView/TableViweEvent';
 export default function EventListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
+  const { setTitle } = useContext(TitleContext);
 
   useEffect(() => {
     async function fetchRowData() {
@@ -33,15 +34,16 @@ export default function EventListView() {
     'Rating/ReviewCount',
   ];
   const actionCol = ['View', 'Delete'];
+  setTitle('Events');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} width="100%">
-        <Typography variant="h4">Events</Typography>
+      <Box mb={5} width="100%" textAlign="right">
+        {/* <Typography variant="h4">Events</Typography> */}
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
           New Event
         </Button>
-      </Stack>
+      </Box>
 
       {fetchedData ? (
         <TableViewEvent columns={tableColumns} actionbtn={actionCol} tableData={rowData} />

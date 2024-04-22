@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
-import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 
 import { getReq } from 'src/api/api';
+import { TitleContext } from 'src/context/mainContext';
 
 import TableView from 'src/components/tableView';
 
 export default function CustomerListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
+  const { setTitle } = useContext(TitleContext);
 
   useEffect(() => {
     if (!fetchedData) {
@@ -24,11 +25,10 @@ export default function CustomerListView() {
   }, [fetchedData]);
   const tableColumns = ['Name', 'Email', 'Mobile', 'City/State', 'Status'];
   const actionCol = ['View', 'Delete'];
+  setTitle('Coustmer');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Customer</Typography>
-      </Stack>
+      <Box mb={5}>{/* <Typography variant="h4">Customer</Typography> */}</Box>
 
       {fetchedData ? (
         <TableView
