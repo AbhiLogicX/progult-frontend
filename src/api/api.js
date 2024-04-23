@@ -12,9 +12,9 @@ const axiosInstance = axios.create({
 });
 
 export async function getReq(reqStr) {
-  // console.log('heads', heads, `Bearer ${heads.accessToken}`);
   try {
     const response = await axiosInstance.get(`/${reqStr}`);
+
     if (response.data.statusCode) {
       return response.data;
     }
@@ -23,6 +23,12 @@ export async function getReq(reqStr) {
     return error;
   }
 }
+
+// axios.defaults.withCredentials = true;
+
+// response.headers = {
+//   "Set-Cookie": `access_token=${token}; Max-Age=${86400}; HttpOnly; SameSite=None; Secure; Path=/`,
+// };
 
 export async function postReq(reqStr, data) {
   try {

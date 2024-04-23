@@ -24,13 +24,22 @@ import { FoodAndItem, AddFoodAndItem } from './BussinessFoodItem';
 function BussinessInfoView({ bussinessData, handleReload }) {
   const [open, setOpen] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
-  const [openAddonForm, setopenAddonForm] = useState(false);
+  const [openAddonForm, setopenAddonForm] = useState({
+    open: false,
+    type: '',
+  });
 
   const handleCloseAddonForm = () => {
-    setopenAddonForm(false);
+    setopenAddonForm({
+      open: false,
+      type: '',
+    });
   };
-  const handleOpenAddonForm = () => {
-    setopenAddonForm(true);
+  const handleOpenAddonForm = (type) => {
+    setopenAddonForm({
+      open: true,
+      type,
+    });
   };
   const handleClickOpenRule = () => {
     setOpenRulesForm(true);
@@ -56,7 +65,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
     setOpen(false);
   };
 
-  console.log(bussinessData);
+  // console.log(bussinessData);
 
   return (
     <Box>
@@ -97,12 +106,12 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           </Box>
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ p: '1%', width: '100%  ', mb: 2 }}>
+      {/* <Paper elevation={3} sx={{ p: '1%', width: '100%  ', mb: 2 }}>
         <Typography variant="h5" mb={3}>
           {`About ${bussinessData?.title}`}
         </Typography>
         <Typography>{bussinessData?.description}</Typography>
-      </Paper>
+      </Paper> */}
       <Paper elevation={3} sx={{ p: '1%', mb: 2, width: '100%' }}>
         <Typography variant="h5" mb={3}>
           Aminities
@@ -168,12 +177,16 @@ function BussinessInfoView({ bussinessData, handleReload }) {
       <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
         <Box mb={3} display="flex" justifyContent="space-between">
           <Typography variant="h5">AddOns</Typography>
-          <Button variant="contained" onClick={handleOpenAddonForm}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleOpenAddonForm('Item');
+            }}
+          >
             Add Items
           </Button>
           <AddFoodAndItem
             open={openAddonForm}
-            fromCall="Item"
             handleClose={handleCloseAddonForm}
             bussinessId={bussinessData._id}
             handleReload={handleReload}
@@ -184,9 +197,24 @@ function BussinessInfoView({ bussinessData, handleReload }) {
         </Box>
       </Paper>
       <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
-        <Typography variant="h5" mb={3}>
-          Food & Bevrages
-        </Typography>
+        <Box mb={3} display="flex" justifyContent="space-between">
+          <Typography variant="h5">Food & Bevrages</Typography>
+
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleOpenAddonForm('Food');
+            }}
+          >
+            Add Food
+          </Button>
+          <AddFoodAndItem
+            open={openAddonForm}
+            handleClose={handleCloseAddonForm}
+            bussinessId={bussinessData._id}
+            handleReload={handleReload}
+          />
+        </Box>
         <Box sx={{ px: '1%' }}>
           <FoodAndItem bussinessId={bussinessData._id} fromCall="food" />
         </Box>

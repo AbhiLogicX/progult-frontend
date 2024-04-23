@@ -32,7 +32,7 @@ export default function BussinessActivityDialog({
       >
         <Box>Edit Bussiness Activity</Box>
         <Button color="error" variant="contained">
-          Delete Bussiness
+          Delete activity
         </Button>
       </DialogTitle>
       <DialogContent>

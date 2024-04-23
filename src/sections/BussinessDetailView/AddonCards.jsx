@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Paper, Button, TextField, IconButton, Typography, NativeSelect } from '@mui/material';
 
 import { patchReq } from 'src/api/api';
@@ -18,6 +19,16 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
   };
   const handleEditClose = () => {
     setEdit(false);
+  };
+
+  const handleDelete = async () => {
+    // console.log('hello Delete', addOnData);
+    await patchReq(`${fromCall}/detail?Id=${addOnData._id}&status=delete`).then((res) => {
+      if (res.statusCode === 200) {
+        handleReload(false);
+      }
+    });
+    // item/detail?Id=65fbc76847077a0a07a8e4bf&status=active
   };
 
   const onSubmit = async (data) => {
@@ -51,6 +62,7 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
 
           <Box>
             <Box>
+              {/* <Typography>{fromCall}</Typography> */}
               {edit ? (
                 <TextField
                   defaultValue={addOnData.title}
@@ -116,6 +128,9 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
               <EditIcon />
             </IconButton>
           )}
+          <IconButton onClick={handleDelete}>
+            <DeleteIcon color="error" />
+          </IconButton>
           {edit ? (
             <>
               <Button onClick={handleEditClose} color="error">

@@ -11,6 +11,7 @@ import {
   Dialog,
   TextField,
   DialogTitle,
+  NativeSelect,
   DialogActions,
   DialogContent,
 } from '@mui/material';
@@ -54,21 +55,38 @@ export function FoodAndItem({ bussinessId, fromCall }) {
 
 // food?bussinessId=66069bfe7f083dba90191320
 
-export function AddFoodAndItem({ open, bussinessId, fromCall, handleClose, handleReload }) {
+export function AddFoodAndItem({ open, bussinessId, handleClose, handleReload }) {
   const { register, handleSubmit } = useForm({});
   const [resSuccess, setResSuccess] = useState(false);
   const [errRes, setErrRes] = useState(false);
+  const [unitDatafetched, setUnitDatafetched] = useState(false);
+  const [unitData, setUnitData] = useState();
+
+  useEffect(() => {
+    if (!unitDatafetched) {
+      fetchUnitData();
+    }
+    async function fetchUnitData() {
+      await getReq(`master/unit/active`).then((res) => {
+        if (res.statusCode === 200) {
+          setUnitData(res.data);
+          setUnitDatafetched(true);
+        }
+      });
+    }
+  });
 
   const onSubmit = async (data) => {
-    data.image = data.image[0].name;
+    data.image = data.image[0];
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('rate', data.rate);
     formData.append('stock', data.stock);
+    formData.append('unitId', data.unitId);
     formData.append('image', data.image);
     formData.append('description', data.description);
     formData.append('bussinessId', bussinessId);
-    if (fromCall === 'Item') {
+    if (open.type === 'Item') {
       await postReq(`item`, formData).then((res) => {
         // console.log('hi code', res.statusCode);
         if (res.statusCode !== 200) {
@@ -77,29 +95,45 @@ export function AddFoodAndItem({ open, bussinessId, fromCall, handleClose, handl
         }
         setResSuccess(true);
         handleClose();
-        // setTimeout(() => {
-        //   handleReload(false);
-        // }, 2000);
+        setTimeout(() => {
+          handleReload(false);
+        }, 2000);
+      });
+    }
+    if (open.type === 'Food') {
+      await postReq(`food`, formData).then((res) => {
+        // console.log('hi code', res.statusCode);
+        if (res.statusCode !== 200) {
+          setErrRes(true);
+          handleClose();
+        }
+        setResSuccess(true);
+        handleClose();
+        setTimeout(() => {
+          handleReload(false);
+        }, 2000);
       });
     }
   };
+
+  console.log('hello', unitData);
   return (
-    <Dialog open={open}>
+    <Dialog open={open.open}>
       {resSuccess ? (
         <Alert
           icon={<CheckIcon fontSize="inherit" />}
           variant="filled"
           severity="success"
-        >{`${fromCall} added Successfully`}</Alert>
+        >{`${open.type} added Successfully`}</Alert>
       ) : null}
       {errRes ? (
         <Alert icon={<CheckIcon fontSize="inherit" />} variant="filled" severity="error">
-          {`${fromCall} not added `}
+          {`${open.type} not added `}
         </Alert>
       ) : null}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle>{`Add ${fromCall}`}</DialogTitle>
+        <DialogTitle>{`Add ${open.type}`}</DialogTitle>
         <DialogContent>
           <TextField
             {...register('title')}
@@ -132,6 +166,15 @@ export function AddFoodAndItem({ open, bussinessId, fromCall, handleClose, handl
             name="description"
             margin="normal"
           />
+          {unitDatafetched ? (
+            <NativeSelect {...register('unitId')} sx={{ mb: 1 }} style={{ width: '50%' }}>
+              {unitData.map((seleData) => (
+                <option value={seleData._id}>{seleData.title}</option>
+              ))}
+              {/* <option value="active">active</option>
+              <option value="in-active">in-active</option> */}
+            </NativeSelect>
+          ) : null}
           <TextField
             {...register('image')}
             fullWidth
@@ -163,7 +206,6 @@ FoodAndItem.propTypes = {
 
 AddFoodAndItem.propTypes = {
   bussinessId: PropTypes.string,
-  fromCall: PropTypes.string,
   handleClose: PropTypes.func,
   open: PropTypes.bool,
   handleReload: PropTypes.func,

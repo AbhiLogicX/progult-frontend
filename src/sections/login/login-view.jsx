@@ -48,10 +48,19 @@ export default function LoginView() {
     setError('');
     try {
       const session = await postReq('admin/login', data);
+      // console.log(session);
       if (session.success) {
-        // console.log(session);
         localStorage.setItem('items', JSON.stringify(session.data));
         localStorage.setItem('tokens', JSON.stringify(session.extra));
+        // const cookieHeader = session.headers.get('Set-Cookie');
+        // if (cookieHeader) {
+        //   // Extract the cookie value from the header
+        //   const cookie = cookieHeader.split(';')[0];
+
+        //   // Set the cookie in the browser
+        //   document.cookie = cookie;
+        // }
+
         setLoading(false);
         router.push('/');
       } else {
