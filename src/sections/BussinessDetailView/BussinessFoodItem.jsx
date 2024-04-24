@@ -74,7 +74,7 @@ export function AddFoodAndItem({ open, bussinessId, handleClose, handleReload })
         }
       });
     }
-  });
+  }, [unitDatafetched]);
 
   const onSubmit = async (data) => {
     data.image = data.image[0];

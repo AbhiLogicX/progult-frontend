@@ -31,6 +31,7 @@ export default function RulesForm({ Id, open, handleClose, rules }) {
   });
 
   const onSubmit = (data) => {
+    // console.log(data);
     handleClose();
   };
   //   const handleSubmitForm = () => {

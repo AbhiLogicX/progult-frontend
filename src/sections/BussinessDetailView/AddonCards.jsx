@@ -7,7 +7,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Paper, Button, TextField, IconButton, Typography, NativeSelect } from '@mui/material';
 
 import { patchReq } from 'src/api/api';
-import { primary } from 'src/theme/palette';
 import properties from 'src/config/properties';
 
 export default function AddonCards({ addOnData, handleReload, fromCall }) {
@@ -45,7 +44,7 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
     });
   };
   return (
-    <Paper elevation={4} sx={{ p: '2%', mr: 1, backgroundColor: primary.lighter }}>
+    <Paper elevation={4} sx={{ p: '2%', mr: 1, backgroundColor: 'whitesmoke' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box display="flex">
           <Box mr={1}>

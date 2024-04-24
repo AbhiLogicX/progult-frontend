@@ -20,14 +20,13 @@ export default function ContactDetailform({ fData }) {
   }
 
   return (
-    <Box sx={{ p: '1%', borderRadius: 0.75 }} border={editOption ? '1px solid darkgrey' : null}>
+    <Box sx={{ p: '2%', borderRadius: 0.75 }} border={editOption ? '1px solid darkgrey' : null}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box mb={3} display="flex" sx={{ borderRadius: 0.75 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} alignItems="flex-end" mt="-125px">
             <Grid xs={2}>
               <Box
                 elevation={4}
-                mb={3}
                 sx={{
                   borderRadius: '50%',
                   width: '100%',
@@ -37,11 +36,16 @@ export default function ContactDetailform({ fData }) {
                 <img
                   src={`${properties.BASE_BUSSINESS_IMAGE_URL}${fData.brandLogo}`}
                   alt="Bussiness Brond Cover "
-                  style={{ width: '100%', aspectRatio: 1 / 1, borderRadius: '50%' }}
+                  style={{
+                    width: '100%',
+                    aspectRatio: 1 / 1,
+                    borderRadius: '50%',
+                    border: '10px solid white',
+                  }}
                 />
               </Box>
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={7} mb="20px">
               <Box display="flex" alignItems="center">
                 {editOption ? (
                   <Typography sx={{ fontWeight: 600, mr: 1 }}>Titile :</Typography>
@@ -57,7 +61,7 @@ export default function ContactDetailform({ fData }) {
                   <Typography variant="h2">{fData?.title ? fData?.title : ''}</Typography>
                 )}
               </Box>
-              <Box display="flex" alignItems="center" mb={2}>
+              <Box display="flex" alignItems="center">
                 {editOption ? (
                   <Typography sx={{ fontWeight: 600, mr: 1 }}>Domain :</Typography>
                 ) : (
@@ -144,14 +148,12 @@ export default function ContactDetailform({ fData }) {
                 <Typography variant="h5">Owner Details</Typography>
                 <Box>
                   <Box alignItems="cneter">
-                    <Typography variant="h4">{fData.owner[0].fullName}</Typography>
-                    <Typography variant="h5">+91-1234512345</Typography>
+                    <Typography>{fData.owner[0].fullName}</Typography>
+                    <Typography>+91-1234512345</Typography>
                   </Box>
 
                   <Box display="flex" alignItems="cneter">
-                    <Typography mr={1} fontWeight={600}>
-                      Status:
-                    </Typography>
+                    <Typography mr={1}>Status:</Typography>
                     <Typography>{fData.owner[0].status}</Typography>
                   </Box>
                 </Box>

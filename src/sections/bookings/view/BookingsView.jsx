@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 // import { useState, useEffect } from 'react';
 
 import Stack from '@mui/material/Stack';
@@ -6,18 +6,31 @@ import Stack from '@mui/material/Stack';
 
 import Container from '@mui/material/Container';
 
-// import { getReq } from 'src/api/api';
+import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
 
 import TableView from 'src/components/tableView/TableView';
 
 export default function BookingsView() {
-  //   const [rowData, setRowData] = useState([]);
-  //   const [fetchedData, setFetchedData] = useState(false);
+  const [rowData, setRowData] = useState([]);
+  const [fetchedData, setFetchedData] = useState(false);
   const { setTitle } = useContext(TitleContext);
 
   const tableColumns = ['User', 'Bussiness', 'Date/Time Booked', 'Activites', 'Amount'];
   setTitle('Bookings');
+  useEffect(() => {
+    if (!fetchedData) {
+      fetchBookings();
+    }
+    async function fetchBookings() {
+      await getReq(`booking/business`).then((res) => {
+        if (res.statusCode === 200) {
+          setRowData(res.data);
+          setFetchedData(true);
+        }
+      });
+    }
+  });
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Stack
@@ -34,7 +47,7 @@ export default function BookingsView() {
           </Button> */}
       </Stack>
 
-      <TableView columns={tableColumns} tableData={null} />
+      <TableView columns={tableColumns} tableData={rowData} />
     </Container>
   );
 }

@@ -2,16 +2,13 @@ import PropTypes from 'prop-types';
 
 import { Box, Grid, Paper, Typography } from '@mui/material';
 
-import { warning } from 'src/theme/palette';
+import { primary } from 'src/theme/palette';
 import properties from 'src/config/properties';
 
 export function EventAminitieCard({ cardData }) {
   return (
     <Grid xs={3}>
-      <Paper
-        elevation={3}
-        sx={{ p: '2%', backgroundColor: warning.lighter, color: warning.main, mr: 1 }}
-      >
+      <Paper elevation={3} sx={{ p: '2%', backgroundColor: 'whitesmoke', mr: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box mr={1.5}>
             {/* <img sx={{ height: 125, width: 100 }} /> */}
@@ -22,7 +19,7 @@ export function EventAminitieCard({ cardData }) {
             />
           </Box>
           <Box>
-            <Typography variant="h6" mb={0.5}>
+            <Typography variant="h6" mb={0.5} color={primary.main}>
               {cardData.title}
             </Typography>
           </Box>

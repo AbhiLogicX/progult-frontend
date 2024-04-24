@@ -20,6 +20,7 @@ import { itemData } from './mockData';
 import ContactDetailform from './ContactForm';
 import { BussinessActivityView } from './BussinessActivityView';
 import { FoodAndItem, AddFoodAndItem } from './BussinessFoodItem';
+import AmenitiesManageForm from '../eventDetailView/AminitesManage';
 
 function BussinessInfoView({ bussinessData, handleReload }) {
   const [open, setOpen] = useState(false);
@@ -28,6 +29,15 @@ function BussinessInfoView({ bussinessData, handleReload }) {
     open: false,
     type: '',
   });
+  const [openAminiteDialog, setOpenAminiteDialog] = useState(false);
+
+  const handleAminitieDialogClose = () => {
+    setOpenAminiteDialog(false);
+  };
+
+  const handleAminitieDialogOpen = () => {
+    setOpenAminiteDialog(true);
+  };
 
   const handleCloseAddonForm = () => {
     setopenAddonForm({
@@ -69,7 +79,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
 
   return (
     <Box>
-      <Paper elevation={3} sx={{ px: '2%', py: '1%', width: '100%', mb: 2 }}>
+      <Paper elevation={3} sx={{ width: '100%', mb: 2 }}>
         <Box mb={5}>
           <Box sx={{ borderRadius: 0.75, textAlign: 'center', mb: 2 }}>
             <img
@@ -84,7 +94,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           </Box>
         </Box>
 
-        <Box mb={3}>
+        <Box mb={3} p="2%">
           <Box display="flex" justifyContent="space-between" alignItems="start">
             <Typography variant="h5" mb={3}>
               Bussiness Hours
@@ -112,10 +122,18 @@ function BussinessInfoView({ bussinessData, handleReload }) {
         </Typography>
         <Typography>{bussinessData?.description}</Typography>
       </Paper> */}
-      <Paper elevation={3} sx={{ p: '1%', mb: 2, width: '100%' }}>
-        <Typography variant="h5" mb={3}>
-          Aminities
-        </Typography>
+      <Paper elevation={3} sx={{ p: '2%', mb: 2, width: '100%' }}>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="h5">Aminities</Typography>
+          <Button variant="contained" onClick={handleAminitieDialogOpen}>
+            Edit Aminities
+          </Button>
+          <AmenitiesManageForm
+            openDialog={openAminiteDialog}
+            handleClose={handleAminitieDialogClose}
+            dValues={bussinessData.amenities}
+          />
+        </Box>
         <Grid container spacing={2}>
           {bussinessData.amenities_list.map((item) => (
             <Grid item xs={2}>
@@ -125,7 +143,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
         </Grid>
       </Paper>
 
-      <Paper elevation={3} sx={{ p: '1%', mb: 2, width: '100%' }}>
+      <Paper elevation={3} sx={{ p: '2%', mb: 2, width: '100%' }}>
         <Typography variant="h5" mb={3}>
           Activities
         </Typography>
@@ -134,7 +152,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
         </Box>
       </Paper>
 
-      <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
+      <Paper elevation={3} sx={{ p: '2%', width: '100%', mb: 2 }}>
         <Box display="flex" alignItems="start" justifyContent="space-between">
           <Typography variant="h5" mb={3}>
             Rules & Regulations
@@ -157,7 +175,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           </ul>
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
+      <Paper elevation={3} sx={{ p: '2%', width: '100%', mb: 2 }}>
         <Typography variant="h5" mb={3}>
           Gallery
         </Typography>
@@ -174,7 +192,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           ))}
         </ImageList>
       </Paper>
-      <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
+      <Paper elevation={3} sx={{ p: '2%', width: '100%', mb: 2 }}>
         <Box mb={3} display="flex" justifyContent="space-between">
           <Typography variant="h5">AddOns</Typography>
           <Button
@@ -196,7 +214,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           <FoodAndItem bussinessId={bussinessData._id} fromCall="item" />
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ p: '1%', width: '100%', mb: 2 }}>
+      <Paper elevation={3} sx={{ p: '2%', width: '100%', mb: 2 }}>
         <Box mb={3} display="flex" justifyContent="space-between">
           <Typography variant="h5">Food & Bevrages</Typography>
 

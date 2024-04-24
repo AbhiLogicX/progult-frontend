@@ -7,8 +7,6 @@ import { Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 
-import { warning } from 'src/theme/palette';
-
 import BussinessTimeForm from '../dialogueForm/BussinessHourDialog';
 
 export default function TimingCards({ timeData }) {
@@ -30,7 +28,7 @@ export default function TimingCards({ timeData }) {
     setOpen(false);
   };
   return (
-    <Box elevation={3} p={2} component={Paper} mr={2} sx={{ backgroundColor: warning.light }}>
+    <Box elevation={3} p={2} component={Paper} mr={2} sx={{ backgroundColor: 'whitesmoke' }}>
       <Typography>{`${timeData.startTime} to ${timeData.endTime}`}</Typography>
       <Typography mb={1}>{timeData.days.map((itm) => `${itm} `)}</Typography>
       <Box textAlign="right">

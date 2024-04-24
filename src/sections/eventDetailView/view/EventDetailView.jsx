@@ -45,9 +45,7 @@ export default function EventDetailview() {
   const handleAminitieDialogClose = () => {
     setOpenAminiteDialog(false);
   };
-  const handleAminitieDialogSubmit = (checked) => {
-    setOpenAminiteDialog(false);
-  };
+
   const handleAminitieDialogOpen = () => {
     setOpenAminiteDialog(true);
   };
@@ -67,7 +65,7 @@ export default function EventDetailview() {
 
   const date = new Date();
 
-  setTitle('  ');
+  setTitle('');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Box width="100%">
@@ -143,7 +141,6 @@ export default function EventDetailview() {
               openDialog={openAminiteDialog}
               handleClose={handleAminitieDialogClose}
               dValues={data?.amenities}
-              handleSubmit={handleAminitieDialogSubmit}
             />
           </Box>
           <Box sx={{ px: '1%' }}>

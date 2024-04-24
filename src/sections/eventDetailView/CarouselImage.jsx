@@ -9,9 +9,9 @@ export default function ItemRender({ imgName }) {
     <Grid container justifyContent="center">
       <Grid item xs={12} sm={10}>
         <img
-          src={`${properties.BASE_IMAGE_URL}${imgName}`}
+          src={`${properties.BASE_BUSSINESS_IMAGE_URL}${imgName}`}
           alt="Cover Images"
-          style={{ width: 1200, height: 300 }}
+          style={{ width: '100%', aspectRatio: 4 / 1 }}
         />
         {/* <Typography variant="h5" align="center" gutterBottom>
             {item.title}

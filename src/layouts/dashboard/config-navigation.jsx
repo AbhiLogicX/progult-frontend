@@ -17,11 +17,11 @@ const navConfig = [
     path: '/bookings',
     icon: icon('ic_booking'),
   },
-  {
-    title: 'Subscriptions',
-    path: '/subscriptions',
-    icon: icon('ic_subscription'),
-  },
+  // {
+  //   title: 'Subscriptions',
+  //   path: '/subscriptions',
+  //   icon: icon('ic_subscription'),
+  // },
   {
     title: 'businesses',
     path: '/bussiness-list',
@@ -61,6 +61,7 @@ const navConfig = [
       { title: 'Activities', icon: icon(), path: '/master/activites' },
       { title: 'Aminities', icon: icon('ic_magic'), path: '/master/aminities' },
       { title: 'Unit', icon: icon(), path: '/master/unit' },
+      { title: 'Banner', icon: icon(), path: '/master/banner' },
     ],
   },
 

@@ -1,39 +1,39 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { Button, Typography } from '@mui/material';
 
+import { getReq } from 'src/api/api';
 import properties from 'src/config/properties';
 
 import BussinessActivityDialog from 'src/components/dialogueForm/BussinessActivityDialog';
 
-import { mockDataActivity } from './mockData';
-// import { getReq } from 'src/api/api';
-
 //  bussinessActivity?bussinessId=66069bfe7f083dba90191320
 
 export function BussinessActivityView({ bussinessId }) {
-  // const [dataFetched, setDataFetched] = useState(false);
-  // const [activiteData, setActiviteData] = useState();
-  // useEffect(() => {
-  //   if (!dataFetched) {
-  //     fetchActivites();
-  //   }
-  //   async function fetchActivites() {
-  //     getReq(`bussinessActivity?bussinessId=${bussinessId}`).then((res) => {
-  //       if (res.statusCode === 200) {
-  //         setDataFetched(true);
-  //         console.log(res);
-  //       }
-  //     });
-  //   }
-  // });
+  const [dataFetched, setDataFetched] = useState(false);
+  const [activityData, setActivityData] = useState();
+
+  useEffect(() => {
+    if (!dataFetched) {
+      fetchActivites();
+    }
+    async function fetchActivites() {
+      getReq(`bussinessActivity?bussinessId=${bussinessId}`).then((res) => {
+        if (res.statusCode === 200) {
+          setActivityData(res.data);
+          setDataFetched(true);
+          console.log(res);
+        }
+      });
+    }
+  });
   return (
     <Grid container>
-      {mockDataActivity.data.map((itm) => (
+      {activityData?.map((itm) => (
         <RenderCard crdData={itm} />
       ))}
     </Grid>
@@ -58,18 +58,17 @@ function RenderCard({ crdData }) {
   return (
     <Grid xs={2}>
       <Paper
-        elevat
-        ion={4}
+        elevation={4}
         sx={{ p: '2%', display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2 }}
       >
         <Box>
           <img
-            src={`${properties.BASE_DOMAIN_IMAGE_URL}${crdData.activityId.image}`}
+            src={`${properties.BASE_DOMAIN_IMAGE_URL}${crdData?.activityId.image}`}
             alt="activity cover"
             style={{ aspectRatio: 4 / 3, width: '100%', borderRadius: 15 }}
           />
         </Box>
-        <Typography variant="h6">{crdData.activityId.title}</Typography>
+        <Typography variant="h6">{crdData?.activityId.title}</Typography>
         <Button onClick={handleClickOpen} variant="contained" sx={{ width: '100%' }}>
           Edit
         </Button>

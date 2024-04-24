@@ -26,6 +26,7 @@ export const ReportsPage = lazy(() => import('src/pages/reportsPage'));
 export const TermsPage = lazy(() => import('src/pages/termsAndCondition'));
 export const PrivacyPage = lazy(() => import('src/pages/privacyAndPolicy'));
 export const ContactPage = lazy(() => import('src/pages/contactUsPage'));
+export const MasterBannerPage = lazy(() => import('src/pages/masterBannerList'));
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -68,6 +69,7 @@ export default function Router() {
         { path: 'master/category', element: <MasterCategoreyPage /> },
         { path: 'master/aminities', element: <MasterAminitiesPage /> },
         { path: 'master/activites', element: <MasterActivityPage /> },
+        { path: 'master/banner', element: <MasterBannerPage /> },
         { path: 'customers', element: <CustomerListPage /> },
         { path: 'master/unit', element: <MasterUnitPage /> },
         { path: 'customers/detail/:Id', element: <ProfileViewPage /> },

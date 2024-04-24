@@ -41,7 +41,7 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
   };
 
   const handleSubmit = async () => {
-    if (domainCall === 'master/unit') {
+    if (domainCall === 'master/unit' || domainCall === 'master/banner') {
       const dataToUpdate = {
         title,
         Id: mId,

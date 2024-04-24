@@ -32,7 +32,7 @@ export default function BussinessActivityDialog({
       >
         <Box>Edit Bussiness Activity</Box>
         <Button color="error" variant="contained">
-          Delete activity
+          Remove activity
         </Button>
       </DialogTitle>
       <DialogContent>
@@ -52,7 +52,7 @@ export default function BussinessActivityDialog({
               </Box>
             </Box>
             <Box>
-              {dialogData.slots.map((itm) => (
+              {dialogData?.slots?.map((itm) => (
                 <Box mb={1}>
                   <TimingCards timeData={itm} />
                 </Box>

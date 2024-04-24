@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Grid, Paper, IconButton, Typography } from '@mui/material';
 
 import { deleteReq } from 'src/api/api';
-import { grey, warning } from 'src/theme/palette';
+import { primary } from 'src/theme/palette';
 
 import { EditPackageForm } from './PackageForm';
 
@@ -19,16 +19,17 @@ export default function PackageCard({ packagesData, eventId, handleReload }) {
 
   return (
     <Box>
-      <Grid container spacing={0}>
+      <Grid container>
         {packagesData?.map((pkg) => (
           <Grid xs={4}>
-            <Paper elevation={4} sx={{ p: '1%', backgroundColor: grey[300], mr: 1, mb: 1 }}>
+            <Paper elevation={4} sx={{ p: 2, backgroundColor: 'whitesmoke', mr: 2, mb: 1 }}>
               <Box display="flex" justifyContent="space-between">
                 <Typography variant="h4">{pkg.title}</Typography>
-                <Typography variant="h4" color={warning.main}>{`₹ ${pkg.amount}/-`}</Typography>
+                <Typography variant="h4" color={primary.main}>{`₹ ${pkg.amount}/-`}</Typography>
               </Box>
               <Typography>{pkg.description}</Typography>
-              <Box>
+              <Box textAlign="right">
+                <EditPackageForm eventId={eventId} handleReload={handleReload} dValues={pkg} />
                 <IconButton
                   color="error"
                   onClick={() => {
@@ -37,7 +38,6 @@ export default function PackageCard({ packagesData, eventId, handleReload }) {
                 >
                   <DeleteIcon />
                 </IconButton>
-                <EditPackageForm eventId={eventId} handleReload={handleReload} dValues={pkg} />
               </Box>
             </Paper>
           </Grid>
