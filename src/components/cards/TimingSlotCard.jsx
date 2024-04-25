@@ -27,6 +27,7 @@ export default function TimingCards({ timeData }) {
     // }
     setOpen(false);
   };
+
   return (
     <Box elevation={3} p={2} component={Paper} mr={2} sx={{ backgroundColor: 'whitesmoke' }}>
       <Typography>{`${timeData.startTime} to ${timeData.endTime}`}</Typography>
@@ -41,6 +42,7 @@ export default function TimingCards({ timeData }) {
         handleClose={handleClose}
         handleSubmit={handleSubmit}
         fromCall="Edit Timings"
+        timeData={timeData}
       />
     </Box>
   );

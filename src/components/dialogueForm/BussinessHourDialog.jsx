@@ -11,10 +11,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { format } from 'date-fns';
 
 // import DialogContentText from '@mui/material/DialogContentText';
 
-export default function BussinessTimeForm({ open, handleClose, handleSubmit, fromCall }) {
+export default function BussinessTimeForm({ open, handleClose, handleSubmit, fromCall, timeData }) {
+  // console.log(format(new Date(`2024-04-26 ${timeData?.startTime || ''}`), 'H:m:s'));
+
   return (
     <Dialog
       open={open}
@@ -36,7 +39,12 @@ export default function BussinessTimeForm({ open, handleClose, handleSubmit, fro
           <Box display="flex" mr={1}>
             <Box mr={2}>
               <Typography mr={1}>Start Time</Typography>
-              <TextField id="outlined-basic" variant="outlined" type="time" />
+              <TextField
+                id="outlined-basic"
+                variant="outlined"
+                type="time"
+                defaultValue={format(new Date(`2024-04-26 ${timeData?.startTime || ''}`), 'H:m:s')}
+              />
             </Box>
             <Box>
               <Typography mr={1}>End Time</Typography>
@@ -65,4 +73,5 @@ BussinessTimeForm.propTypes = {
   handleClose: PropTypes.func,
   handleSubmit: PropTypes.func,
   fromCall: PropTypes.string,
+  timeData: PropTypes.object,
 };

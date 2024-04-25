@@ -116,7 +116,7 @@ export function AddFoodAndItem({ open, bussinessId, handleClose, handleReload })
     }
   };
 
-  console.log('hello', unitData);
+  // console.log('hello', unitData);
   return (
     <Dialog open={open.open}>
       {resSuccess ? (

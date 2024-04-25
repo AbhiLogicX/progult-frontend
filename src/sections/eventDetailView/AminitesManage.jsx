@@ -12,35 +12,43 @@ import {
   DialogContent,
 } from '@mui/material';
 
-import { getReq } from 'src/api/api';
+import { getReq, postReq } from 'src/api/api';
 
-export default function AmenitiesManageForm({ openDialog, handleClose, dValues }) {
+export default function AmenitiesManageForm({
+  openDialog,
+  handleClose,
+  dValues,
+  handleReload,
+  Id,
+  fromCall,
+}) {
   const [fetchData, setData] = useState();
   const [fetchedData, setfetchedData] = useState(false);
-  const [checkedValues, setCheckedValues] = useState([]);
+  const [checkedValues, setCheckedValues] = useState();
 
   useEffect(() => {
     if (!fetchedData) {
       fetchAminitieData();
     }
+    setCheckedValues(dValues);
     async function fetchAminitieData() {
       await getReq('domain/aminities').then((res) => {
         setData(res.data);
         setfetchedData(true);
       });
     }
-  }, [fetchedData]);
+  }, [fetchedData, dValues]);
 
-  function addDefaultValues() {
-    for (let i = 0; i < dValues?.length; i += 1) {
-      const obj = dValues[i];
-      if (!checkedValues.includes(obj._id)) {
-        checkedValues.push(obj._id);
-      }
-    }
-  }
+  // function addDefaultValues() {
+  //   for (let i = 0; i < dValues?.length; i += 1) {
+  //     const obj = dValues[i];
+  //     if (!checkedValues.includes(obj._id)) {
+  //       checkedValues.push(obj._id);
+  //     }
+  //   }
+  // }
 
-  addDefaultValues();
+  // addDefaultValues();
   // console.log('cross check', checkedValues);
   const handleCheck = (e) => {
     const { name, checked } = e.target;
@@ -52,14 +60,26 @@ export default function AmenitiesManageForm({ openDialog, handleClose, dValues }
     }
   };
 
+  async function handleAminitiePost(values) {
+    const dataPost = {
+      aminityId: values,
+      eventId: Id,
+      bussinessId: Id,
+    };
+    await postReq(`${fromCall}/aminities`, dataPost).then((res) => {
+      if (res.statusCode === 200) {
+        handleReload(false);
+      }
+    });
+  }
+
   const handleAminitieDialogSubmit = (e) => {
     e.preventDefault();
-    console.log('Checked values:', checkedValues);
+    // console.log('Checked values:', checkedValues);
+    handleAminitiePost(checkedValues);
     handleClose();
-    setCheckedValues([]);
   };
 
-  console.log(dValues);
   return (
     <Dialog
       open={openDialog}
@@ -121,4 +141,7 @@ AmenitiesManageForm.propTypes = {
   openDialog: PropTypes.string,
   handleClose: PropTypes.func,
   dValues: PropTypes.object,
+  handleReload: PropTypes.func,
+  Id: PropTypes.string,
+  fromCall: PropTypes.string,
 };

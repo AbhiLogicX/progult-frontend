@@ -65,6 +65,17 @@ export default function EventDetailview() {
 
   const date = new Date();
 
+  function addDefaultValues() {
+    const defaultAminites = [];
+    for (let i = 0; i < data?.amenities?.length; i += 1) {
+      const obj = data?.amenities[i];
+      if (!defaultAminites.includes(obj._id)) {
+        defaultAminites.push(obj._id);
+      }
+    }
+    return defaultAminites;
+  }
+
   setTitle('');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
@@ -122,6 +133,7 @@ export default function EventDetailview() {
               openDialog={openDialog}
               handleClose={handleDialogClose}
               dValues={data}
+              handleReload={setDataFetched}
             />
           </Box>
         </Paper>
@@ -129,6 +141,7 @@ export default function EventDetailview() {
           <Typography variant="h5" mb={3}>
             About the Event
           </Typography>
+
           <Typography>{data?.description}</Typography>
         </Paper>
         <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
@@ -140,7 +153,10 @@ export default function EventDetailview() {
             <AmenitiesManageForm
               openDialog={openAminiteDialog}
               handleClose={handleAminitieDialogClose}
-              dValues={data?.amenities}
+              dValues={addDefaultValues()}
+              handleReload={setDataFetched}
+              Id={data?._id}
+              fromCall="event"
             />
           </Box>
           <Box sx={{ px: '1%' }}>
@@ -162,6 +178,8 @@ export default function EventDetailview() {
               handleClose={handleClickCloseRule}
               open={openRulesForm}
               rules={data?.rules}
+              handleReload={setDataFetched}
+              fromCall="event"
             />
           </Box>
           <Box>

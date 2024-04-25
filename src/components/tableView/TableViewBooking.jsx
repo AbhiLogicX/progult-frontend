@@ -15,14 +15,19 @@ import { RouterLink } from 'src/routes/components';
 
 import DialogComponent from '../dialogueForm/DialogComponent';
 
-export default function TableView({ columns, actionbtn, tableData, fromCall, handleReload }) {
+export default function TableViewBooking({
+  columns,
+  actionbtn,
+  tableData,
+  fromCall,
+  handleReload,
+}) {
   const location = useLocation().pathname.split('/');
 
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
-  // console.log(tableData);
-
+  console.log(tableData);
   return (
     <Paper elevation={3} sx={{ width: '100%' }}>
       <TableContainer>
@@ -38,13 +43,13 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
             {actionbtn
               ? tableData.map((row) => (
                   <TableRow
-                    key={row.fullName}
+                    key={row.bookNo}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.fullName}
+                      {row.bookNo}
                     </TableCell>
-                    <TableCell>{row.email}</TableCell>
+                    <TableCell>{row.customerId.fullName}</TableCell>
                     <TableCell>{row.mobile}</TableCell>
                     {columns.includes('City/State') && (
                       <TableCell>{`${row?.address?.city || ' '} , ${
@@ -86,11 +91,13 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.fullName}
+                      {row.bookNo}
                     </TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.mobile}</TableCell>
-                    <TableCell>{row.status}</TableCell>
+                    <TableCell>{row.customerId.fullName}</TableCell>
+                    <TableCell>{row.businessId.title}</TableCell>
+                    <TableCell>{row.createdAt}</TableCell>
+                    <TableCell>{row.activityId.title}</TableCell>
+                    <TableCell>{row.isPaid}</TableCell>
                   </TableRow>
                 ))}
           </TableBody>
@@ -100,7 +107,7 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
   );
 }
 
-TableView.propTypes = {
+TableViewBooking.propTypes = {
   columns: PropTypes.array,
   actionbtn: PropTypes.array,
   tableData: PropTypes.array,

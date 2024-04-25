@@ -74,8 +74,17 @@ function BussinessInfoView({ bussinessData, handleReload }) {
     // }
     setOpen(false);
   };
-
-  // console.log(bussinessData);
+  function addDefaultValues() {
+    const defaultAminites = [];
+    for (let i = 0; i < bussinessData.amenities_list.length; i += 1) {
+      const obj = bussinessData.amenities_list[i];
+      if (!defaultAminites.includes(obj._id)) {
+        defaultAminites.push(obj._id);
+      }
+    }
+    // console.log('def', defaultAminites);
+    return defaultAminites;
+  }
 
   return (
     <Box>
@@ -129,9 +138,14 @@ function BussinessInfoView({ bussinessData, handleReload }) {
             Edit Aminities
           </Button>
           <AmenitiesManageForm
+            // dValues={bussinessData.amenities}
+
             openDialog={openAminiteDialog}
             handleClose={handleAminitieDialogClose}
-            dValues={bussinessData.amenities}
+            dValues={addDefaultValues()}
+            handleReload={handleReload}
+            Id={bussinessData?._id}
+            fromCall="bussiness"
           />
         </Box>
         <Grid container spacing={2}>
@@ -165,6 +179,8 @@ function BussinessInfoView({ bussinessData, handleReload }) {
             handleClose={handleClickCloseRule}
             open={openRulesForm}
             rules={bussinessData?.rules}
+            fromCall="bussiness"
+            handleReload={handleReload}
           />
         </Box>
         <Box>

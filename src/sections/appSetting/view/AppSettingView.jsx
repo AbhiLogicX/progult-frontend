@@ -16,6 +16,7 @@ export default function AppSettingView() {
       {/* <Typography variant="h4" sx={{ mb: 5 }}>
         App Settings
       </Typography> */}
+
       <Box>
         <Box sx={{ mb: 5, border: '1px darkgrey solid', borderRadius: 0.75, p: 2 }}>
           <Typography variant="h5" sx={{ mb: 2 }}>
@@ -76,6 +77,14 @@ export default function AppSettingView() {
             <TextField
               id="standard-basic"
               label="Pin code"
+              variant="standard"
+              sx={{ mr: 2, mb: 2, width: '25%' }}
+            />
+            <br />
+            <TextField
+              id="standard-basic"
+              label="Full Address"
+              fullWidth
               variant="standard"
               sx={{ mr: 2, mb: 2, width: '25%' }}
             />

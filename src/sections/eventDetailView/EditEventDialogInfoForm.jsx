@@ -12,10 +12,20 @@ import {
   DialogContent,
 } from '@mui/material';
 
-export default function EventInfoDialogForm({ openDialog, handleClose, dValues }) {
+import { patchReq } from 'src/api/api';
+
+export default function EventInfoDialogForm({ openDialog, handleClose, dValues, handleReload }) {
   const { register, handleSubmit } = useForm({});
   async function onSubmit(data) {
-    // pass
+    // console.log('hello', data);
+    data.Id = dValues._id;
+    await patchReq(`event`, data).then((res) => {
+      if (res.statusCode === 200) {
+        // console.log('res', res);
+      }
+    });
+    handleClose();
+    handleReload(false);
   }
 
   return (
@@ -39,13 +49,25 @@ export default function EventInfoDialogForm({ openDialog, handleClose, dValues }
             label="Title"
             defaultValue={dValues?.title}
             {...register('title')}
+            fullWidth
             sx={{ mr: 1, mb: 1 }}
           />
           <TextField
             type="text"
             name="hostName"
             label="HostName"
+            {...register('hostName')}
+            fullWidth
             defaultValue={dValues?.hostName}
+            sx={{ mr: 1, mb: 1 }}
+          />
+          <TextField
+            type="text"
+            name="description"
+            label="Description"
+            {...register('description')}
+            defaultValue={dValues?.description}
+            fullWidth
             sx={{ mr: 1, mb: 1 }}
           />
           <Box>
@@ -100,7 +122,7 @@ export default function EventInfoDialogForm({ openDialog, handleClose, dValues }
           <Button color="error" onClick={handleClose}>
             Cancle
           </Button>
-          <Button variant="contained" onClick={handleClose}>
+          <Button variant="contained" type="submit">
             Save
           </Button>
         </DialogActions>
@@ -113,4 +135,5 @@ EventInfoDialogForm.propTypes = {
   openDialog: PropTypes.string,
   handleClose: PropTypes.func,
   dValues: PropTypes.object,
+  handleReload: PropTypes.func,
 };

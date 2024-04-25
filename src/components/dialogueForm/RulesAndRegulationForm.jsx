@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { useLocation } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,30 +15,43 @@ import {
   DialogContent,
 } from '@mui/material';
 
-export default function RulesForm({ Id, open, handleClose, rules }) {
-  const { register, control, handleSubmit } = useForm({
+import { postReq } from 'src/api/api';
+
+export default function RulesForm({ open, handleClose, rules, handleReload, Id, fromCall }) {
+  const { register, control, handleSubmit, setValue } = useForm({
     defaultValues: {
-      test: [{ rule: 'rule11' }, { rule: 'rule22' }, { rule: 'rule33' }],
+      test: rules?.map((rule) => ({ rule })),
     },
   });
-
-  //   const currLocation = useLocation().pathname.split('/');
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'test',
   });
 
-  const onSubmit = (data) => {
-    // console.log(data);
-    handleClose();
+  // Function to set default values if rules prop changes
+  React.useEffect(() => {
+    setValue(
+      'test',
+      rules?.map((rule) => ({ rule }))
+    );
+  }, [rules, setValue]);
+
+  const onSubmit = async (data) => {
+    const rulesData = data.test.map((itm) => itm.rule);
+    // console.log('data', rulesData);
+    await postReq(`${fromCall}/rules`, { rules: rulesData, eventId: Id, bussinessId: Id }).then(
+      (res) => {
+        if (res.statusCode === 200) {
+          handleClose();
+          handleReload(false);
+        }
+      }
+    );
   };
-  //   const handleSubmitForm = () => {
-  //     console.log('hi');
-  //   };
 
   return (
-    <Dialog open={open} onClose={{}}>
+    <Dialog open={open} onClose={handleClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>Update Rules</DialogTitle>
         <DialogContent>
@@ -49,12 +61,10 @@ export default function RulesForm({ Id, open, handleClose, rules }) {
               <li key={item.id}>
                 <TextField
                   {...register(`test.${index}.rule`, { required: true })}
+                  defaultValue={item.rule} // Set default value here
                   placeholder="Enter rule"
                   sx={{ mr: 1, mb: 1, maxWidth: 600, minWidth: 300 }}
                 />
-                {/* <Button color="error" type="button" onClick={() => remove(index)}>
-                  Delete
-                </Button> */}
                 <IconButton aria-label="delete" color="error" onClick={() => remove(index)}>
                   <DeleteIcon />
                 </IconButton>
@@ -76,7 +86,7 @@ export default function RulesForm({ Id, open, handleClose, rules }) {
 
         <DialogActions>
           <Button onClick={handleClose} color="error">
-            Cancle
+            Cancel
           </Button>
           <Button variant="contained" type="submit">
             Update
@@ -88,8 +98,10 @@ export default function RulesForm({ Id, open, handleClose, rules }) {
 }
 
 RulesForm.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  rules: PropTypes.arrayOf(PropTypes.string).isRequired,
   Id: PropTypes.string,
-  open: PropTypes.bool,
-  handleClose: PropTypes.func,
-  rules: PropTypes.array,
+  handleReload: PropTypes.func,
+  fromCall: PropTypes.string,
 };

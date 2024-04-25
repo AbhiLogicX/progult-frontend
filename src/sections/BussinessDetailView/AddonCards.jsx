@@ -127,9 +127,11 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
               <EditIcon />
             </IconButton>
           )}
-          <IconButton onClick={handleDelete}>
-            <DeleteIcon color="error" />
-          </IconButton>
+          {edit ? null : (
+            <IconButton onClick={handleDelete}>
+              <DeleteIcon color="error" />
+            </IconButton>
+          )}
           {edit ? (
             <>
               <Button onClick={handleEditClose} color="error">

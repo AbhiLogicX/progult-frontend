@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { Box, Grid, Button, TextField, Typography } from '@mui/material';
 
+import { patchReq } from 'src/api/api';
 import properties from 'src/config/properties';
 
 export default function ContactDetailform({ fData }) {
@@ -16,6 +17,43 @@ export default function ContactDetailform({ fData }) {
     setEditOption(false);
   };
   async function onSubmit(data) {
+    const updateBussiness = {};
+    const updateBussinessLogo = {};
+    if (data?.coverImage[0] !== undefined || data?.brandLogo[0] !== undefined || data.description) {
+      updateBussinessLogo.coverImage = data.coverImage[0].name;
+      updateBussinessLogo.brandLogo = data.brandLogo[0].name;
+      updateBussinessLogo.description = data.description;
+      updateBussinessLogo.Id = fData._id;
+      await patchReq(`bussiness/logo`, updateBussinessLogo).then((res) => {
+        // console.log(res);
+      });
+    }
+    if (
+      data.title ||
+      data.city ||
+      data.state ||
+      data.street ||
+      data.area ||
+      data.pincode ||
+      data.fullAddress ||
+      data.category
+    ) {
+      updateBussiness.title = data.title;
+      updateBussiness.city = data.city;
+      updateBussiness.state = data.state;
+      updateBussiness.street = data.street;
+      updateBussiness.area = data.area;
+      updateBussiness.pincode = data.pincode;
+      updateBussiness.fullAddress = data.fullAddress;
+      updateBussiness.category = data.category;
+      await patchReq(`bussiness`, updateBussiness).then((res) => {
+        if (res.statusCode === 200) {
+          // console.log(res);
+        }
+      });
+    }
+
+    // console.log(data);
     setEditOption(false);
   }
 

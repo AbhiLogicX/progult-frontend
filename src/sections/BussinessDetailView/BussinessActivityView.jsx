@@ -26,7 +26,7 @@ export function BussinessActivityView({ bussinessId }) {
         if (res.statusCode === 200) {
           setActivityData(res.data);
           setDataFetched(true);
-          console.log(res);
+          // console.log(res);
         }
       });
     }
