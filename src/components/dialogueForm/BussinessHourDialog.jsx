@@ -11,7 +11,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { format } from 'date-fns';
 
 // import DialogContentText from '@mui/material/DialogContentText';
 
@@ -39,12 +38,7 @@ export default function BussinessTimeForm({ open, handleClose, handleSubmit, fro
           <Box display="flex" mr={1}>
             <Box mr={2}>
               <Typography mr={1}>Start Time</Typography>
-              <TextField
-                id="outlined-basic"
-                variant="outlined"
-                type="time"
-                defaultValue={format(new Date(`2024-04-26 ${timeData?.startTime || ''}`), 'H:m:s')}
-              />
+              <TextField id="outlined-basic" variant="outlined" type="time" />
             </Box>
             <Box>
               <Typography mr={1}>End Time</Typography>
