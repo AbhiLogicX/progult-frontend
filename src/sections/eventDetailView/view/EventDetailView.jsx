@@ -4,10 +4,11 @@ import { useState, useEffect, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Paper, Button, Container, Typography } from '@mui/material';
-import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
-import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
+// import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
+// import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
 import { getReq } from 'src/api/api';
+import { grey, primary } from 'src/theme/palette';
 import { TitleContext } from 'src/context/mainContext';
 
 import RulesForm from 'src/components/dialogueForm/RulesAndRegulationForm';
@@ -76,56 +77,95 @@ export default function EventDetailview() {
     return defaultAminites;
   }
 
+  // console.log(data);
+
   setTitle('');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Box width="100%">
-        <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
+        {/* <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
           <EventCarousel imgData={data?.coverImages} />
-        </Paper>
-        <Paper elevation={3} sx={{ p: '2%', mb: 1 }}>
-          <Grid container spacing={2}>
-            <Grid xs={6} mb={2}>
-              <Typography variant="h3">{data?.title}</Typography>
-              <Box display="flex">
-                <Typography variant="h5" mr={1}>
-                  Hosted By:
-                </Typography>
-                <Typography variant="h5" mr={1}>
-                  {data?.hostName}
-                </Typography>
-              </Box>
+        </Paper> */}
+        <Paper elevation={3} sx={{ mb: 1 }}>
+          <Box mb={5}>
+            <EventCarousel imgData={data?.coverImages} />
+          </Box>
+
+          <Box p="2%" sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+            <Grid container>
+              <Grid xs={12}>
+                {/* <Typography variant="h3">{data?.title}</Typography>
+                <Box display="flex">
+                  <Typography variant="h5" mr={1}>
+                    Hosted By:
+                  </Typography>
+                  <Typography variant="h5" mr={1}>
+                    {data?.hostName}
+                  </Typography>
+                </Box> */}
+                <Typography variant="h2">{data?.title}</Typography>
+              </Grid>
+
+              <Grid xs={12}>
+                <Box display="flex" justifyContent="space-between">
+                  {/* <Box display="flex">
+                    <Typography fontWeight={700} mr={1} color={grey[400]}>
+                      Domain:
+                    </Typography>
+                    <Typography fontWeight={700} color={primary.main}>
+                      Music
+                    </Typography>
+                  </Box> */}
+                  <Box display="flex">
+                    <Typography fontWeight={700} mr={1} color={grey[400]}>
+                      Status:
+                    </Typography>
+                    <Typography fontWeight={700} color={primary.main}>
+                      {data?.status}
+                    </Typography>
+                  </Box>
+                  <Box display="flex">
+                    <Typography fontWeight={700} mr={1} color={grey[400]}>
+                      Host Name:
+                    </Typography>
+                    <Typography fontWeight={700} color={primary.main}>
+                      {data?.hostName}
+                    </Typography>
+                  </Box>
+                  <Button variant="contained" onClick={handleDialogOpen}>
+                    Edit Details
+                  </Button>
+                  <EventInfoDialogForm
+                    openDialog={openDialog}
+                    handleClose={handleDialogClose}
+                    dValues={data}
+                    handleReload={setDataFetched}
+                  />
+                </Box>
+              </Grid>
+
+              <Grid xs={2} mr={1}>
+                <Typography variant="h6">Event Starts:</Typography>
+
+                <Box p="2%" bgcolor={grey[300]} borderRadius={1}>
+                  <Typography variant="h6">{`${date.getDate(
+                    data?.dateTime?.startDate
+                  )}/${date.getMonth(data?.dateTime?.startDate)}/${date.getFullYear(
+                    data?.dateTime?.startDate
+                  )}`}</Typography>
+                  <Typography variant="h6">{data?.dateTime?.startTime}</Typography>
+                </Box>
+              </Grid>
+              <Grid xs={2}>
+                <Typography variant="h6">Event End:</Typography>
+              </Grid>
+              <Grid xs={7}>
+                <Typography variant="h6">Event Venue:</Typography>
+              </Grid>
             </Grid>
-            <Grid xs={6}>
-              <Box>
-                <Typography variant="h5">
-                  <FmdGoodOutlinedIcon fontSize="s" />
-                  At
-                </Typography>
-                <Typography>{`${data?.address?.city}/${data?.address?.state}`}</Typography>
-                <Typography>{data?.address?.fullAddress}</Typography>
-              </Box>
-            </Grid>
-            <Grid xs={6}>
-              <Box>
-                <Typography variant="h5">
-                  <EventAvailableOutlinedIcon sx={{ mr: 1 }} />
-                  Data / Time
-                </Typography>
-                <Typography>{`Start Date: ${date.getDate(
-                  data?.dateTime?.startDate
-                )}-${date.getMonth(data?.dateTime?.startDate)}-${date.getFullYear(
-                  data?.dateTime?.startDate
-                )}`}</Typography>
-                <Typography>{`End Date: ${date.getDate(data?.dateTime?.endDate)}-${date.getMonth(
-                  data?.dateTime?.endDate
-                )}-${date.getFullYear(data?.dateTime?.endDate)}`}</Typography>
-                <Typography>{`Start Time: ${data?.dateTime?.startTime}`}</Typography>
-                <Typography>{`End Time: ${data?.dateTime?.endTime}`}</Typography>
-              </Box>
-            </Grid>
-          </Grid>
-          <Box textAlign="right">
+          </Box>
+
+          {/* <Box textAlign="right">
             <Button variant="contained" onClick={handleDialogOpen}>
               Edit event Info
             </Button>
@@ -135,8 +175,9 @@ export default function EventDetailview() {
               dValues={data}
               handleReload={setDataFetched}
             />
-          </Box>
+          </Box> */}
         </Paper>
+
         <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
           <Typography variant="h5" mb={3}>
             About the Event

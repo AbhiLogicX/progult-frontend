@@ -52,7 +52,7 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
               src={`${properties.BASE_ITEM_IMAGE_URL}${addOnData.image}}`}
               style={{
                 height: 100,
-                width: 100,
+                width: '100%',
                 borderRadius: 25,
               }}
               alt="Addon Cover"

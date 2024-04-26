@@ -132,7 +132,7 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
           />
           {splitFromCall[1] === 'unit' ? null : (
             <Box>
-              <Typography>Upload Image</Typography>
+              <Typography>upload image(512 px* 512px)</Typography>
               <TextField type="file" accept="image/*" onChange={handleFileChange} />
             </Box>
           )}

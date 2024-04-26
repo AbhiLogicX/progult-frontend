@@ -78,7 +78,12 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
                           <img
                             src={`${properties.BASE_DOMAIN_IMAGE_URL}${row.image}`}
                             alt="Cover of master"
-                            style={{ width: '150px', height: '150px', borderRadius: '50%' }}
+                            style={{
+                              width: '100px',
+                              height: '100px',
+                              borderRadius: fromCall === 'master/banner' ? '10%' : '50%',
+                              objectFit: 'cover',
+                            }}
                           />
                         </Box>
                       </TableCell>

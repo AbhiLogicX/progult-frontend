@@ -56,28 +56,34 @@ function RenderCard({ crdData }) {
   };
 
   return (
-    <Grid xs={2}>
-      <Paper
-        elevation={4}
-        sx={{ p: '2%', display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2 }}
-      >
+    <Grid xs={3}>
+      <Paper elevation={4} sx={{ alignItems: 'center', mr: 2 }}>
         <Box>
           <img
             src={`${properties.BASE_DOMAIN_IMAGE_URL}${crdData?.activityId.image}`}
             alt="activity cover"
-            style={{ aspectRatio: 4 / 3, width: '100%', borderRadius: 15 }}
+            style={{
+              aspectRatio: 4 / 3,
+              width: '100%',
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            }}
           />
         </Box>
-        <Typography variant="h6">{crdData?.activityId.title}</Typography>
-        <Button onClick={handleClickOpen} variant="contained" sx={{ width: '100%' }}>
-          Edit
-        </Button>
-        <BussinessActivityDialog
-          openDialog={open}
-          handleClose={handleClose}
-          handleSubmit={handleSumit}
-          dialogData={crdData}
-        />
+        <Box p="5%">
+          <Typography variant="h6" textAlign="center" mb={2}>
+            {crdData?.activityId.title}
+          </Typography>
+          <Button onClick={handleClickOpen} variant="contained" fullWidth>
+            Edit
+          </Button>
+          <BussinessActivityDialog
+            openDialog={open}
+            handleClose={handleClose}
+            handleSubmit={handleSumit}
+            dialogData={crdData}
+          />
+        </Box>
       </Paper>
     </Grid>
   );

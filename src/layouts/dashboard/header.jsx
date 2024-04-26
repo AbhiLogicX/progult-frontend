@@ -41,7 +41,7 @@ export default function Header({ onOpenNav }) {
       )}
 
       {/* <Searchbar /> */}
-      <Typography variant="h3">{title}</Typography>
+      <Typography variant="h4">{title}</Typography>
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
