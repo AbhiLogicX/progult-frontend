@@ -23,6 +23,7 @@ export default function TableViewBooking({
   handleReload,
 }) {
   const location = useLocation().pathname.split('/');
+  const date = new Date();
 
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
@@ -95,9 +96,13 @@ export default function TableViewBooking({
                     </TableCell>
                     <TableCell>{row.customerId.fullName}</TableCell>
                     <TableCell>{row.businessId.title}</TableCell>
-                    <TableCell>{row.createdAt}</TableCell>
-                    <TableCell>{row.activityId.title}</TableCell>
-                    <TableCell>{row.isPaid}</TableCell>
+                    <TableCell>
+                      {`${date.getDate(row.createdAt)}/${date.getMonth(
+                        row.createdAt
+                      )}/${date.getFullYear(row.createdAt)}`}
+                    </TableCell>
+                    <TableCell>{row?.totalPayable}</TableCell>
+                    <TableCell>{row.isPaid ? 'Paid' : 'Un-Paid'}</TableCell>
                   </TableRow>
                 ))}
           </TableBody>

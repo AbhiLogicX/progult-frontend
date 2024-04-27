@@ -9,7 +9,9 @@ import Container from '@mui/material/Container';
 import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
 
+import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 import TableViewBooking from 'src/components/tableView/TableViewBooking';
+// import { Tab } from '@mui/material';
 
 export default function BookingsView() {
   const [rowData, setRowData] = useState([]);
@@ -18,11 +20,11 @@ export default function BookingsView() {
 
   const tableColumns = [
     'Booking No.',
-    'User',
+    'Customer',
     'Bussiness',
-    'Date/Time Booked',
-    'Activites',
+    'Date Booked',
     'Amount',
+    'Pay Status',
   ];
   setTitle('Bookings');
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function BookingsView() {
             New Bussinesss
           </Button> */}
       </Stack>
+      <TableFilterToolBar fromCall="bookings" />
 
       <TableViewBooking columns={tableColumns} tableData={rowData} />
     </Container>

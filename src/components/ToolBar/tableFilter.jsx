@@ -105,7 +105,7 @@ export default function TableFilterToolBar({ fromCall }) {
           </Box>
         </Box>
         <Box display="flex" width="100%" justifyContent="end">
-          {fromCall === 'bussiness' ? (
+          {fromCall === 'bussiness' || fromCall === 'bookings' ? (
             <Box>
               <TextField select defaultValue="Default">
                 {Categoery.map((opt) => (
