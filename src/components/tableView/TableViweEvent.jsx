@@ -42,15 +42,27 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                   >
                     <TableCell component="th" scope="row">
                       <Box>
-                        <img
-                          src={`${properties.BASE_BUSSINESS_IMAGE_URL}${row.bussinessId.brandLogo}`}
-                          alt="event cover"
-                          style={{
-                            height: 75,
-                            width: 75,
-                            borderRadius: 25,
-                          }}
-                        />
+                        {row.brandLogo ? (
+                          <img
+                            src={`${properties.BASE_BUSSINESS_IMAGE_URL}${row.brandLogo}`}
+                            alt="Bussiness Cover"
+                            style={{
+                              width: 100,
+                              height: 100,
+                              borderRadius: 25,
+                            }}
+                          />
+                        ) : (
+                          <img
+                            src="public\assets\images\imgPlace.png"
+                            alt="Bussiness Cover"
+                            style={{
+                              width: 100,
+                              height: 100,
+                              borderRadius: 25,
+                            }}
+                          />
+                        )}
                       </Box>
                     </TableCell>
                     <TableCell component="th" scope="row">
