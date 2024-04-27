@@ -29,7 +29,7 @@ export default function BussinessDetailView() {
       fetchBussinessData();
     }
   }, [fetchedData, currLocation]);
-  setTitle('');
+  setTitle('Businesses');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       {fetchedData ? (

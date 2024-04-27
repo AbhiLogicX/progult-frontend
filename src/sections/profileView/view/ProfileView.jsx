@@ -39,7 +39,7 @@ export default function ProfileView() {
   }
 
   return (
-    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !imporntant' }}>
+    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Box width="100%">
         {fetchedData ? (
           <BasicInfoView profiledata={profileData} handleReload={setFetchedData} />

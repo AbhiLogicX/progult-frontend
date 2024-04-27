@@ -79,7 +79,7 @@ export default function EventDetailview() {
 
   // console.log(data);
 
-  setTitle('');
+  setTitle('Events');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Box width="100%">
