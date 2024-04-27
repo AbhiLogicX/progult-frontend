@@ -12,7 +12,7 @@ import {
   DialogContent,
 } from '@mui/material';
 
-import { error, primary } from 'src/theme/palette';
+import { primary } from 'src/theme/palette';
 import { postReq, patchReq } from 'src/api/api';
 
 export default function AddPackageForm({ eventId, handleReload }) {

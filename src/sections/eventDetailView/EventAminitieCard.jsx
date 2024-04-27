@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { Box, Grid, Paper, Button, Typography } from '@mui/material';
 
-import { error, primary } from 'src/theme/palette';
+import { error } from 'src/theme/palette';
 import properties from 'src/config/properties';
 
 export function EventAminitieCard({ cardData }) {

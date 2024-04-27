@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Grid, Paper, IconButton, Typography, Button } from '@mui/material';
+import { Box, Grid, Paper, Button, Typography } from '@mui/material';
 
-import { deleteReq, getReq } from 'src/api/api';
-import { error, grey, primary } from 'src/theme/palette';
+import { getReq, deleteReq } from 'src/api/api';
+import { grey, error, primary } from 'src/theme/palette';
 
 import { EditPackageForm } from './PackageForm';
 

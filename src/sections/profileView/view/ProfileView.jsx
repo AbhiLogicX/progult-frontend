@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 
 import { getReq } from 'src/api/api';
 
