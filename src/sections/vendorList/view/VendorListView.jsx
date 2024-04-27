@@ -9,6 +9,7 @@ import { TitleContext } from 'src/context/mainContext';
 
 import Iconify from 'src/components/iconify';
 import TableView from 'src/components/tableView';
+import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 
 export default function VendorListView() {
   const [rowData, setRowData] = useState([]);
@@ -39,6 +40,8 @@ export default function VendorListView() {
           New Vendor
         </Button>
       </Box>
+
+      <TableFilterToolBar />
 
       {fetchedData ? (
         <TableView

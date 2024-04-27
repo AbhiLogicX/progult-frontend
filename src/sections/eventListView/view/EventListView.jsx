@@ -8,6 +8,7 @@ import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
 
 import Iconify from 'src/components/iconify';
+import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 import TableViewEvent from 'src/components/tableView/TableViweEvent';
 
 export default function EventListView() {
@@ -44,6 +45,8 @@ export default function EventListView() {
           New Event
         </Button>
       </Box>
+
+      <TableFilterToolBar fromCall="event" />
 
       {fetchedData ? (
         <TableViewEvent columns={tableColumns} actionbtn={actionCol} tableData={rowData} />

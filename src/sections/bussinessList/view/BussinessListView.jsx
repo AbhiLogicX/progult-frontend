@@ -10,6 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
 
+import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 import TableViewBussiness from 'src/components/tableView/TableViewBussiness';
 
 export default function BussinessListView() {
@@ -53,6 +54,7 @@ export default function BussinessListView() {
           New Bussinesss
         </Button>
       </Stack> */}
+      <TableFilterToolBar fromCall="bussiness" />
 
       {fetchedData ? (
         <TableViewBussiness columns={tableColumns} actionbtn={actionCol} tableData={rowData} />

@@ -7,6 +7,7 @@ import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
 
 import TableView from 'src/components/tableView';
+import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 
 export default function CustomerListView() {
   const [rowData, setRowData] = useState([]);
@@ -30,6 +31,7 @@ export default function CustomerListView() {
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Box mb={5}>{/* <Typography variant="h4">Customer</Typography> */}</Box>
 
+      <TableFilterToolBar />
       {fetchedData ? (
         <TableView
           columns={tableColumns}
