@@ -13,6 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 
 import { RouterLink } from 'src/routes/components';
 
+import properties from 'src/config/properties';
 import { error, customColors } from 'src/theme/palette';
 
 export default function TableViewEvent({ columns, actionbtn, tableData }) {
@@ -20,6 +21,7 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
     columns.push('Action');
   }
 
+  // console.log('td', tableData[0].bussinessId.brandLogo);
   return (
     <Paper elevation={3} sx={{ width: '100%' }}>
       <TableContainer>
@@ -41,7 +43,7 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                     <TableCell component="th" scope="row">
                       <Box>
                         <img
-                          src="/assets/images/images(1).png"
+                          src={`${properties.BASE_BUSSINESS_IMAGE_URL}${row.bussinessId.brandLogo}`}
                           alt="event cover"
                           style={{
                             height: 75,

@@ -26,6 +26,7 @@ import AmenitiesManageForm from '../eventDetailView/AminitesManage';
 function BussinessInfoView({ bussinessData, handleReload }) {
   const [open, setOpen] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
+
   const [openAddonForm, setopenAddonForm] = useState({
     open: false,
     type: '',
@@ -80,37 +81,65 @@ function BussinessInfoView({ bussinessData, handleReload }) {
     return defaultAminites;
   }
 
-  // console.log(bussinessData);
+  // console.log('bd', bussinessData);
   return (
     <Box>
       <Paper elevation={3} sx={{ width: '100%', mb: 2 }}>
         <Box sx={{ textAlign: 'center', mb: 2 }}>
-          <img
-            src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.coverImage}`}
-            alt="Bussiness Cover"
-            style={{
-              width: '100%',
-              aspectRatio: 4 / 1,
-              borderTopLeftRadius: 15,
-              borderTopRightRadius: 15,
-            }}
-          />
+          {bussinessData.coverImage !== undefined ? (
+            <img
+              src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.coverImage}`}
+              alt="Bussiness Cover"
+              style={{
+                width: '100%',
+                aspectRatio: 4 / 1,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                objectFit: 'cover',
+              }}
+            />
+          ) : (
+            <img
+              src="/assets/images/imgPlace.png"
+              alt="Bussiness Cover"
+              style={{
+                width: '100%',
+                aspectRatio: 4 / 1,
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+                objectFit: 'cover',
+              }}
+            />
+          )}
         </Box>
 
         <Box p="1%" mt="-10%">
-          <Grid container alignItems="flex-end">
+          <Grid container alignItems="flex-end" mb={2}>
             <Grid xs={2}>
               <Box px="4%">
-                <img
-                  src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.brandLogo}`}
-                  alt="brandLogo"
-                  style={{
-                    width: '100%',
-                    aspectRatio: 1 / 1,
-                    borderRadius: '50%',
-                    border: '10px solid white',
-                  }}
-                />
+                {bussinessData.brandLogo !== undefined ? (
+                  <img
+                    src={`${properties.BASE_BUSSINESS_IMAGE_URL}${bussinessData.brandLogo}`}
+                    alt="brandLogo"
+                    style={{
+                      width: '100%',
+                      aspectRatio: 1 / 1,
+                      borderRadius: '50%',
+                      border: '10px solid white',
+                    }}
+                  />
+                ) : (
+                  <img
+                    src="/assets/images/imgPlace.png"
+                    alt="brandLogo"
+                    style={{
+                      width: '100%',
+                      aspectRatio: 1 / 1,
+                      borderRadius: '50%',
+                      border: '10px solid white',
+                    }}
+                  />
+                )}
               </Box>
             </Grid>
 
@@ -140,35 +169,74 @@ function BussinessInfoView({ bussinessData, handleReload }) {
                 <Button variant="contained">Edit Details</Button>
               </Box>
             </Grid>
+          </Grid>
 
-            <Grid xs={2} mt={5} mr={2}>
-              <Box>
-                <Typography variant="h5">Owner Info:</Typography>
-                <Box bgcolor={grey[300]} borderRadius={2} display="flex" p={2}>
-                  <Box borderRadius="50%" bgcolor="white" width="75px" height="75px" mr={2}>
+          <Grid container alignItems="stretch">
+            <Grid xs={3}>
+              <Typography variant="h5">Owner Info:</Typography>
+
+              <Box
+                bgcolor={grey[300]}
+                borderRadius={2}
+                display="flex"
+                alignItems="center"
+                p={2}
+                width="97%"
+              >
+                <Box borderRadius="50%" bgcolor="white" width="75px" height="75px" mr={2}>
+                  {bussinessData?.owner[0]?.image !== undefined ? (
                     <img
-                      src=""
-                      alt=""
+                      src={`${properties.BASE_VENDOR_IMAGE_URL}${bussinessData.owner[0].fullName}`}
+                      alt="vendor pic"
                       style={{ width: '75px', height: '75px', borderRadius: '50%' }}
                     />
-                  </Box>
-                  <Box>
-                    <Typography variant="h6">{bussinessData.owner[0].fullName}</Typography>
-                    <Typography>{bussinessData.owner[0].status}</Typography>
-                  </Box>
+                  ) : (
+                    <img
+                      src="/assets/images/imgPlace.png"
+                      alt="vendor pic"
+                      style={{ width: '75px', height: '75px', borderRadius: '50%' }}
+                    />
+                  )}
+                </Box>
+                <Box>
+                  <Typography fontWeight={700}>{bussinessData.owner[0].fullName}</Typography>
+                  <Typography color={grey[700]}>{bussinessData.owner[0].status}</Typography>
                 </Box>
               </Box>
             </Grid>
 
-            <Grid xs={8}>
-              <Box>
-                <Typography variant="h5">Contact Info:</Typography>
-                <Box bgcolor={grey[300]} borderRadius={2} display="flex" p={2}>
-                  <Box>
-                    <Typography variant="h6">{bussinessData.address.fullAddress}</Typography>
-                    <Typography>{`${bussinessData.address.state}/${bussinessData.address.city}/${bussinessData.address.area}`}</Typography>
-                    <Typography>{`Pincode: ${bussinessData.address.pincode}`}</Typography>
-                  </Box>
+            <Grid xs={6}>
+              <Typography variant="h5">Contact Info:</Typography>
+
+              <Box bgcolor={grey[300]} borderRadius={2} display="flex" p={2} width="98%">
+                <Box>
+                  <Typography fontWeight={700}>{bussinessData.address.fullAddress}</Typography>
+                  <Typography
+                    color={grey[700]}
+                  >{`${bussinessData.address.state}/${bussinessData.address.city}/${bussinessData.address.area}`}</Typography>
+                  <Typography
+                    color={grey[700]}
+                  >{`Pincode: ${bussinessData.address.pincode}`}</Typography>
+                </Box>
+              </Box>
+            </Grid>
+
+            <Grid xs={3}>
+              <Typography variant="h5">Bussiness Info:</Typography>
+
+              <Box
+                bgcolor={grey[300]}
+                borderRadius={2}
+                display="flex"
+                alignItems="center"
+                p={2}
+                height="75%"
+              >
+                <Box>
+                  <Typography>{`Created At: ${bussinessData?.createdAt}`}</Typography>
+                  <Typography
+                    color={grey[700]}
+                  >{`Updated At: ${bussinessData?.updatedAt}`}</Typography>
                 </Box>
               </Box>
             </Grid>
@@ -195,7 +263,6 @@ function BussinessInfoView({ bussinessData, handleReload }) {
               fromCall="Add Timings"
               handleReload={handleReload}
               Id={bussinessData._id}
-              timeData={{ days: [] }}
             />
           </Box>
           <Box display="flex">
@@ -300,7 +367,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
                     srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                     src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
                     alt={item.title}
-                    style={{ borderRadius: 10 }}
+                    style={{ borderRadius: 10, cursor: 'pointer' }}
                     loading="lazy"
                   />
                 </ImageListItem>

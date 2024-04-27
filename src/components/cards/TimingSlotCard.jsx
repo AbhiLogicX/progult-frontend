@@ -26,9 +26,12 @@ export default function TimingCards({ timeData, Id, handleReload }) {
   const handleDelete = () => {};
 
   return (
-    <Box elevation={3} p={2} component={Paper} mr={2} sx={{ backgroundColor: 'whitesmoke' }}>
-      <Typography variant="h5">{`${timeData.startTime} to ${timeData.endTime}`}</Typography>
-      <Typography mb={2} variant="subtitle1">
+    <Box elevation={3} p={2} component={Paper} mr={2} sx={{ backgroundColor: grey[300] }}>
+      <Typography
+        fontWeight={700}
+        color={grey[800]}
+      >{`${timeData.startTime} to ${timeData.endTime}`}</Typography>
+      <Typography mb={2} fontWeight={700}>
         {timeData.days.map((itm) => `${itm} `)}
       </Typography>
       <Box>

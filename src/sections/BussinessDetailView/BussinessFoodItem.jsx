@@ -39,7 +39,7 @@ export function FoodAndItem({ bussinessId, fromCall }) {
     <Box>
       <Grid container>
         {data?.map((dataItm) => (
-          <Grid xs={4} mb={1}>
+          <Grid xs={3} mb={1}>
             <AddonCards
               addOnData={dataItm}
               key={`${dataItm.title}${bussinessId}`}

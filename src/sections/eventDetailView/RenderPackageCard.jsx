@@ -9,7 +9,7 @@ import { grey, error, primary } from 'src/theme/palette';
 
 import { EditPackageForm } from './PackageForm';
 
-export default function PackageCard({ packagesData, eventId, handleReload }) {
+export default function PackageCard({ eventId, handleReload }) {
   const [fetchedData, setFetchedData] = useState(false);
   const [pkageData, setPkageData] = useState();
 
@@ -47,7 +47,9 @@ export default function PackageCard({ packagesData, eventId, handleReload }) {
                 <Typography variant="h4" color={primary.main}>{`₹ ${pkg.amount}/-`}</Typography>
                 <Typography variant="h4">{pkg.title}</Typography>
               </Box>
-              <Typography mb={1}>{pkg.description}</Typography>
+              <Typography lineHeight={1.3} mb={2}>
+                {pkg.description}
+              </Typography>
               <Box>
                 <Button
                   sx={{
@@ -76,7 +78,6 @@ export default function PackageCard({ packagesData, eventId, handleReload }) {
 }
 
 PackageCard.propTypes = {
-  packagesData: PropTypes.array,
   eventId: PropTypes.string,
   handleReload: PropTypes.func,
 };

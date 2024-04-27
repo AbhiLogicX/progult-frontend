@@ -14,22 +14,20 @@ function MasterViewCard({ cardData }) {
     <Paper
       elevation={4}
       sx={{
-        p: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        p: 1,
+        textAlign: 'center',
         mr: 1,
         bgcolor: grey[300],
       }}
     >
-      <Box mb={2}>
+      <Box mb={1}>
         <img
           src={`${properties.BASE_DOMAIN_IMAGE_URL}${cardData.image}`}
           alt="aminitie cover"
           style={{ width: '100%', aspectRatio: 4 / 3, borderRadius: 15 }}
         />
       </Box>
-      <Typography variant="h6" textAlign="center" mb={1}>
+      <Typography textAlign="center" mb={1} lineHeight={1} fontWeight={700}>
         {cardData.title}
       </Typography>
       <Button

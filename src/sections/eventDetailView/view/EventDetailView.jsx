@@ -92,7 +92,7 @@ export default function EventDetailview() {
           </Box>
 
           <Box p="2%" sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
-            <Grid container>
+            <Grid container mb={2}>
               <Grid xs={12}>
                 {/* <Typography variant="h3">{data?.title}</Typography>
                 <Box display="flex">
@@ -108,14 +108,6 @@ export default function EventDetailview() {
 
               <Grid xs={12}>
                 <Box display="flex" justifyContent="space-between">
-                  {/* <Box display="flex">
-                    <Typography fontWeight={700} mr={1} color={grey[400]}>
-                      Domain:
-                    </Typography>
-                    <Typography fontWeight={700} color={primary.main}>
-                      Music
-                    </Typography>
-                  </Box> */}
                   <Box display="flex">
                     <Typography fontWeight={700} mr={1} color={grey[400]}>
                       Status:
@@ -143,38 +135,43 @@ export default function EventDetailview() {
                   />
                 </Box>
               </Grid>
+            </Grid>
 
-              <Grid xs={2} mr={1}>
+            <Grid container alignItems="stretch">
+              <Grid xs={2}>
                 <Typography variant="h6">Event Starts:</Typography>
-
-                <Box p="2%" bgcolor={grey[300]} borderRadius={1}>
-                  <Typography variant="h6">{`${date.getDate(
+                <Box p={2} bgcolor={grey[300]} borderRadius={1} width="98%" height="80%">
+                  <Typography fontWeight={700}>{`${date.getDate(
                     data?.dateTime?.startDate
                   )}/${date.getMonth(data?.dateTime?.startDate)}/${date.getFullYear(
                     data?.dateTime?.startDate
                   )}`}</Typography>
-                  <Typography variant="h6">{data?.dateTime?.startTime}</Typography>
+                  <Typography fontWeight={700}>{data?.dateTime?.startTime}</Typography>
                 </Box>
               </Grid>
-              <Grid xs={2} mr={1}>
+
+              <Grid xs={2} alignItems="">
                 <Typography variant="h6">Event End:</Typography>
-                <Box p="2%" bgcolor={grey[300]} borderRadius={1}>
-                  <Typography variant="h6">{`${date.getDate(
+                <Box p={2} bgcolor={grey[300]} borderRadius={1} width="98%" height="80%">
+                  <Typography fontWeight={700}>{`${date.getDate(
                     data?.dateTime?.endDate
                   )}/${date.getMonth(data?.dateTime?.endDate)}/${date.getFullYear(
                     data?.dateTime?.endDate
                   )}`}</Typography>
-                  <Typography variant="h6">{data?.dateTime?.endTime}</Typography>
+                  <Typography fontWeight={700}>{data?.dateTime?.endTime}</Typography>
                 </Box>
               </Grid>
-              <Grid xs={7}>
+
+              <Grid xs={8}>
                 <Typography variant="h6">Event Venue:</Typography>
-                <Box p="2%" bgcolor={grey[300]} borderRadius={1}>
-                  <Typography variant="h6">{data?.address?.fullAddress}</Typography>
+                <Box p={2} bgcolor={grey[300]} borderRadius={1} minHeight="110px">
+                  <Typography fontWeight={700}>{data?.address?.fullAddress}</Typography>
                   <Typography>{`${data?.address?.state}/${data?.address?.city}/${
                     data?.address?.area === undefined ? '' : data?.address?.area
                   }`}</Typography>
-                  <Typography>{`Pincode:${data?.address?.pincode}`}</Typography>
+                  <Typography>{`Pincode: ${
+                    data?.address?.pincode === undefined ? '' : data?.address?.pincode
+                  }`}</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -198,11 +195,7 @@ export default function EventDetailview() {
             <Typography variant="h5">Packages</Typography>
             <AddPackageForm eventId={data?._id} handleReload={setDataFetched} />
           </Box>
-          <PackageCard
-            packagesData={data?.packages}
-            eventId={data?._id}
-            handleReload={setDataFetched}
-          />
+          <PackageCard eventId={data?._id} handleReload={setDataFetched} />
         </Paper>
 
         <Grid container>

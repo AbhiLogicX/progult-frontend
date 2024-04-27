@@ -4,10 +4,11 @@ import { useForm } from 'react-hook-form';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Paper, Button, TextField, IconButton, Typography, NativeSelect } from '@mui/material';
+import { Box, Paper, Button, TextField, Typography, NativeSelect } from '@mui/material';
 
 import { patchReq } from 'src/api/api';
 import properties from 'src/config/properties';
+import { grey, error, primary } from 'src/theme/palette';
 
 export default function AddonCards({ addOnData, handleReload, fromCall }) {
   const [edit, setEdit] = useState(false);
@@ -44,19 +45,21 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
     });
   };
   return (
-    <Paper elevation={4} sx={{ p: '2%', mr: 1, backgroundColor: 'whitesmoke' }}>
+    <Paper elevation={4} sx={{ p: '2%', mr: 1, backgroundColor: grey[300] }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box display="flex">
           <Box mr={1}>
-            <img
-              src={`${properties.BASE_ITEM_IMAGE_URL}${addOnData.image}}`}
-              style={{
-                height: 100,
-                width: '100%',
-                borderRadius: 25,
-              }}
-              alt="Addon Cover"
-            />
+            {edit ? null : (
+              <img
+                src={`${properties.BASE_ITEM_IMAGE_URL}${addOnData.image}}`}
+                style={{
+                  aspectRatio: 4 / 3,
+                  width: '100%',
+                  borderRadius: 25,
+                }}
+                alt="Addon Cover"
+              />
+            )}
           </Box>
 
           <Box>
@@ -71,7 +74,7 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
                   sx={{ mb: 1 }}
                 />
               ) : (
-                <Typography variant="h6" mb={2}>
+                <Typography fontWeight={700} mb={2}>
                   {addOnData.title}
                 </Typography>
               )}
@@ -121,17 +124,43 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
             </Box>
           </Box>
         </Box>
-        <Box textAlign="right">
+        <Box>
           {edit ? null : (
-            <IconButton onClick={handleEditOpen}>
-              <EditIcon />
-            </IconButton>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: 'white',
+                color: grey[400],
+                width: '45%',
+                mr: 1,
+                '&:hover': {
+                  backgroundColor: error.main,
+                  color: error.errorBackground,
+                },
+              }}
+              onClick={handleDelete}
+            >
+              <DeleteIcon /> Delete
+            </Button>
           )}
           {edit ? null : (
-            <IconButton onClick={handleDelete}>
-              <DeleteIcon color="error" />
-            </IconButton>
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: 'white',
+                color: primary.main,
+                width: '45%',
+                '&:hover': {
+                  backgroundColor: primary.main,
+                  color: 'white',
+                },
+              }}
+              onClick={handleEditOpen}
+            >
+              <EditIcon /> Edit
+            </Button>
           )}
+
           {edit ? (
             <>
               <Button onClick={handleEditClose} color="error">

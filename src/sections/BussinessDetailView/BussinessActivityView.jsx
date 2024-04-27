@@ -31,6 +31,7 @@ export function BussinessActivityView({ bussinessId }) {
       });
     }
   });
+
   return (
     <Grid container>
       {activityData?.map((itm) => (
@@ -71,8 +72,11 @@ function RenderCard({ crdData }) {
           />
         </Box>
         <Box p="5%">
-          <Typography variant="h6" textAlign="center" mb={2}>
+          <Typography variant="h6" textAlign="center">
             {crdData?.activityId.title}
+          </Typography>
+          <Typography fontWeight={500} textAlign="center" mb={1}>
+            {`Slots: ${crdData?.slots?.length === undefined ? '' : crdData?.slots?.length}`}
           </Typography>
           <Button onClick={handleClickOpen} variant="contained" fullWidth>
             Edit
