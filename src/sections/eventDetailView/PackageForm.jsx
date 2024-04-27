@@ -7,12 +7,12 @@ import {
   Button,
   Dialog,
   TextField,
-  IconButton,
   DialogTitle,
   DialogActions,
   DialogContent,
 } from '@mui/material';
 
+import { error, primary } from 'src/theme/palette';
 import { postReq, patchReq } from 'src/api/api';
 
 export default function AddPackageForm({ eventId, handleReload }) {
@@ -39,7 +39,7 @@ export default function AddPackageForm({ eventId, handleReload }) {
   return (
     <>
       <Button variant="contained" onClick={handleOpenPackgeForm}>
-        Add Package
+        Add More
       </Button>
 
       <Dialog open={openPackageForm}>
@@ -117,9 +117,19 @@ export function EditPackageForm({ eventId, handleReload, dValues }) {
   };
   return (
     <>
-      <IconButton variant="contained" onClick={handleOpenPackgeForm}>
-        <EditIcon />
-      </IconButton>
+      <Button
+        sx={{
+          color: primary.main,
+          bgcolor: 'white',
+          '&:hover': {
+            backgroundColor: primary.main,
+            color: 'white',
+          },
+        }}
+        onClick={handleOpenPackgeForm}
+      >
+        <EditIcon /> Edit
+      </Button>
 
       <Dialog open={openPackageForm}>
         <form onSubmit={handleSubmit(onSubmit)}>

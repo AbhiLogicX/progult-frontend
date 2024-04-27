@@ -156,11 +156,26 @@ export default function EventDetailview() {
                   <Typography variant="h6">{data?.dateTime?.startTime}</Typography>
                 </Box>
               </Grid>
-              <Grid xs={2}>
+              <Grid xs={2} mr={1}>
                 <Typography variant="h6">Event End:</Typography>
+                <Box p="2%" bgcolor={grey[300]} borderRadius={1}>
+                  <Typography variant="h6">{`${date.getDate(
+                    data?.dateTime?.endDate
+                  )}/${date.getMonth(data?.dateTime?.endDate)}/${date.getFullYear(
+                    data?.dateTime?.endDate
+                  )}`}</Typography>
+                  <Typography variant="h6">{data?.dateTime?.endTime}</Typography>
+                </Box>
               </Grid>
               <Grid xs={7}>
                 <Typography variant="h6">Event Venue:</Typography>
+                <Box p="2%" bgcolor={grey[300]} borderRadius={1}>
+                  <Typography variant="h6">{data?.address?.fullAddress}</Typography>
+                  <Typography>{`${data?.address?.state}/${data?.address?.city}/${
+                    data?.address?.area === undefined ? '' : data?.address?.area
+                  }`}</Typography>
+                  <Typography>{`Pincode:${data?.address?.pincode}`}</Typography>
+                </Box>
               </Grid>
             </Grid>
           </Box>
@@ -179,59 +194,6 @@ export default function EventDetailview() {
         </Paper>
 
         <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
-          <Typography variant="h5" mb={3}>
-            About the Event
-          </Typography>
-
-          <Typography>{data?.description}</Typography>
-        </Paper>
-        <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
-          <Box display="flex" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography variant="h5">Event Highlights</Typography>
-            <Button variant="contained" onClick={handleAminitieDialogOpen}>
-              Edit Aminities
-            </Button>
-            <AmenitiesManageForm
-              openDialog={openAminiteDialog}
-              handleClose={handleAminitieDialogClose}
-              dValues={addDefaultValues()}
-              handleReload={setDataFetched}
-              Id={data?._id}
-              fromCall="event"
-            />
-          </Box>
-          <Box sx={{ px: '1%' }}>
-            <Grid container spacing={2}>
-              {data?.amenities.map((itm) => (
-                <EventAminitieCard cardData={itm} />
-              ))}
-            </Grid>
-          </Box>
-        </Paper>
-        <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <Typography variant="h5">Rules and Regulations</Typography>
-            <Button variant="contained" onClick={handleClickOpenRule}>
-              Manage Rules
-            </Button>
-            <RulesForm
-              Id={data?._id}
-              handleClose={handleClickCloseRule}
-              open={openRulesForm}
-              rules={data?.rules}
-              handleReload={setDataFetched}
-              fromCall="event"
-            />
-          </Box>
-          <Box>
-            <ul>
-              {data?.rules?.map((itm) => (
-                <li key={`${itm}`}>{itm}</li>
-              ))}
-            </ul>
-          </Box>
-        </Paper>
-        <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
           <Box display="flex" justifyContent="space-between" mb={1}>
             <Typography variant="h5">Packages</Typography>
             <AddPackageForm eventId={data?._id} handleReload={setDataFetched} />
@@ -242,6 +204,68 @@ export default function EventDetailview() {
             handleReload={setDataFetched}
           />
         </Paper>
+
+        <Grid container>
+          <Grid xs={6}>
+            <Paper elevation={3} sx={{ p: '2%', mb: 1, width: '98%' }}>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography variant="h5">About the Event</Typography>
+                <Button variant="contained">Edit</Button>
+              </Box>
+              <Typography>{data?.description}</Typography>
+            </Paper>
+
+            <Paper elevation={3} sx={{ p: '2%', mb: 1, width: '98%' }}>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography variant="h5">Rules and Regulations</Typography>
+                <Button variant="contained" onClick={handleClickOpenRule}>
+                  Manage Rules
+                </Button>
+                <RulesForm
+                  Id={data?._id}
+                  handleClose={handleClickCloseRule}
+                  open={openRulesForm}
+                  rules={data?.rules}
+                  handleReload={setDataFetched}
+                  fromCall="event"
+                />
+              </Box>
+              <Box>
+                <ul>
+                  {data?.rules?.map((itm) => (
+                    <li key={`${itm}`}>{itm}</li>
+                  ))}
+                </ul>
+              </Box>
+            </Paper>
+          </Grid>
+
+          <Grid xs={6}>
+            <Paper elevation={3} sx={{ p: '2%', mb: 1 }}>
+              <Box display="flex" alignItems="center" justifyContent="space-between" mb={5}>
+                <Typography variant="h5">Highlights</Typography>
+                <Button variant="contained" onClick={handleAminitieDialogOpen}>
+                  Edit Aminities
+                </Button>
+                <AmenitiesManageForm
+                  openDialog={openAminiteDialog}
+                  handleClose={handleAminitieDialogClose}
+                  dValues={addDefaultValues()}
+                  handleReload={setDataFetched}
+                  Id={data?._id}
+                  fromCall="event"
+                />
+              </Box>
+              <Box sx={{ px: '1%' }}>
+                <Grid container>
+                  {data?.amenities.map((itm) => (
+                    <EventAminitieCard cardData={itm} />
+                  ))}
+                </Grid>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
       </Box>
     </Container>
   );

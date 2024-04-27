@@ -10,6 +10,7 @@ const properties = {
   BASE_ADMIN_IMAGE_URL: 'https://api.proglut.com/adminImages/',
   // https://proglut.onrender.com/api/v1
   // https://api.proglut.com/api/v1
+  // http://localhost:8000/api/v1
 };
 
 export default properties;

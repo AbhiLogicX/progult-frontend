@@ -121,7 +121,7 @@ export default function BussinessTimeForm({
     } else {
       await patchReq('bussiness/slots', data).then((res) => {
         if (res.statuCode === 200) {
-          console.log(res);
+          // console.log(res);
         }
       });
       // console.log(startTime, endTime, weekDays);

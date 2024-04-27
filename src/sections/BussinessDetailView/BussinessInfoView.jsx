@@ -80,7 +80,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
     return defaultAminites;
   }
 
-  console.log(bussinessData);
+  // console.log(bussinessData);
   return (
     <Box>
       <Paper elevation={3} sx={{ width: '100%', mb: 2 }}>

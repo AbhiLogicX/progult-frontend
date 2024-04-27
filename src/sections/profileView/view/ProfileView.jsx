@@ -40,11 +40,6 @@ export default function ProfileView() {
 
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !imporntant' }}>
-      <Box sx={{ width: '100%' }}>
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Profile View
-        </Typography>
-      </Box>
       <Box>
         {fetchedData ? (
           <BasicInfoView profiledata={profileData} handleReload={setFetchedData} />

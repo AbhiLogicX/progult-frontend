@@ -27,7 +27,7 @@ export default function TableViewBooking({
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
-  console.log(tableData);
+  // console.log(tableData);
   return (
     <Paper elevation={3} sx={{ width: '100%' }}>
       <TableContainer>
