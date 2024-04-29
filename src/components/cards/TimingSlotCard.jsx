@@ -32,7 +32,7 @@ export default function TimingCards({ timeData, Id, handleReload }) {
         color={grey[800]}
       >{`${timeData.startTime} to ${timeData.endTime}`}</Typography>
       <Typography mb={2} fontWeight={700}>
-        {timeData.days.map((itm) => `${itm} `)}
+        {timeData.days.map((itm) => `${itm}, `)}
       </Typography>
       <Box>
         <Button

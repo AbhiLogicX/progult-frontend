@@ -1,45 +1,155 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import SmsIcon from '@mui/icons-material/Sms';
-import TextField from '@mui/material/TextField';
-import FeedIcon from '@mui/icons-material/Feed';
-import CallIcon from '@mui/icons-material/Call';
 import Typography from '@mui/material/Typography';
-import NativeSelect from '@mui/material/NativeSelect';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import MarkunreadIcon from '@mui/icons-material/Markunread';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
-import { patchReq } from 'src/api/api';
-import { primary, warning } from 'src/theme/palette';
+import { grey, error, primary, success } from 'src/theme/palette';
+
+import BookingTable from './bookingTable';
+import LineChart from './YearlyEarnigChart';
+import ContatactDetails from './contactForm';
 
 function BasicInfoView({ profiledata, handleReload }) {
+  const [openForm, setOpenForm] = useState(false);
+
+  const handleOpenForm = () => {
+    setOpenForm(true);
+  };
+  const handleCloseForm = () => {
+    setOpenForm(false);
+  };
+  const location = useLocation().pathname.split('/');
+  console.log(profiledata);
   return (
     <Box display="flex" width="100%">
-      <Box mr={5}>
-        <Box mb={3} component={Paper} elevation={3} p="1%" display="flex" alignItems="center">
-          <Box mr={2}>
+      <Box mr={2}>
+        <Box mb={3} component={Paper} elevation={3}>
+          <Box>
             <img
-              src="/assets/images/images(1).png"
-              alt="profile person cvoer"
-              style={{ height: 250, width: 250 }}
+              src="\assets\images\profileBackImg.png"
+              style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
+              alt="profile back"
             />
           </Box>
-          <Box>
-            <Typography variant="h2">{profiledata.data.fullName}</Typography>
-          </Box>
+          <Grid container alignItems="flex-end" mt={-9.5} p="1%">
+            <Grid xs={2}>
+              <Box>
+                <img
+                  src="\assets\images\profileImg.jpg"
+                  style={{
+                    height: '150px',
+                    width: '150px',
+                    borderRadius: '50%',
+                    border: '10px solid white',
+                  }}
+                  alt="profile Pic"
+                />
+              </Box>
+            </Grid>
+
+            <Grid xs={8}>
+              <Box>
+                <Typography variant="h3">{profiledata.data.fullName}</Typography>
+                <Box display="flex">
+                  <Box display="flex" mr={2}>
+                    <Typography fontWeight={700} color={grey[400]} mr={1}>
+                      VendorID:
+                    </Typography>
+                    <Typography fontWeight={700} color={primary.main}>
+                      {profiledata.data._id}
+                    </Typography>
+                  </Box>
+                  <Box display="flex">
+                    <Typography fontWeight={700} color={grey[400]} mr={1}>
+                      Status:
+                    </Typography>
+                    <Typography fontWeight={700} color={primary.main}>
+                      {profiledata.data.status}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid xs={2}>
+              <Box textAlign="right">
+                <Button variant="contained" onClick={handleOpenForm}>
+                  Edit
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Grid p="1%" container>
+            <Grid xs={4}>
+              <Typography variant="h6">User Info:</Typography>
+              <Box p={2} bgcolor={grey[300]} borderRadius={2} width="97%">
+                <Typography>{`Mobile: +91-${profiledata.data.mobile}`}</Typography>
+                <Typography>{`Email: ${profiledata.data.email}`}</Typography>
+                <Typography>{`Gender: ${profiledata.data.gender}`}</Typography>
+              </Box>
+            </Grid>
+            <Grid xs={8}>
+              <Typography variant="h6">Location Info:</Typography>
+              <Box p={2} bgcolor={grey[300]} borderRadius={2}>
+                <Typography
+                  fontWeight={700}
+                >{`Street: ${profiledata.data.address?.street}`}</Typography>
+                <Typography>{`${profiledata.data.address?.state}/ ${profiledata.data.address?.city}/ ${profiledata.data.address?.area}`}</Typography>
+                <Typography>{`Pincode: ${profiledata.data.address?.pincode}`}</Typography>
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
-        <ContatactDetails profileData={profiledata} handleReload={handleReload} />
+        <ContatactDetails
+          profileData={profiledata}
+          handleReload={handleReload}
+          handleClose={handleCloseForm}
+          open={openForm}
+        />
+        <Box>
+          {location[1] === 'vendors' ? (
+            <Paper elevation={3} sx={{ p: '1%' }}>
+              <Typography variant="h5"> Yearly Earnings</Typography>
+              <LineChart />
+            </Paper>
+          ) : null}
+          {location[1] === 'customers' ? (
+            <Paper elevation={3} sx={{ p: '1%' }}>
+              <Box display="flex" justifyContent="space-between" mb={2}>
+                <Typography variant="h5">Booking History</Typography>
+                <Box>
+                  <Button
+                    sx={{
+                      bgcolor: grey[700],
+                      color: error.errorBackground,
+                      '&:hover': { bgcolor: grey[700], color: error.errorBackground },
+                      mr: 1,
+                    }}
+                  >
+                    Bussiness
+                  </Button>
+                  <Button
+                    sx={{
+                      bgcolor: error.errorBackground,
+                      color: grey[700],
+                      '&:hover': { bgcolor: grey[700], color: error.errorBackground },
+                    }}
+                  >
+                    Evnets
+                  </Button>
+                </Box>
+              </Box>
+              <BookingTable />
+            </Paper>
+          ) : null}
+        </Box>
       </Box>
-      <Box component={Paper} elevation={3} sx={{ px: '1%', py: '2%' }}>
+      <Box width="80%">
         <SidePanle />
       </Box>
     </Box>
@@ -50,361 +160,130 @@ export default BasicInfoView;
 
 //-----------------------------------------------------------------------------------
 
-function ContatactDetails({ profileData, handleReload }) {
-  const [editOption, setEditOption] = useState(false);
-
-  const { register, handleSubmit } = useForm({});
-
-  const location = useLocation().pathname.split('/');
-
-  const handleSetEditOption = () => {
-    setEditOption(true);
-  };
-  const handleSetEditOptionCancel = () => {
-    setEditOption(false);
-  };
-
-  async function onSubmit(data) {
-    data.fullName = profileData.data.fullName;
-    data.Id = profileData.data._id;
-    if (location[1] === 'vendors') {
-      await patchReq('vendor/detail', data);
-      setEditOption(false);
-      handleReload(false);
-    }
-    if (location[1] === 'customers') {
-      await patchReq('user/detail', data);
-      setEditOption(false);
-      handleReload(false);
-    }
-  }
-  return (
-    <Paper elevation={3} sx={{ borderRadius: 0.75, p: '1%', width: '100%' }}>
-      <Box mb={5}>
-        <Typography variant="h5">Contact Details</Typography>
-      </Box>
-
-      <Box
-        sx={{ mb: 1, p: '1%', borderRadius: 0.75 }}
-        border={editOption ? '1px solid darkgrey' : null}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box mb={5} display="flex" sx={{ borderRadius: 0.75 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Email :</Typography>
-                  {editOption ? (
-                    <TextField
-                      name="email"
-                      variant="outlined"
-                      {...register('email')}
-                      required
-                      defaultValue={profileData.data.email}
-                    />
-                  ) : (
-                    <Typography>{profileData.data.email}</Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Mobile :</Typography>
-                  {editOption ? (
-                    <TextField
-                      name="mobile"
-                      variant="outlined"
-                      {...register('mobile')}
-                      required
-                      defaultValue={profileData.data.mobile}
-                    />
-                  ) : (
-                    <Typography>{profileData.data.mobile}</Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Gender :</Typography>
-                  {editOption ? (
-                    <NativeSelect defaultValue={profileData.data.gender} {...register('gender')}>
-                      <option value="male">male</option>
-                      <option value="female">female</option>
-                    </NativeSelect>
-                  ) : (
-                    <Typography>{profileData.data.gender}</Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Status :</Typography>
-                  {editOption ? (
-                    <NativeSelect defaultValue={profileData.data.status} {...register('status')}>
-                      <option value="active">active</option>
-                      <option value="in-active">in-active</option>
-                    </NativeSelect>
-                  ) : (
-                    <Typography>{profileData.data.status}</Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>City :</Typography>
-                  {editOption ? (
-                    <TextField
-                      name="city"
-                      variant="outlined"
-                      {...register('city')}
-                      defaultValue={
-                        profileData.data?.address?.city ? profileData.data.address.city : ''
-                      }
-                    />
-                  ) : (
-                    <Typography>
-                      {profileData.data?.address?.city ? profileData.data.address.city : ''}
-                    </Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>State :</Typography>
-                  {editOption ? (
-                    <TextField
-                      name="state"
-                      variant="outlined"
-                      {...register('state')}
-                      defaultValue={
-                        profileData.data?.address?.state ? profileData.data.address.state : ''
-                      }
-                    />
-                  ) : (
-                    <Typography>
-                      {profileData.data?.address?.state ? profileData.data.address.state : ''}
-                    </Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Street :</Typography>
-                  {editOption ? (
-                    <TextField
-                      name="street"
-                      variant="outlined"
-                      {...register('street')}
-                      defaultValue={
-                        profileData.data?.address?.street ? profileData.data.address.street : ''
-                      }
-                    />
-                  ) : (
-                    <Typography>
-                      {profileData.data?.address?.street ? profileData.data.address.street : ''}
-                    </Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Area :</Typography>
-                  {editOption ? (
-                    <TextField
-                      name="area"
-                      variant="outlined"
-                      {...register('area')}
-                      defaultValue={
-                        profileData.data?.address?.area ? profileData.data.address.area : ''
-                      }
-                    />
-                  ) : (
-                    <Typography>
-                      {profileData.data?.address?.area ? profileData.data.address.area : ''}
-                    </Typography>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box display="flex" alignItems="center">
-                  <Typography sx={{ fontWeight: 600, mr: 1 }}>Pincode :</Typography>
-                  {editOption ? (
-                    <TextField
-                      name="pincode"
-                      variant="outlined"
-                      {...register('pincode')}
-                      defaultValue={
-                        profileData.data?.address?.pincode ? profileData.data.address.pincode : ''
-                      }
-                    />
-                  ) : (
-                    <Typography>
-                      {profileData.data?.address?.pincode ? profileData.data.address.pincode : ''}
-                    </Typography>
-                  )}
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-          <Box textAlign="right">
-            {editOption ? (
-              <Button color="error" onClick={handleSetEditOptionCancel} sx={{ mr: 1 }}>
-                Cancel
-              </Button>
-            ) : (
-              <Button onClick={handleSetEditOption} sx={{ mr: 1 }}>
-                Edit
-              </Button>
-            )}
-            {editOption ? (
-              <Button variant="contained" type="submit">
-                Save
-              </Button>
-            ) : (
-              <Button variant="contained" disabled>
-                Save
-              </Button>
-            )}
-          </Box>
-        </form>
-      </Box>
-    </Paper>
-  );
-}
-
 function SidePanle() {
+  const location = useLocation().pathname.split('/');
+  console.log(location);
+
   return (
-    <Box width="100%">
-      <Box mb={3}>
-        <Grid container spacing={1} sx={{ textAlign: 'center' }}>
-          <Grid xs={12} mb={2}>
-            <Button variant="contained" sx={{ width: '90%' }} color="success">
-              <WhatsAppIcon sx={{ mr: 1 }} />
-              Send WhatsApp
-            </Button>
-          </Grid>
-          <Grid xs={6} mb={1}>
-            <Button variant="contained" sx={{ width: '81%' }}>
-              <SmsIcon sx={{ mr: 1 }} />
-              Send SMS
-            </Button>
-          </Grid>
-          <Grid xs={6} mb={1}>
-            <Button variant="contained" sx={{ width: '82%' }}>
-              <MarkunreadIcon sx={{ mr: 1 }} />
-              Send Email
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box px={2} mb={2}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Box display="flex">
-            <FeedIcon sx={{ mr: 1 }} />
-            <Typography mr={1}>{`Today's Orders :`}</Typography>
-          </Box>
-          <Typography bgcolor={primary.light} sx={{ px: 2, py: 1, borderRadius: 0.75 }}>
-            0
+    <>
+      {location[1] === 'customers' ? (
+        <Paper elevation={3} sx={{ p: 1.5 }}>
+          <Typography variant="h5" mb={2}>
+            Bookings
           </Typography>
-        </Box>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Box display="flex">
-            <FeedIcon sx={{ mr: 1 }} />
-            <Typography mr={1}>Monthly Orders :</Typography>
+
+          <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+            <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+              <Typography variant="h4" color={primary.main}>
+                12
+              </Typography>
+              <Typography variant="subtitle1">Today’s Bookings</Typography>
+            </Box>
+
+            <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+              <Typography variant="h4" color={primary.main}>
+                12
+              </Typography>
+              <Typography variant="subtitle1">Bookings This Month</Typography>
+            </Box>
+
+            <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+              <Typography variant="h4" color={primary.main}>
+                12
+              </Typography>
+              <Typography variant="subtitle1">All Bookings</Typography>
+            </Box>
           </Box>
-          <Typography bgcolor={primary.light} sx={{ px: 2, py: 1, borderRadius: 0.75 }}>
-            0
-          </Typography>
-        </Box>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Box display="flex">
-            <FeedIcon sx={{ mr: 1 }} />
-            <Typography mr={1}>Total Orders :</Typography>
-          </Box>
-          <Typography bgcolor={primary.light} sx={{ px: 2, py: 1, borderRadius: 0.75 }}>
-            0
-          </Typography>
-        </Box>
-      </Box>
+        </Paper>
+      ) : null}
 
-      <Box px={2} mb={2}>
-        <Box mb={1}>
-          <Typography variant="h5">Earnings</Typography>
-        </Box>
+      {location[1] === 'vendors' ? (
+        <>
+          <Paper elevation={3} sx={{ p: 1.5, mb: 2 }}>
+            <Typography variant="h4" mb={2}>
+              Businesses
+            </Typography>
 
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Box display="flex">
-            <AccountBalanceWalletIcon sx={{ mr: 1 }} />
-            <Typography mr={1}>{`Today's Earning :`}</Typography>
-          </Box>
+            <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+              <Box bgcolor={success.lighter} p={2} borderRadius={2} width="51.4%" mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  03
+                </Typography>
+                <Typography variant="subtitle1">Businesses</Typography>
+              </Box>
 
-          <Typography
-            bgcolor={primary.darker}
-            color="whitesmoke"
-            sx={{ px: 2, py: 1, borderRadius: 0.75, display: 'flex', alignItems: 'center' }}
-          >
-            <CurrencyRupeeIcon sx={{ mr: 1 }} />0
-          </Typography>
-        </Box>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Box display="flex">
-            <AccountBalanceWalletIcon sx={{ mr: 1 }} />
-            <Typography mr={1}>{`Today's Earning :`}</Typography>
-          </Box>
+              <Box bgcolor={success.lighter} p={2} borderRadius={2} width="48%" mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  01
+                </Typography>
+                <Typography variant="subtitle1">Events</Typography>
+              </Box>
+            </Box>
+          </Paper>
 
-          <Typography
-            bgcolor={primary.darker}
-            color="whitesmoke"
-            sx={{ px: 2, py: 1, borderRadius: 0.75, display: 'flex', alignItems: 'center' }}
-          >
-            <CurrencyRupeeIcon sx={{ mr: 1 }} />0
-          </Typography>
-        </Box>
-      </Box>
+          <Paper elevation={3} sx={{ p: 1.5, mb: 2 }}>
+            <Typography variant="h4" mb={2}>
+              Bookings
+            </Typography>
 
-      <Box px={2}>
-        <Box mb={1}>
-          <Typography variant="h5">Account</Typography>
-        </Box>
+            <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+              <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  12
+                </Typography>
+                <Typography variant="subtitle1">Today’s Bookings</Typography>
+              </Box>
 
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Box display="flex">
-            <MarkunreadIcon sx={{ mr: 1 }} />
-            <Typography mr={1}>Email</Typography>
-          </Box>
+              <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  12
+                </Typography>
+                <Typography variant="subtitle1">Today’s Bookings</Typography>
+              </Box>
 
-          <Typography
-            bgcolor={warning.light}
-            sx={{ px: 2, py: 1, borderRadius: 0.75, display: 'flex', alignItems: 'center' }}
-          >
-            Not Verified
-          </Typography>
-        </Box>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Box display="flex">
-            <CallIcon sx={{ mr: 1 }} />
-            <Typography mr={1}>Mobile</Typography>
-          </Box>
+              <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  12
+                </Typography>
+                <Typography variant="subtitle1">Today’s Bookings</Typography>
+              </Box>
+            </Box>
+          </Paper>
 
-          <Typography
-            bgcolor={warning.light}
-            sx={{ px: 2, py: 1, borderRadius: 0.75, display: 'flex', alignItems: 'center' }}
-          >
-            Not Verified
-          </Typography>
-        </Box>
-      </Box>
-    </Box>
+          <Paper elevation={3} sx={{ p: 1.5, mb: 2 }}>
+            <Typography variant="h4" mb={2}>
+              Earnings
+            </Typography>
+
+            <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+              <Box bgcolor={primary.light} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  ₹200
+                </Typography>
+                <Typography variant="subtitle1">Today’s Earnings</Typography>
+              </Box>
+
+              <Box bgcolor={primary.light} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  ₹500
+                </Typography>
+                <Typography variant="subtitle1">Earnings This Month</Typography>
+              </Box>
+              <Box bgcolor={primary.light} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  ₹1050
+                </Typography>
+                <Typography variant="subtitle1">Total Earnings</Typography>
+              </Box>
+            </Box>
+          </Paper>
+        </>
+      ) : null}
+    </>
   );
 }
 
 BasicInfoView.propTypes = {
   profiledata: PropTypes.object,
-  handleReload: PropTypes.func,
-};
-
-ContatactDetails.propTypes = {
-  profileData: PropTypes.object,
   handleReload: PropTypes.func,
 };

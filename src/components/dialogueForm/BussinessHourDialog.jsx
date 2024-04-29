@@ -26,7 +26,7 @@ export default function BussinessTimeForm({
   handleReload,
 }) {
   // console.log(format(new Date(`2024-04-26 ${timeData?.startTime || ''}`), 'H:m:s'));
-  const [weekDays, setWeekDays] = useState(timeData?.days);
+  const [weekDays, setWeekDays] = useState(timeData?.days ? timeData?.days : []);
   const [endTime, setEndTime] = useState(timeData?.endTime);
   const [startTime, setStartTime] = useState(timeData?.startTime);
   const [title, setTitle] = useState(timeData?.title);
@@ -96,6 +96,7 @@ export default function BussinessTimeForm({
     } else {
       setWeekDays((prevState) => prevState.filter((item) => item !== value));
     }
+    console.log(weekDays);
   };
 
   async function handleSubmit(event) {

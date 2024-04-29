@@ -28,6 +28,9 @@ export default defineConfig({
   },
   server: {
     port: 3030,
+    proxy: {
+      '/api': 'https://api.proglut.com',
+    },
   },
   preview: {
     port: 3030,

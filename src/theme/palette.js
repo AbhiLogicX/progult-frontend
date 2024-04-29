@@ -18,8 +18,8 @@ export const grey = {
 };
 
 export const primary = {
-  lighter: '#D0ECFE',
-  light: '#FFDAC3',
+  lighter: '#FFF5DA',
+  light: '#FFEDE1',
   main: '#FE7723',
   dark: '#BE4A02',
   darker: '#042174',

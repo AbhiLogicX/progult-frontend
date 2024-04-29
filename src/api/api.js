@@ -1,14 +1,15 @@
 import axios from 'axios';
 
-import properties from 'src/config/properties';
+// import properties from 'src/config/properties';
 
 const heads = JSON.parse(localStorage.getItem('tokens'));
 
 const axiosInstance = axios.create({
-  baseURL: `${properties.BASE_URL}`,
+  baseURL: `/api/v1`,
   headers: {
     Authorization: `Bearer ${heads?.accessToken}`,
   },
+  withCredentials: true,
 });
 
 export async function getReq(reqStr) {
