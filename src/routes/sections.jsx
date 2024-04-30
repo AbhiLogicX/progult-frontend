@@ -27,6 +27,8 @@ export const TermsPage = lazy(() => import('src/pages/termsAndCondition'));
 export const PrivacyPage = lazy(() => import('src/pages/privacyAndPolicy'));
 export const ContactPage = lazy(() => import('src/pages/contactUsPage'));
 export const MasterBannerPage = lazy(() => import('src/pages/masterBannerList'));
+export const ActivitySlotEdit = lazy(() => import('src/pages/activitySlotEdit'));
+export const BookingDetailsPage = lazy(() => import('src/pages/BookingDetailPage'));
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -83,6 +85,11 @@ export default function Router() {
         { path: 'subscriptions', element: <SubscriptionPage /> },
         { path: 'notification', element: <NotificationPage /> },
         { path: 'reports', element: <ReportsPage /> },
+        { path: 'booking/detail/:bookingId', element: <BookingDetailsPage /> },
+        {
+          path: 'bussiness/detail/:bussinessId/editSlots/:activityId',
+          element: <ActivitySlotEdit />,
+        },
       ],
     },
     {

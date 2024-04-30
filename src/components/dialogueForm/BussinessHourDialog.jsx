@@ -96,7 +96,7 @@ export default function BussinessTimeForm({
     } else {
       setWeekDays((prevState) => prevState.filter((item) => item !== value));
     }
-    console.log(weekDays);
+    // console.log(weekDays);
   };
 
   async function handleSubmit(event) {

@@ -24,14 +24,14 @@ function BasicInfoView({ profiledata, handleReload }) {
     setOpenForm(false);
   };
   const location = useLocation().pathname.split('/');
-  console.log(profiledata);
+  // console.log(profiledata);
   return (
     <Box display="flex" width="100%">
       <Box mr={2}>
         <Box mb={3} component={Paper} elevation={3}>
           <Box>
             <img
-              src="\assets\images\profileBackImg.png"
+              src="/assets/images/profileBackImg.png"
               style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
               alt="profile back"
             />
@@ -40,7 +40,7 @@ function BasicInfoView({ profiledata, handleReload }) {
             <Grid xs={2}>
               <Box>
                 <img
-                  src="\assets\images\profileImg.jpg"
+                  src="/assets/images/profileImg.jpg"
                   style={{
                     height: '150px',
                     width: '150px',
@@ -162,7 +162,7 @@ export default BasicInfoView;
 
 function SidePanle() {
   const location = useLocation().pathname.split('/');
-  console.log(location);
+  // console.log(location);
 
   return (
     <>

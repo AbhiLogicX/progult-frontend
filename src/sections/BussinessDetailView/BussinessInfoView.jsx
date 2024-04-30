@@ -16,6 +16,7 @@ import TimingCards from 'src/components/cards/TimingSlotCard';
 import MasterViewCard from 'src/components/cards/MasterViewCard';
 import RulesForm from 'src/components/dialogueForm/RulesAndRegulationForm';
 import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
+// import { EditSlotContext } from 'src/context/mainContext';
 
 import { itemData } from './mockData';
 // import ContactDetailform from './ContactForm';
@@ -82,6 +83,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
   }
 
   // console.log('bd', bussinessData);
+
   return (
     <Box>
       <Paper elevation={3} sx={{ width: '100%', mb: 2 }}>
@@ -263,6 +265,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
               fromCall="Add Timings"
               handleReload={handleReload}
               Id={bussinessData._id}
+              timeData={[]}
             />
           </Box>
           <Box display="flex">

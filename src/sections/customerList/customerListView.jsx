@@ -31,7 +31,7 @@ export default function CustomerListView() {
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Box mb={5}>{/* <Typography variant="h4">Customer</Typography> */}</Box>
 
-      <TableFilterToolBar />
+      <TableFilterToolBar fromCall="customer" />
       {fetchedData ? (
         <TableView
           columns={tableColumns}

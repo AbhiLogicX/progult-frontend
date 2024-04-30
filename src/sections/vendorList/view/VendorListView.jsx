@@ -41,7 +41,7 @@ export default function VendorListView() {
         </Button>
       </Box>
 
-      <TableFilterToolBar />
+      <TableFilterToolBar fromCall="vendor" />
 
       {fetchedData ? (
         <TableView

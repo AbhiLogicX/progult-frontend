@@ -26,6 +26,7 @@ export default function BookingsView() {
     'Amount',
     'Pay Status',
   ];
+  const actionCol = ['View'];
   setTitle('Bookings');
   useEffect(() => {
     if (!fetchedData) {
@@ -41,6 +42,8 @@ export default function BookingsView() {
       });
     }
   });
+
+  // console.log(rowData);
 
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
@@ -59,7 +62,7 @@ export default function BookingsView() {
       </Stack>
       <TableFilterToolBar fromCall="bookings" />
 
-      <TableViewBooking columns={tableColumns} tableData={rowData} />
+      <TableViewBooking columns={tableColumns} tableData={rowData} actionbtn={actionCol} />
     </Container>
   );
 }

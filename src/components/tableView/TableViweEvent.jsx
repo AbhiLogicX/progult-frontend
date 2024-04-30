@@ -54,7 +54,7 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                           />
                         ) : (
                           <img
-                            src="public\assets\images\imgPlace.png"
+                            src="/assets/images/imgPlace.png"
                             alt="Bussiness Cover"
                             style={{
                               width: 100,

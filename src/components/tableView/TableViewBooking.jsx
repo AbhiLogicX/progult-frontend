@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -11,7 +11,7 @@ import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 
-import { RouterLink } from 'src/routes/components';
+// import { RouterLink } from 'src/routes/components';
 
 import DialogComponent from '../dialogueForm/DialogComponent';
 
@@ -22,7 +22,7 @@ export default function TableViewBooking({
   fromCall,
   handleReload,
 }) {
-  const location = useLocation().pathname.split('/');
+  // const location = useLocation().pathname.split('/');
   const date = new Date();
 
   if (actionbtn && !columns.includes('Action')) {
@@ -50,14 +50,15 @@ export default function TableViewBooking({
                     <TableCell component="th" scope="row">
                       {row.bookNo}
                     </TableCell>
-                    <TableCell>{row.customerId.fullName}</TableCell>
-                    <TableCell>{row.mobile}</TableCell>
-                    {columns.includes('City/State') && (
-                      <TableCell>{`${row?.address?.city || ' '} , ${
-                        row?.address?.state || ' '
-                      }`}</TableCell>
-                    )}
-                    <TableCell>{row.status}</TableCell>
+                    <TableCell>{row.owner?.fullName}</TableCell>
+                    <TableCell>{row.bussinessId?.title}</TableCell>
+                    <TableCell>
+                      {`${date.getDate(row.createdAt)}/${date.getMonth(
+                        row.createdAt
+                      )}/${date.getFullYear(row.createdAt)}`}
+                    </TableCell>
+                    <TableCell>{row?.totalPayable}</TableCell>
+                    <TableCell>{row.isPaid ? 'Paid' : 'Un-Paid'}</TableCell>
                     <TableCell sx={{ display: 'flex' }}>
                       {actionbtn.map((btnItm) => {
                         if (btnItm === 'Delete') {
@@ -76,8 +77,8 @@ export default function TableViewBooking({
                           <Button
                             variant="contained"
                             sx={{ mr: 2 }}
-                            component={RouterLink}
-                            href={`/${location[1]}/detail/${row._id}`}
+                            // component={RouterLink}
+                            // href={`/${location[1]}/detail/${row._id}`}
                           >
                             {btnItm}
                           </Button>

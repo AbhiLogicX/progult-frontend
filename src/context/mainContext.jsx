@@ -13,6 +13,22 @@ export const TitleProvider = ({ children }) => {
 
 // export { TitleContext, TitleProvider };
 
+export const EditSlotContext = createContext();
+
+export const EditSlotProvider = ({ children }) => {
+  const [slotData, setSlotData] = useState({});
+
+  const contextValue = useMemo(() => ({ slotData, setSlotData }), [slotData, setSlotData]);
+
+  return <EditSlotContext.Provider value={contextValue}>{children}</EditSlotContext.Provider>;
+};
+
+// export { TitleContext, TitleProvider };
+
+EditSlotProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 TitleProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

@@ -6,10 +6,12 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { Button, Typography } from '@mui/material';
 
+import { RouterLink } from 'src/routes/components';
+
 import { getReq } from 'src/api/api';
 import properties from 'src/config/properties';
 
-import BussinessActivityDialog from 'src/components/dialogueForm/BussinessActivityDialog';
+// import BussinessActivityDialog from 'src/components/dialogueForm/BussinessActivityDialog';
 
 //  bussinessActivity?bussinessId=66069bfe7f083dba90191320
 
@@ -31,7 +33,7 @@ export function BussinessActivityView({ bussinessId }) {
       });
     }
   });
-
+  // console.log('activityData', activityData);
   return (
     <Grid container>
       {activityData?.map((itm) => (
@@ -42,19 +44,20 @@ export function BussinessActivityView({ bussinessId }) {
 }
 
 function RenderCard({ crdData }) {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
-  const handleSumit = () => {
-    setOpen(false);
-  };
+  // const handleSumit = () => {
+  //   setOpen(false);
+  // };
+  // console.log(crdData);
 
   return (
     <Grid xs={3}>
@@ -78,15 +81,20 @@ function RenderCard({ crdData }) {
           <Typography fontWeight={500} textAlign="center" mb={1}>
             {`Slots: ${crdData?.slots?.length === undefined ? '' : crdData?.slots?.length}`}
           </Typography>
-          <Button onClick={handleClickOpen} variant="contained" fullWidth>
+          <Button
+            variant="contained"
+            fullWidth
+            component={RouterLink}
+            href={`/bussiness/detail/${crdData.bussinessId}/editSlots/${crdData._id}`}
+          >
             Edit
           </Button>
-          <BussinessActivityDialog
+          {/* <BussinessActivityDialog
             openDialog={open}
             handleClose={handleClose}
             handleSubmit={handleSumit}
             dialogData={crdData}
-          />
+          /> */}
         </Box>
       </Paper>
     </Grid>
