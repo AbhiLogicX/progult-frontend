@@ -81,11 +81,15 @@ export default function Router() {
         { path: 'evnet-list', element: <EventListPage /> },
         { path: 'event/detail/:eventId', element: <EventDetailViewPage /> },
         { path: 'app-setting', element: <AppSettingPage /> },
-        { path: 'bookings', element: <BookingsPage /> },
+        { path: 'bookings/event', element: <BookingsPage /> },
+        { path: 'bookings/bussiness', element: <BookingsPage /> },
         { path: 'subscriptions', element: <SubscriptionPage /> },
         { path: 'notification', element: <NotificationPage /> },
         { path: 'reports', element: <ReportsPage /> },
-        { path: 'booking/detail/:bookingId', element: <BookingDetailsPage /> },
+        {
+          path: 'booking/detail/:bookingType/:bookingId',
+          element: <BookingDetailsPage />,
+        },
         {
           path: 'bussiness/detail/:bussinessId/editSlots/:activityId',
           element: <ActivitySlotEdit />,

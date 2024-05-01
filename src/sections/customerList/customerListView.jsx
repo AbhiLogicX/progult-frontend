@@ -26,10 +26,10 @@ export default function CustomerListView() {
   }, [fetchedData]);
   const tableColumns = ['Name', 'Email', 'Mobile', 'City/State', 'Status'];
   const actionCol = ['View', 'Delete'];
-  setTitle('Coustmer');
+  setTitle('Customer');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Box mb={5}>{/* <Typography variant="h4">Customer</Typography> */}</Box>
+      <Box mb={2}>{/* <Typography variant="h4">Customer</Typography> */}</Box>
 
       <TableFilterToolBar fromCall="customer" />
       {fetchedData ? (

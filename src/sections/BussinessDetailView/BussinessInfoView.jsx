@@ -20,6 +20,7 @@ import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
 
 import { itemData } from './mockData';
 // import ContactDetailform from './ContactForm';
+import ContactInfoDialog from './ContactFormDialog';
 import { BussinessActivityView } from './BussinessActivityView';
 import { FoodAndItem, AddFoodAndItem } from './BussinessFoodItem';
 import AmenitiesManageForm from '../eventDetailView/AminitesManage';
@@ -28,11 +29,20 @@ function BussinessInfoView({ bussinessData, handleReload }) {
   const [open, setOpen] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
 
+  const [openForm, setOpenForm] = useState(false);
+
   const [openAddonForm, setopenAddonForm] = useState({
     open: false,
     type: '',
   });
   const [openAminiteDialog, setOpenAminiteDialog] = useState(false);
+
+  const handleOpenForm = () => {
+    setOpenForm(true);
+  };
+  const handleCloseForm = () => {
+    setOpenForm(false);
+  };
 
   const handleAminitieDialogClose = () => {
     setOpenAminiteDialog(false);
@@ -168,7 +178,14 @@ function BussinessInfoView({ bussinessData, handleReload }) {
             </Grid>
             <Grid xs={6}>
               <Box textAlign="right">
-                <Button variant="contained">Edit Details</Button>
+                <Button variant="contained" onClick={handleOpenForm}>
+                  Edit Details
+                </Button>
+                <ContactInfoDialog
+                  open={openForm}
+                  handleClose={handleCloseForm}
+                  fData={bussinessData}
+                />
               </Box>
             </Grid>
           </Grid>
@@ -235,10 +252,12 @@ function BussinessInfoView({ bussinessData, handleReload }) {
                 height="75%"
               >
                 <Box>
-                  <Typography>{`Created At: ${bussinessData?.createdAt}`}</Typography>
-                  <Typography
-                    color={grey[700]}
-                  >{`Updated At: ${bussinessData?.updatedAt}`}</Typography>
+                  <Typography>{`Created At: ${
+                    bussinessData?.createdAt ? bussinessData?.createdAt : ''
+                  }`}</Typography>
+                  <Typography color={grey[700]}>{`Updated At: ${
+                    bussinessData?.updatedAt ? bussinessData?.updatedAt : ''
+                  }`}</Typography>
                 </Box>
               </Box>
             </Grid>

@@ -38,7 +38,7 @@ export default function EventListView() {
   setTitle('Events');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Box mb={5} width="100%" textAlign="right">
+      <Box mb={2} width="100%" textAlign="right">
         {/* <Typography variant="h4">Events</Typography> */}
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>

@@ -44,84 +44,80 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
       }
     });
   };
+  // console.log(addOnData);
   return (
     <Paper elevation={4} sx={{ p: '2%', mr: 1, backgroundColor: grey[300] }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box display="flex">
-          <Box mr={1}>
+          <Box mr={1} width="60%">
             {edit ? null : (
               <img
-                src={`${properties.BASE_ITEM_IMAGE_URL}${addOnData.image}}`}
+                src={`${properties.BASE_ITEM_IMAGE_URL}${addOnData.image}`}
+                alt="Bussiness Cover"
                 style={{
-                  aspectRatio: 4 / 3,
                   width: '100%',
-                  borderRadius: 25,
+                  aspectRatio: 4 / 2,
+                  objectFit: 'cover',
+                  borderRadius: 5,
                 }}
-                alt="Addon Cover"
               />
             )}
           </Box>
 
           <Box>
-            <Box>
-              {/* <Typography>{fromCall}</Typography> */}
-              {edit ? (
-                <TextField
-                  defaultValue={addOnData.title}
-                  name="title"
-                  label="Title"
-                  {...register('title')}
-                  sx={{ mb: 1 }}
-                />
-              ) : (
-                <Typography fontWeight={700} mb={2}>
-                  {addOnData.title}
-                </Typography>
-              )}
-              {edit ? (
-                <TextField
-                  defaultValue={addOnData.rate}
-                  name="rate"
-                  label="Price"
-                  {...register('rate')}
-                  sx={{ mb: 1 }}
-                />
-              ) : (
-                <Typography>{`Price: ₹${addOnData.rate}`}</Typography>
-              )}
-              {edit ? (
-                <TextField
-                  defaultValue={addOnData.stock}
-                  name="stock"
-                  label="Stock"
-                  {...register('stock')}
-                  sx={{ mb: 1 }}
-                />
-              ) : (
-                <Typography>{`Stock: ${addOnData.stock}`}</Typography>
-              )}
-              {edit ? (
-                <NativeSelect
-                  defaultValue={addOnData.status}
-                  {...register('status')}
-                  sx={{ mb: 1 }}
-                >
-                  <option value="active">active</option>
-                  <option value="in-active">in-active</option>
-                </NativeSelect>
-              ) : (
-                <Typography>{`Status: ${addOnData.status}`}</Typography>
-              )}
-              {edit ? (
-                <TextField
-                  {...register('image')}
-                  name="image"
-                  type="file"
-                  accept="image/*"
-                  sx={{ mb: 1 }}
-                />
-              ) : null}
-            </Box>
+            {/* <Typography>{fromCall}</Typography> */}
+            {edit ? (
+              <TextField
+                defaultValue={addOnData.title}
+                name="title"
+                label="Title"
+                {...register('title')}
+                sx={{ mb: 1 }}
+              />
+            ) : (
+              <Typography fontWeight={700} mb={2}>
+                {addOnData.title}
+              </Typography>
+            )}
+            {edit ? (
+              <TextField
+                defaultValue={addOnData.rate}
+                name="rate"
+                label="Price"
+                {...register('rate')}
+                sx={{ mb: 1 }}
+              />
+            ) : (
+              <Typography>{`Price: ₹${addOnData.rate}`}</Typography>
+            )}
+            {edit ? (
+              <TextField
+                defaultValue={addOnData.stock}
+                name="stock"
+                label="Stock"
+                {...register('stock')}
+                sx={{ mb: 1 }}
+              />
+            ) : (
+              <Typography>{`Stock: ${addOnData.stock}`}</Typography>
+            )}
+            {edit ? (
+              <NativeSelect defaultValue={addOnData.status} {...register('status')} sx={{ mb: 1 }}>
+                <option value="active">active</option>
+                <option value="in-active">in-active</option>
+              </NativeSelect>
+            ) : (
+              <Typography>{`Status: ${addOnData.status}`}</Typography>
+            )}
+            {edit ? (
+              <TextField
+                {...register('image')}
+                name="image"
+                type="file"
+                accept="image/*"
+                sx={{ mb: 1 }}
+              />
+            ) : null}
           </Box>
         </Box>
         <Box>

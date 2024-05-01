@@ -28,7 +28,7 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
       <TableContainer>
         <Table aria-label="simple table">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ '& > *': { padding: 1.5 } }}>
               {columns.map((colItem) => (
                 <TableCell>{colItem}</TableCell>
               ))}
@@ -36,10 +36,13 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
           </TableHead>
           <TableBody>
             {actionbtn
-              ? tableData.map((row) => (
+              ? tableData?.map((row) => (
                   <TableRow
                     key={row.fullName}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    sx={{
+                      '&:last-child td, &:last-child th': { border: 0 },
+                      '& > *': { padding: 1 },
+                    }}
                   >
                     <TableCell component="th" scope="row">
                       {row.fullName}

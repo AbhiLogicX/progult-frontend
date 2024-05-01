@@ -16,6 +16,10 @@ const navConfig = [
     title: 'bookings',
     path: '/bookings',
     icon: icon('ic_booking'),
+    subNav: [
+      { title: 'Bussiness', icon: icon('ic_masterCategoery'), path: '/bookings/bussiness' },
+      { title: 'Event', icon: icon('ic_masterCategoery'), path: '/bookings/event' },
+    ],
   },
   // {
   //   title: 'Subscriptions',

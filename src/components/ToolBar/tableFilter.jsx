@@ -9,7 +9,7 @@ import { Box, Paper, Button, MenuItem, TextField, Typography } from '@mui/materi
 
 import { grey } from 'src/theme/palette';
 
-import FilterDialog from './filterDialog';
+import FilterDrawer from './RightFilterDrwaer';
 // import label from '../label';
 
 const Search = styled('div')(({ theme }) => ({
@@ -21,7 +21,6 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
     width: 'auto',
   },
 }));
@@ -137,20 +136,20 @@ export default function TableFilterToolBar({ fromCall }) {
   };
 
   return (
-    <Paper elevation={3} sx={{ width: '100%', p: '1%', mb: 2 }}>
+    <Paper elevation={3} sx={{ width: '100%', p: 1, mb: 2 }}>
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" alignItems="flex-end">
           <Box mr={1}>
-            <Typography fontWeight={700}>From Date</Typography>
-            <TextField type="date" />
+            <Typography>From Date</Typography>
+            <TextField type="date" inputProps={{ style: { padding: 7 } }} />
           </Box>
           <Box mr={1}>
-            <Typography fontWeight={700}>To Date</Typography>
-            <TextField type="date" />
+            <Typography>To Date</Typography>
+            <TextField type="date" inputProps={{ style: { padding: 7 } }} />
           </Box>
           {fromCall === 'bookings' ? (
             <Box>
-              <TextField select defaultValue="Default">
+              <TextField select defaultValue="Default" InputProps={{ style: { padding: 0 } }}>
                 {Customer.map((opt) => (
                   <MenuItem key={opt.value} value={opt.value}>
                     {opt.label}
@@ -212,12 +211,12 @@ export default function TableFilterToolBar({ fromCall }) {
             </TextField>
           ) : null} */}
           <Box Box display="flex" alignItems="center">
-            <Search sx={{ bgcolor: grey[200], height: 58, display: 'flex', alignItems: 'center' }}>
+            <Search sx={{ bgcolor: grey[200], display: 'flex', alignItems: 'center' }}>
               {/* <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper> */}
               <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-              <Button variant="contained" sx={{ pt: 1.2, pb: 1.2, mr: 1 }}>
+              <Button variant="contained">
                 <SearchIcon />
               </Button>
             </Search>
@@ -227,11 +226,16 @@ export default function TableFilterToolBar({ fromCall }) {
               <Button sx={{ pb: 1, pt: 1 }} onClick={handleOpenFilter}>
                 <FilterAltIcon />
               </Button>
-              <FilterDialog
+              <FilterDrawer
                 open={openFilterDialog}
                 handleClose={handleCloseFilter}
                 fromCall={fromCall}
               />
+              {/* <FilterDialog
+                open={openFilterDialog}
+                handleClose={handleCloseFilter}
+                fromCall={fromCall}
+              /> */}
             </Box>
           )}
         </Box>

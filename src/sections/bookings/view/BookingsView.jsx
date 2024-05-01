@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 // import { useState, useEffect } from 'react';
 
@@ -14,11 +15,15 @@ import TableViewBooking from 'src/components/tableView/TableViewBooking';
 // import { Tab } from '@mui/material';
 
 export default function BookingsView() {
-  const [rowData, setRowData] = useState([]);
-  const [fetchedData, setFetchedData] = useState(false);
+  const [rowBussinessData, setRowBussinessData] = useState([]);
+  const [rowEventData, setRowEventData] = useState([]);
+  const [fetchedBussinessData, setFetchedBussinessData] = useState(false);
+  const [fetchedEventData, setFetchedEventData] = useState(false);
   const { setTitle } = useContext(TitleContext);
 
-  const tableColumns = [
+  const location = useLocation().pathname.split('/')[2];
+
+  const tableColumnsBussiness = [
     'Booking No.',
     'Customer',
     'Bussiness',
@@ -26,25 +31,49 @@ export default function BookingsView() {
     'Amount',
     'Pay Status',
   ];
+  const tableColumnsEvent = [
+    'Booking No.',
+    'Customer',
+    'Evnet',
+    'Date Booked',
+    'Amount',
+    'Pay Status',
+  ];
   const actionCol = ['View'];
-  setTitle('Bookings');
+
   useEffect(() => {
-    if (!fetchedData) {
+    if (
+      (!fetchedBussinessData && location === 'bussiness') ||
+      (!fetchedEventData && location === 'event')
+    ) {
       fetchBookings();
     }
     async function fetchBookings() {
-      await getReq(`booking/business`).then((res) => {
-        if (res.statusCode === 200) {
-          // console.log('controll', res.data[0]);
-          setRowData(res.data);
-          setFetchedData(true);
-        }
-      });
+      if (location === 'bussiness') {
+        await getReq(`booking/business`).then((res) => {
+          if (res.statusCode === 200) {
+            // console.log('controll', res.data[0]);
+
+            setRowBussinessData(res.data);
+            setFetchedBussinessData(true);
+          }
+        });
+      }
+      if (location === 'event') {
+        await getReq(`booking/event`).then((res) => {
+          if (res.statusCode === 200) {
+            // console.log('controll', res.data[0]);
+
+            setRowEventData(res.data);
+            setFetchedEventData(true);
+          }
+        });
+      }
     }
-  });
+  }, [location, fetchedBussinessData, fetchedEventData]);
 
   // console.log(rowData);
-
+  setTitle(location === 'bussiness' ? 'Bussiness Bookings' : 'Event Bookings');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Stack
@@ -62,7 +91,12 @@ export default function BookingsView() {
       </Stack>
       <TableFilterToolBar fromCall="bookings" />
 
-      <TableViewBooking columns={tableColumns} tableData={rowData} actionbtn={actionCol} />
+      <TableViewBooking
+        columns={location === 'bussiness' ? tableColumnsBussiness : tableColumnsEvent}
+        tableData={location === 'bussiness' ? rowBussinessData : rowEventData}
+        actionbtn={actionCol}
+        fromCall={location}
+      />
     </Container>
   );
 }

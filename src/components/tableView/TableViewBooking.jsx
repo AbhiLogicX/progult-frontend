@@ -11,7 +11,7 @@ import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 
-// import { RouterLink } from 'src/routes/components';
+import { RouterLink } from 'src/routes/components';
 
 import DialogComponent from '../dialogueForm/DialogComponent';
 
@@ -28,13 +28,13 @@ export default function TableViewBooking({
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
-  // console.log(tableData);
+  // console.log('tableData', tableData, fromCall);
   return (
     <Paper elevation={3} sx={{ width: '100%' }}>
       <TableContainer>
         <Table aria-label="simple table">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ '& > *': { padding: 1.5 } }}>
               {columns.map((colItem) => (
                 <TableCell>{colItem}</TableCell>
               ))}
@@ -45,13 +45,20 @@ export default function TableViewBooking({
               ? tableData.map((row) => (
                   <TableRow
                     key={row.bookNo}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    sx={{
+                      '&:last-child td, &:last-child th': { border: 0 },
+                      '& > *': { padding: 1 },
+                    }}
                   >
                     <TableCell component="th" scope="row">
                       {row.bookNo}
                     </TableCell>
-                    <TableCell>{row.owner?.fullName}</TableCell>
-                    <TableCell>{row.bussinessId?.title}</TableCell>
+                    <TableCell>
+                      {fromCall === 'bussiness' ? row.owner?.fullName : row.customerId?.fullName}
+                    </TableCell>
+                    <TableCell>
+                      {fromCall === 'bussiness' ? row.bussinessId?.title : row.eventId?.title}
+                    </TableCell>
                     <TableCell>
                       {`${date.getDate(row.createdAt)}/${date.getMonth(
                         row.createdAt
@@ -77,8 +84,8 @@ export default function TableViewBooking({
                           <Button
                             variant="contained"
                             sx={{ mr: 2 }}
-                            // component={RouterLink}
-                            // href={`/${location[1]}/detail/${row._id}`}
+                            component={RouterLink}
+                            href={`/booking/detail/${fromCall}/${row._id}`}
                           >
                             {btnItm}
                           </Button>

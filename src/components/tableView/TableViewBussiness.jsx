@@ -35,7 +35,7 @@ export default function TableViewBussiness({ columns, actionbtn, tableData }) {
           </TableHead>
           <TableBody>
             {actionbtn
-              ? tableData.map((row) => (
+              ? tableData?.map((row) => (
                   <TableRow
                     key={row._id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -71,7 +71,7 @@ export default function TableViewBussiness({ columns, actionbtn, tableData }) {
                     <TableCell>{row.domain[0].title}</TableCell>
                     <TableCell>{`${row.address.city} / ${row.address.state}`}</TableCell>
                     <TableCell>{row.owner[0].fullName}</TableCell>
-                    <TableCell>Active</TableCell>
+                    <TableCell>{row.status}</TableCell>
                     <TableCell>
                       <Box display="flex">
                         <StarIcon fontSize="medium" sx={{ mr: 1, color: primary.main }} />

@@ -96,11 +96,17 @@ function BasicInfoView({ profiledata, handleReload }) {
             <Grid xs={8}>
               <Typography variant="h6">Location Info:</Typography>
               <Box p={2} bgcolor={grey[300]} borderRadius={2}>
-                <Typography
-                  fontWeight={700}
-                >{`Street: ${profiledata.data.address?.street}`}</Typography>
-                <Typography>{`${profiledata.data.address?.state}/ ${profiledata.data.address?.city}/ ${profiledata.data.address?.area}`}</Typography>
-                <Typography>{`Pincode: ${profiledata.data.address?.pincode}`}</Typography>
+                <Typography fontWeight={700}>{`Street: ${
+                  profiledata?.data?.address?.street ? profiledata.data.address?.state : ''
+                }`}</Typography>
+                <Typography>{`${
+                  profiledata?.data?.address?.state ? profiledata?.data?.address?.state : ''
+                }/ ${profiledata?.data?.address?.city ? profiledata?.data?.address?.city : ''}/ ${
+                  profiledata?.data?.address?.area ? profiledata?.data?.address?.area : ''
+                }`}</Typography>
+                <Typography>{`Pincode: ${
+                  profiledata?.data?.address?.pincode ? profiledata?.data?.address?.pincode : ''
+                }`}</Typography>
               </Box>
             </Grid>
           </Grid>

@@ -55,7 +55,7 @@ export default function AminiteListView() {
   setTitle('Aminities');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Box mb={5} width="100%" sx={{ textAlign: 'right' }}>
+      <Box mb={2} width="100%" sx={{ textAlign: 'right' }}>
         {/* <Typography variant="h4" sx={{ mb: 5 }}>
           Aminities
         </Typography> */}

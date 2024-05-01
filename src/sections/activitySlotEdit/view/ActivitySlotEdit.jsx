@@ -1,15 +1,16 @@
-import { useContext } from 'react';
+// import { useContext } from 'react';
 
 import { grey } from '@mui/material/colors';
 import { Box, Button, Typography } from '@mui/material';
 
 import { error, primary } from 'src/theme/palette';
-import { EditSlotContext } from 'src/context/mainContext';
+// import { EditSlotContext } from 'src/context/mainContext';
 
 import LabTabs from 'src/components/menus/TabMenu';
 
 export default function EditSlot() {
-  const { slotData } = useContext(EditSlotContext);
+  // const { slotData } = useContext(EditSlotContext);
+
   // console.log('this at edit slot', slotData);
   return (
     <Box width="100%">

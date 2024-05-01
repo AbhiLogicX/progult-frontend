@@ -33,7 +33,7 @@ export default function VendorListView() {
   setTitle('Associate Partners');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Box mb={5} textAlign="right">
+      <Box mb={2} textAlign="right">
         {/* <Typography variant="h4">Associate Partners</Typography> */}
 
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
