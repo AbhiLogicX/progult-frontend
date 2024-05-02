@@ -13,6 +13,8 @@ import {
   DialogContent,
 } from '@mui/material';
 
+import { patchReq } from 'src/api/api';
+
 export default function ContactInfoDialog({ open, handleClose, fData }) {
   const { register, handleSubmit } = useForm({});
 
@@ -59,11 +61,29 @@ export default function ContactInfoDialog({ open, handleClose, fData }) {
     },
   ];
 
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     // console.log('hello');
+    data.Id = fData._id;
+    data.category = fData.domain[0]._id;
+    await patchReq(`bussiness`, data).then((res) => {
+      // console.log(res);
+    });
+
+    await patchReq(`bussiness/detail?Id=${fData._id}&status=${data.status}`).then((res) => {
+      // console.log(res);
+    });
+
+    // if (data.coverImage.length !== 0 || data.brandLogo.length !== 0) {
+    //   await patchReq('bussiness/logo', data).then((res) => {
+    //     console.log(res);
+    //   });
+    // }
+
+    // console.log(data, data.coverImage[0]);
+    handleClose();
   };
 
-  //   console.log(fData);
+  // console.log(fData);
 
   return (
     <Dialog
@@ -99,7 +119,7 @@ export default function ContactInfoDialog({ open, handleClose, fData }) {
             <Box mt={1} mb={1}>
               <Typography>Status</Typography>
               {fData?.status === 'active' ? (
-                <TextField select defaultValue="active">
+                <TextField select defaultValue="active" {...register('status')} name="status">
                   {activeStatusList.map((opt) => (
                     <MenuItem key={opt.value} value={opt.value}>
                       {opt.lable}
@@ -108,7 +128,7 @@ export default function ContactInfoDialog({ open, handleClose, fData }) {
                 </TextField>
               ) : null}
               {fData?.status === 'pending' ? (
-                <TextField select defaultValue="pending">
+                <TextField select defaultValue="pending" {...register('status')} name="status">
                   {pendingStausList.map((opt) => (
                     <MenuItem key={opt.value} value={opt.value}>
                       {opt.lable}
@@ -117,7 +137,7 @@ export default function ContactInfoDialog({ open, handleClose, fData }) {
                 </TextField>
               ) : null}
               {fData?.status === 'reject' ? (
-                <TextField select defaultValue="reject">
+                <TextField select defaultValue="reject" {...register('status')} name="status">
                   {rejectStatusList.map((opt) => (
                     <MenuItem key={opt.value} value={opt.value}>
                       {opt.lable}

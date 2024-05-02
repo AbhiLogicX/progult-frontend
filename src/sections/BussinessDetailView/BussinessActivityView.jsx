@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import EditIcon from '@mui/icons-material/Edit';
 import { Button, Typography } from '@mui/material';
 
 import { RouterLink } from 'src/routes/components';
 
 import { getReq } from 'src/api/api';
+import { primary } from 'src/theme/palette';
 import properties from 'src/config/properties';
 
 // import BussinessActivityDialog from 'src/components/dialogueForm/BussinessActivityDialog';
@@ -61,7 +63,7 @@ function RenderCard({ crdData }) {
 
   return (
     <Grid xs={3}>
-      <Paper elevation={4} sx={{ alignItems: 'center', mr: 2 }}>
+      <Paper elevation={5} sx={{ alignItems: 'center', mr: 2, mb: 1 }}>
         <Box>
           <img
             src={`${properties.BASE_DOMAIN_IMAGE_URL}${crdData?.activityId.image}`}
@@ -82,12 +84,20 @@ function RenderCard({ crdData }) {
             {`Slots: ${crdData?.slots?.length === undefined ? '' : crdData?.slots?.length}`}
           </Typography>
           <Button
-            variant="contained"
+            sx={{
+              bgcolor: 'white',
+              color: primary.main,
+
+              '&:hover': {
+                backgroundColor: primary.main,
+                color: 'white',
+              },
+            }}
             fullWidth
             component={RouterLink}
             href={`/bussiness/detail/${crdData.bussinessId}/editSlots/${crdData._id}`}
           >
-            Edit
+            <EditIcon /> Edit
           </Button>
           {/* <BussinessActivityDialog
             openDialog={open}

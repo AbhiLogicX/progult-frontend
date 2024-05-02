@@ -161,7 +161,7 @@ export default function AddonCards({ addOnData, handleReload, fromCall }) {
             <>
               <Button onClick={handleEditClose} color="error">
                 Cancel
-              </Button>{' '}
+              </Button>
               <Button variant="contained" type="submit">
                 Update
               </Button>

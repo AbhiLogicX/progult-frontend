@@ -5,7 +5,9 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 import ImageList from '@mui/material/ImageList';
+import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 import ImageListItem from '@mui/material/ImageListItem';
 
@@ -275,7 +277,19 @@ function BussinessInfoView({ bussinessData, handleReload }) {
             <Typography variant="h5" mb={2}>
               Bussiness Hours
             </Typography>
-            <Button variant="contained" onClick={handleClickOpen}>
+            <Button
+              onClick={handleClickOpen}
+              sx={{
+                bgcolor: 'white',
+                color: primary.main,
+
+                '&:hover': {
+                  backgroundColor: primary.main,
+                  color: 'white',
+                },
+              }}
+            >
+              <AddIcon />
               Add New Time
             </Button>
             <BussinessTimeForm
@@ -305,7 +319,6 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           <Paper elevation={3} sx={{ p: '2%', mb: 2, width: '97%' }}>
             <Box display="flex" justifyContent="space-between" mb={1}>
               <Typography variant="h5">About Bussiness</Typography>
-              <Button variant="contained">Edit</Button>
             </Box>
             <Box>
               <Typography>{bussinessData.description}</Typography>
@@ -317,8 +330,19 @@ function BussinessInfoView({ bussinessData, handleReload }) {
               <Typography variant="h5" mb={1}>
                 Rules & Regulations
               </Typography>
-              <Button onClick={handleClickOpenRule} variant="contained">
-                Edit
+              <Button
+                onClick={handleClickOpenRule}
+                sx={{
+                  bgcolor: 'white',
+                  color: primary.main,
+
+                  '&:hover': {
+                    backgroundColor: primary.main,
+                    color: 'white',
+                  },
+                }}
+              >
+                <EditIcon sx={{ mr: 1 }} /> Edit
               </Button>
               <RulesForm
                 Id={bussinessData._id}
@@ -341,8 +365,19 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           <Paper elevation={3} sx={{ p: '2%', mb: 2, width: '97%' }}>
             <Box display="flex" justifyContent="space-between" mb={1}>
               <Typography variant="h5">Aminities</Typography>
-              <Button variant="contained" onClick={handleAminitieDialogOpen}>
-                Edit Aminities
+              <Button
+                onClick={handleAminitieDialogOpen}
+                sx={{
+                  bgcolor: 'white',
+                  color: primary.main,
+
+                  '&:hover': {
+                    backgroundColor: primary.main,
+                    color: 'white',
+                  },
+                }}
+              >
+                <EditIcon sx={{ mr: 1 }} /> Edit
               </Button>
               <AmenitiesManageForm
                 // dValues={bussinessData.amenities}
@@ -369,7 +404,20 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           <Paper elevation={3} sx={{ p: '2%', mb: 2, width: '100%' }}>
             <Box mb={2} display="flex" justifyContent="space-between">
               <Typography variant="h5">Activities</Typography>
-              <Button variant="contained">Add More</Button>
+              <Button
+                sx={{
+                  bgcolor: 'white',
+                  color: primary.main,
+
+                  '&:hover': {
+                    backgroundColor: primary.main,
+                    color: 'white',
+                  },
+                }}
+              >
+                <AddIcon />
+                Add More
+              </Button>
             </Box>
             <Box>
               <BussinessActivityView bussinessId={bussinessData._id} />
@@ -379,7 +427,20 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           <Paper elevation={3} sx={{ p: '2%', width: '100%', mb: 2 }}>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h5">Gallery</Typography>
-              <Button variant="contained">Add Image</Button>
+              <Button
+                sx={{
+                  bgcolor: 'white',
+                  color: primary.main,
+
+                  '&:hover': {
+                    backgroundColor: primary.main,
+                    color: 'white',
+                  },
+                }}
+              >
+                <AddIcon />
+                Add Image
+              </Button>
             </Box>
 
             <ImageList sx={{ width: '100%', height: 400 }} cols={4} rowHeight={200}>
@@ -403,11 +464,20 @@ function BussinessInfoView({ bussinessData, handleReload }) {
         <Box mb={1} display="flex" justifyContent="space-between">
           <Typography variant="h5">AddOns</Typography>
           <Button
-            variant="contained"
             onClick={() => {
               handleOpenAddonForm('Item');
             }}
+            sx={{
+              bgcolor: 'white',
+              color: primary.main,
+
+              '&:hover': {
+                backgroundColor: primary.main,
+                color: 'white',
+              },
+            }}
           >
+            <AddIcon />
             Add Items
           </Button>
           <AddFoodAndItem
@@ -427,11 +497,20 @@ function BussinessInfoView({ bussinessData, handleReload }) {
           <Typography variant="h5">Food & Bevrages</Typography>
 
           <Button
-            variant="contained"
             onClick={() => {
               handleOpenAddonForm('Food');
             }}
+            sx={{
+              bgcolor: 'white',
+              color: primary.main,
+
+              '&:hover': {
+                backgroundColor: primary.main,
+                color: 'white',
+              },
+            }}
           >
+            <AddIcon />
             Add Food
           </Button>
           <AddFoodAndItem

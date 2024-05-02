@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { grey } from '@mui/material/colors';
 import { Box, Grid, Paper, Button, Typography } from '@mui/material';
 
 import { error } from 'src/theme/palette';
@@ -8,7 +9,7 @@ import properties from 'src/config/properties';
 export function EventAminitieCard({ cardData }) {
   return (
     <Grid xs={4}>
-      <Paper elevation={3} sx={{ p: '2%', backgroundColor: 'whitesmoke', mr: 2 }}>
+      <Paper elevation={3} sx={{ p: '2%', backgroundColor: grey[300], mr: 2, mb: 1 }}>
         <Box textAlign="center">
           <Box p="2%">
             {/* <img sx={{ height: 125, width: 100 }} /> */}
