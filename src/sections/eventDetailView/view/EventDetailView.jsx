@@ -3,6 +3,8 @@ import { useState, useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+// import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import { Paper, Button, Container, Typography } from '@mui/material';
 // import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 // import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
@@ -124,7 +126,18 @@ export default function EventDetailview() {
                       {data?.hostName}
                     </Typography>
                   </Box>
-                  <Button variant="contained" onClick={handleDialogOpen}>
+                  <Button
+                    onClick={handleDialogOpen}
+                    sx={{
+                      bgcolor: 'white',
+                      color: primary.main,
+
+                      '&:hover': {
+                        backgroundColor: primary.main,
+                        color: 'white',
+                      },
+                    }}
+                  >
                     Edit Details
                   </Button>
                   <EventInfoDialogForm
@@ -203,7 +216,6 @@ export default function EventDetailview() {
             <Paper elevation={3} sx={{ p: '2%', mb: 1, width: '98%' }}>
               <Box display="flex" justifyContent="space-between" mb={1}>
                 <Typography variant="h5">About the Event</Typography>
-                <Button variant="contained">Edit</Button>
               </Box>
               <Typography>{data?.description}</Typography>
             </Paper>
@@ -237,7 +249,19 @@ export default function EventDetailview() {
             <Paper elevation={3} sx={{ p: '2%', mb: 1 }}>
               <Box display="flex" alignItems="center" justifyContent="space-between" mb={5}>
                 <Typography variant="h5">Highlights</Typography>
-                <Button variant="contained" onClick={handleAminitieDialogOpen}>
+                <Button
+                  onClick={handleAminitieDialogOpen}
+                  sx={{
+                    bgcolor: 'white',
+                    color: primary.main,
+
+                    '&:hover': {
+                      backgroundColor: primary.main,
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <EditIcon sx={{ mr: 1 }} />
                   Edit Aminities
                 </Button>
                 <AmenitiesManageForm

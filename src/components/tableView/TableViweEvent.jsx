@@ -6,6 +6,7 @@ import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import TableRow from '@mui/material/TableRow';
+import StarIcon from '@mui/icons-material/Star';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
@@ -14,7 +15,7 @@ import TableContainer from '@mui/material/TableContainer';
 import { RouterLink } from 'src/routes/components';
 
 import properties from 'src/config/properties';
-import { error, customColors } from 'src/theme/palette';
+import { error, primary, customColors } from 'src/theme/palette';
 
 export default function TableViewEvent({ columns, actionbtn, tableData }) {
   if (actionbtn && !columns.includes('Action')) {
@@ -22,6 +23,7 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
   }
 
   // console.log('td', tableData[0].bussinessId.brandLogo);
+  // console.log(tableData);
   return (
     <Paper elevation={3} sx={{ width: '100%' }}>
       <TableContainer>
@@ -71,8 +73,13 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                     <TableCell>{`${row.address.city} / ${row.address.state}`}</TableCell>
                     <TableCell>{row.owner[0].fullName}</TableCell>
                     <TableCell>{row.bussinessId.title}</TableCell>
-                    <TableCell>Active</TableCell>
-                    <TableCell>{`${row.rating} / ${row.reviewcount}`}</TableCell>
+                    <TableCell>{row.status}</TableCell>
+                    <TableCell>
+                      <Box display="flex" alignItems="center">
+                        <StarIcon fontSize="medium" sx={{ mr: 1, color: primary.main }} />
+                        {row.rating !== null ? row.rating : 0}
+                      </Box>
+                    </TableCell>
                     <TableCell>
                       <Box display="flex">
                         {actionbtn.map((btnItm) => {

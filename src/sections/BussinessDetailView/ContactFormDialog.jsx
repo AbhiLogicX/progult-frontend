@@ -73,11 +73,11 @@ export default function ContactInfoDialog({ open, handleClose, fData }) {
       // console.log(res);
     });
 
-    // if (data.coverImage.length !== 0 || data.brandLogo.length !== 0) {
-    //   await patchReq('bussiness/logo', data).then((res) => {
-    //     console.log(res);
-    //   });
-    // }
+    if (data.coverImage.length !== 0 || data.brandLogo.length !== 0) {
+      await patchReq('bussiness/logo', data).then((res) => {
+        // console.log(res);
+      });
+    }
 
     // console.log(data, data.coverImage[0]);
     handleClose();

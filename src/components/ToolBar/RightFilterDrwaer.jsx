@@ -103,7 +103,7 @@ const Activity = [
 export default function FilterDrawer({ open, handleClose, fromCall }) {
   const DrawerList = (
     <Box sx={{ width: 350, p: 1 }} role="presentation">
-      <Typography variant="h4"> Filter</Typography>
+      <Typography variant="h4"> Filters</Typography>
       <TextField label="City" fullWidth sx={{ mb: 1, mt: 1 }} />
       <TextField label="State" fullWidth sx={{ mb: 1 }} />
 

@@ -11,6 +11,8 @@ import { TitleContext } from 'src/context/mainContext';
 import BussinessInfoView from '../BussinessInfoView';
 
 export default function BussinessDetailView() {
+  const [fetchedGalleryData, setFetchedGalleryData] = useState(false);
+  const [gallery, setGallery] = useState();
   const [fetchedData, setFetchedData] = useState(false);
   const [bussinessData, setBussinessData] = useState();
   const [loading, setLoading] = useState(true);
@@ -25,15 +27,28 @@ export default function BussinessDetailView() {
         setLoading(false);
       });
     }
+    async function fetchBussinessGallery() {
+      await getReq(`bussiness/gallery?bussinessId=${currLocation[3]}`).then((res) => {
+        setGallery(res.data);
+        setFetchedGalleryData(true);
+      });
+    }
     if (!fetchedData) {
       fetchBussinessData();
     }
-  }, [fetchedData, currLocation]);
+    if (!fetchedGalleryData) {
+      fetchBussinessGallery();
+    }
+  }, [fetchedData, currLocation, fetchedGalleryData]);
   setTitle('Businesses');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      {fetchedData ? (
-        <BussinessInfoView bussinessData={bussinessData} handleReload={setFetchedData} />
+      {fetchedData && fetchedGalleryData ? (
+        <BussinessInfoView
+          bussinessData={bussinessData}
+          handleReload={setFetchedData}
+          gallery={gallery}
+        />
       ) : (
         <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
           <CircularProgress color="inherit" />

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 
+import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Button,
@@ -38,8 +39,19 @@ export default function AddPackageForm({ eventId, handleReload }) {
   };
   return (
     <>
-      <Button variant="contained" onClick={handleOpenPackgeForm}>
-        Add More
+      <Button
+        onClick={handleOpenPackgeForm}
+        sx={{
+          bgcolor: 'white',
+          color: primary.main,
+
+          '&:hover': {
+            backgroundColor: primary.main,
+            color: 'white',
+          },
+        }}
+      >
+        <AddIcon /> Add More
       </Button>
 
       <Dialog open={openPackageForm}>

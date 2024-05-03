@@ -25,3 +25,42 @@ export function fToNow(date) {
       })
     : '';
 }
+
+// ----------------------------------------------------------------------
+
+export function changeTimeFormat12(time) {
+  // Check whether AM or PM
+  const splitTime = time.split(':');
+  let newformat = 'AM';
+  if (splitTime[0] >= 12) {
+    newformat = 'PM';
+  }
+
+  // Find current hour in AM-PM Format
+  let hours = splitTime[0] % 12;
+
+  // To display "0" as "12"
+  if (!hours) {
+    hours = 12;
+  }
+  const minutes = splitTime[1] < 10 ? splitTime[1] : splitTime[1];
+
+  return `${hours}:${minutes} ${newformat}`;
+}
+
+export function convertTime24(timeStr) {
+  if (!timeStr) {
+    return '';
+  }
+  const [time, modifier] = timeStr.split(' ');
+  const splitHour = time.split(':');
+  let hours = splitHour[0];
+
+  if (hours === '12') {
+    hours = '00';
+  }
+  if (modifier === 'PM') {
+    hours = parseInt(hours, 10) + 12;
+  }
+  return `${hours}:${splitHour[1]}`;
+}

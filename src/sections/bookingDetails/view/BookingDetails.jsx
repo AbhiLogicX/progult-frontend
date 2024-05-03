@@ -92,7 +92,7 @@ export default function BookingDetails() {
                     <Typography variant="h2">{bookingDetails?.bussinessId?.title}</Typography>
                     <Box display="flex">
                       <Box display="flex" mr={2}>
-                        <Typography fontWeight={700} mr={1} color={grey[300]}>
+                        <Typography fontWeight={700} mr={1} color={grey[500]}>
                           Booking Id:
                         </Typography>
                         <Typography fontWeight={700} color={primary.main}>
@@ -100,7 +100,7 @@ export default function BookingDetails() {
                         </Typography>
                       </Box>
                       <Box display="flex">
-                        <Typography fontWeight={700} mr={1} color={grey[300]}>
+                        <Typography fontWeight={700} mr={1} color={grey[500]}>
                           Booking Date:
                         </Typography>
                         <Typography fontWeight={700} color={primary.main}>
@@ -147,6 +147,38 @@ export default function BookingDetails() {
           ) : null}
         </Grid>
         <Grid xs={3}>
+          <Paper elevation={3} sx={{ p: 2, mb: 2, display: 'flex', alignItems: 'center' }}>
+            <Box width="25%" mr={2}>
+              <img
+                src="/assets/images/imgPlace.png"
+                style={{ borderRadius: '50%', objectFit: 'cover', aspectRatio: 1 / 1 }}
+                alt="bussinesslogo/host logo"
+              />
+            </Box>
+            <Box>
+              <Typography color={primary.main} fontWeight={700}>
+                BUSSINESS OWNER
+              </Typography>
+              <Typography variant="h5">Akash Agrawal</Typography>
+              <Typography color={grey[700]}>+91-1234567890</Typography>
+            </Box>
+          </Paper>
+          <Paper elevation={3} sx={{ p: 2, mb: 2, display: 'flex', alignItems: 'center' }}>
+            <Box width="25%" mr={2}>
+              <img
+                src="/assets/images/imgPlace.png"
+                style={{ borderRadius: '50%', objectFit: 'cover', aspectRatio: 1 / 1 }}
+                alt="bussinesslogo/host logo"
+              />
+            </Box>
+            <Box>
+              <Typography color={primary.main} fontWeight={700}>
+                CUSTOMER
+              </Typography>
+              <Typography variant="h5">Harsh Agrawal</Typography>
+              <Typography color={grey[700]}>+91-9876543210</Typography>
+            </Box>
+          </Paper>
           <Paper elevation={3} sx={{ p: 1.7 }}>
             <Typography variant="h6" mr={3}>
               Biling Information
@@ -288,7 +320,7 @@ function ReanderAddons({ addonData }) {
           />
         )}
       </Box>
-      <Typography fontWeight={700}>{`Amount: ${addonData?.itemId?.title}`}</Typography>
+      <Typography fontWeight={700}> {addonData?.itemId?.title}</Typography>
       <Typography>{`Amount: ${addonData?.rate}`}</Typography>
       <Typography>{`Qty: ${addonData?.quantity}`}</Typography>
 

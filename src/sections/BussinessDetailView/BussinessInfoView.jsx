@@ -20,14 +20,14 @@ import RulesForm from 'src/components/dialogueForm/RulesAndRegulationForm';
 import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
 // import { EditSlotContext } from 'src/context/mainContext';
 
-import { itemData } from './mockData';
+// import { itemData } from './mockData';
 // import ContactDetailform from './ContactForm';
 import ContactInfoDialog from './ContactFormDialog';
 import { BussinessActivityView } from './BussinessActivityView';
 import { FoodAndItem, AddFoodAndItem } from './BussinessFoodItem';
 import AmenitiesManageForm from '../eventDetailView/AminitesManage';
 
-function BussinessInfoView({ bussinessData, handleReload }) {
+function BussinessInfoView({ bussinessData, handleReload, gallery }) {
   const [open, setOpen] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
 
@@ -95,6 +95,7 @@ function BussinessInfoView({ bussinessData, handleReload }) {
   }
 
   // console.log('bd', bussinessData);
+  // console.log('gall', gallery);
 
   return (
     <Box>
@@ -399,7 +400,6 @@ function BussinessInfoView({ bussinessData, handleReload }) {
             </Grid>
           </Paper>
         </Grid>
-
         <Grid xs={6}>
           <Paper elevation={3} sx={{ p: '2%', mb: 2, width: '100%' }}>
             <Box mb={2} display="flex" justifyContent="space-between">
@@ -444,12 +444,12 @@ function BussinessInfoView({ bussinessData, handleReload }) {
             </Box>
 
             <ImageList sx={{ width: '100%', height: 400 }} cols={4} rowHeight={200}>
-              {itemData.map((item) => (
-                <ImageListItem key={item.img}>
+              {gallery?.map((item) => (
+                <ImageListItem key={item.image}>
                   <img
-                    srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                    alt={item.title}
+                    // srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                    src={`${properties.BASE_GALLERY_IMAGE_URL}${item.image}`}
+                    alt={item._id}
                     style={{ borderRadius: 10, cursor: 'pointer' }}
                     loading="lazy"
                   />
@@ -535,6 +535,7 @@ export default BussinessInfoView;
 BussinessInfoView.propTypes = {
   bussinessData: PropTypes.object,
   handleReload: PropTypes.func,
+  gallery: PropTypes.array,
 };
 
 // TimingCards.propType = {
