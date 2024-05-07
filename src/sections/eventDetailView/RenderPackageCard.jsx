@@ -1,34 +1,19 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Grid, Paper, Button, Typography } from '@mui/material';
 
-import { getReq, deleteReq } from 'src/api/api';
+import { deleteReq } from 'src/api/api';
 import { grey, error, primary } from 'src/theme/palette';
 
 import { EditPackageForm } from './PackageForm';
 
-export default function PackageCard({ eventId, handleReload }) {
-  const [fetchedData, setFetchedData] = useState(false);
-  const [pkageData, setPkageData] = useState();
-
-  useEffect(() => {
-    if (!fetchedData) {
-      fetchPkgData();
-    }
-    async function fetchPkgData() {
-      await getReq(`event/packages?eventId=${eventId}`).then((res) => {
-        if (res.statusCode === 200) {
-          setFetchedData(true);
-          setPkageData(res.data);
-        }
-      });
-    }
-  });
+export default function PackageCard({ eventId, handleReload, pkgData }) {
+  // event/packages?status=delete&Id=66387f8822321c8993f813b5
 
   const handleDelete = async (passId) => {
-    await deleteReq(`event/packages?eventId=${eventId}&Id=${passId}`).then((res) => {
+    await deleteReq(`event/packages?status=delete&Id=${passId}`).then((res) => {
       if (res.statusCode === 200) {
         handleReload(false);
       }
@@ -40,7 +25,7 @@ export default function PackageCard({ eventId, handleReload }) {
   return (
     <Box>
       <Grid container>
-        {pkageData?.map((pkg) => (
+        {pkgData?.map((pkg) => (
           <Grid xs={3}>
             <Paper elevation={4} sx={{ p: 2, backgroundColor: grey[300], mr: 2, mb: 1 }}>
               <Box>
@@ -80,4 +65,5 @@ export default function PackageCard({ eventId, handleReload }) {
 PackageCard.propTypes = {
   eventId: PropTypes.string,
   handleReload: PropTypes.func,
+  pkgData: PropTypes.object,
 };

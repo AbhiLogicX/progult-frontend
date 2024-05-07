@@ -48,6 +48,7 @@ export default function BussinessDetailView() {
           bussinessData={bussinessData}
           handleReload={setFetchedData}
           gallery={gallery}
+          handleGalleryReload={setFetchedGalleryData}
         />
       ) : (
         <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>

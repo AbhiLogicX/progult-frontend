@@ -145,7 +145,7 @@ export function EditPackageForm({ eventId, handleReload, dValues }) {
 
       <Dialog open={openPackageForm}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogTitle mb={1}>Add Package</DialogTitle>
+          <DialogTitle mb={1}>Edit Package</DialogTitle>
           <DialogContent>
             <TextField
               {...register('title')}

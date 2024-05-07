@@ -72,7 +72,9 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                     </TableCell>
                     <TableCell>{`${row.address.city} / ${row.address.state}`}</TableCell>
                     <TableCell>{row.owner[0].fullName}</TableCell>
-                    <TableCell>{row.bussinessId.title}</TableCell>
+                    <TableCell>
+                      <Box>{row.bussinessId.title}</Box>
+                    </TableCell>
                     <TableCell>{row.status}</TableCell>
                     <TableCell>
                       <Box display="flex" alignItems="center">

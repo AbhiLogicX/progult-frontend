@@ -66,6 +66,7 @@ const navConfig = [
       { title: 'Aminities', icon: icon('ic_magic'), path: '/master/aminities' },
       { title: 'Unit', icon: icon(), path: '/master/unit' },
       { title: 'Banner', icon: icon(), path: '/master/banner' },
+      { title: 'Advertise', icon: icon(), path: '/master/advertise' },
     ],
   },
 

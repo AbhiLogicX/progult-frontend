@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { format } from 'date-fns';
+import PropTypes from 'prop-types';
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -8,57 +10,106 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 
-function createData(
-  bK_Id,
-  bussinessName,
-  bookedOn,
-  bookingAmount,
-  addonAmount,
-  foodAndBevrages,
-  total
-) {
-  return { bK_Id, bussinessName, bookedOn, bookingAmount, addonAmount, foodAndBevrages, total };
-}
+import { getReq } from 'src/api/api';
 
-const rows = [
-  createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
-  createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
-  createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
-  createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
-  createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
-];
+// function createData(
+//   bK_Id,
+//   bussinessName,
+//   bookedOn,
+//   bookingAmount,
+//   addonAmount,
+//   foodAndBevrages,
+//   total
+// ) {
+//   return { bK_Id, bussinessName, bookedOn, bookingAmount, addonAmount, foodAndBevrages, total };
+// }
 
-export default function BookingTable() {
+// const rows = [
+//   createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
+//   createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
+//   createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
+//   createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
+//   createData('115236', 'M Bussiness', '27-02-2024 at 02:00PM', 1200, 500, 300, 2000),
+// ];
+
+export default function BookingTable({ usId, fromCall }) {
+  const [fetchedData, setFetchedData] = React.useState(false);
+  const [fetchedEventData, setFetchedEventData] = React.useState(false);
+  const [bussinesBookingData, setBussinesBookingData] = React.useState();
+  const [eventBookingData, setEventBookingData] = React.useState();
+  React.useEffect(() => {
+    if (!fetchedData) {
+      fetchBussinessBooking();
+    }
+    if (!fetchedEventData) {
+      fetchEvnetBooking();
+    }
+    async function fetchBussinessBooking() {
+      await getReq(`booking/business?userId=${usId}`).then((res) => {
+        if (res.statusCode === 200) {
+          setBussinesBookingData(res.data);
+          setFetchedData(true);
+        }
+      });
+    }
+    async function fetchEvnetBooking() {
+      await getReq(`booking/business?userId=${usId}`).then((res) => {
+        if (res.statusCode === 200) {
+          setEventBookingData(res.data);
+          setFetchedEventData(true);
+        }
+      });
+    }
+  }, [fetchedData, usId, fetchedEventData]);
+  // console.log('eventBookingData', eventBookingData);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 600 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>BK Id</TableCell>
-            <TableCell>Bussiness Name</TableCell>
+            <TableCell>{fromCall === 'bussiness' ? 'Bussiness Name' : 'Event Name'}</TableCell>
             <TableCell>Booked On</TableCell>
-            <TableCell>Booking Amount</TableCell>
-            <TableCell>Addon Amount</TableCell>
-            <TableCell>Food & Bevrages Amount</TableCell>
-            <TableCell>Total</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Total Ammount</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">
-                {row.bK_Id}
-              </TableCell>
-              <TableCell>{row.bussinessName}</TableCell>
-              <TableCell>{row.bookedOn}</TableCell>
-              <TableCell>{row.bookingAmount}</TableCell>
-              <TableCell>{row.addonAmount}</TableCell>
-              <TableCell>{row.foodAndBevrages}</TableCell>
-              <TableCell>{row.total}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+        {fromCall === 'bussiness' ? (
+          <TableBody>
+            {bussinesBookingData?.map((row) => (
+              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell component="th" scope="row">
+                  {row?.bookNo}
+                </TableCell>
+                <TableCell>{row?.bussinessId?.title}</TableCell>
+                <TableCell>{format(new Date(row?.createdAt), 'dd-MMM-yyyy')}</TableCell>
+                <TableCell>{row?.status}</TableCell>
+                <TableCell>{row?.totalPayable}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        ) : null}
+        {fromCall === 'event' ? (
+          <TableBody>
+            {eventBookingData?.map((row) => (
+              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell component="th" scope="row">
+                  {row?.bookNo}
+                </TableCell>
+                <TableCell>{row?.bussinessId?.title}</TableCell>
+                <TableCell>{format(new Date(row?.createdAt), 'dd-MMM-yyyy')}</TableCell>
+                <TableCell>{row?.status}</TableCell>
+                <TableCell>{row?.totalPayable}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        ) : null}
       </Table>
     </TableContainer>
   );
 }
+
+BookingTable.propTypes = {
+  usId: PropTypes.string,
+  fromCall: PropTypes.string,
+};

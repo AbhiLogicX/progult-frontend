@@ -53,7 +53,7 @@ export default function TableViewMaster({ columns, actionbtn, tableData, fromCal
     columns.push('Action');
   }
   // const BASE_IMG_URL = 'https://proglut.onrender.com/';
-
+  // console.log(tableData);
   return (
     <Paper elevation={3} sx={{ width: '100%' }}>
       <TableContainer component={Box}>

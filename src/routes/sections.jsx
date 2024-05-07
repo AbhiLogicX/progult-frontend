@@ -8,6 +8,7 @@ import CustomerListPage from 'src/pages/CustomerListPage';
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const VendorPage = lazy(() => import('src/pages/vendorListPage'));
 export const MasterActivityPage = lazy(() => import('src/pages/masterActivityList'));
+export const MasterAdvertisePage = lazy(() => import('src/pages/masterAdvertise'));
 export const MasterAminitiesPage = lazy(() => import('src/pages/masterAminiteList'));
 export const MasterUnitPage = lazy(() => import('src/pages/masterUnitList'));
 export const LoginPage = lazy(() => import('src/pages/login'));
@@ -72,6 +73,7 @@ export default function Router() {
         { path: 'master/aminities', element: <MasterAminitiesPage /> },
         { path: 'master/activites', element: <MasterActivityPage /> },
         { path: 'master/banner', element: <MasterBannerPage /> },
+        { path: 'master/advertise', element: <MasterAdvertisePage /> },
         { path: 'customers', element: <CustomerListPage /> },
         { path: 'master/unit', element: <MasterUnitPage /> },
         { path: 'customers/detail/:Id', element: <ProfileViewPage /> },

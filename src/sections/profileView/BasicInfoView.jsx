@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -8,6 +8,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
+import { getReq } from 'src/api/api';
 import { grey, error, primary, success } from 'src/theme/palette';
 
 import BookingTable from './bookingTable';
@@ -16,6 +17,14 @@ import ContatactDetails from './contactForm';
 
 function BasicInfoView({ profiledata, handleReload }) {
   const [openForm, setOpenForm] = useState(false);
+  const [tableRender, setTableRender] = useState('bussiness');
+
+  const handleClickChangeTableBussiness = () => {
+    setTableRender('bussiness');
+  };
+  const handleClickChangeTableEvent = () => {
+    setTableRender('event');
+  };
 
   const handleOpenForm = () => {
     setOpenForm(true);
@@ -24,10 +33,10 @@ function BasicInfoView({ profiledata, handleReload }) {
     setOpenForm(false);
   };
   const location = useLocation().pathname.split('/');
-  // console.log(profiledata);
+  // console.log('profiledata', profiledata);
   return (
     <>
-      <Box display="flex" width="100%">
+      <Box display="flex" width="100%" mb={2}>
         <Box mr={2}>
           <Box mb={3} component={Paper} elevation={3}>
             <Box>
@@ -122,7 +131,7 @@ function BasicInfoView({ profiledata, handleReload }) {
             {location[1] === 'vendors' ? (
               <Paper elevation={3} sx={{ p: '1%' }}>
                 <Typography variant="h5"> Yearly Earnings</Typography>
-                <LineChart />
+                <LineChart id={profiledata.data._id} />
               </Paper>
             ) : null}
           </Box>
@@ -136,28 +145,58 @@ function BasicInfoView({ profiledata, handleReload }) {
           <Box display="flex" justifyContent="space-between" mb={2}>
             <Typography variant="h5">Booking History</Typography>
             <Box>
-              <Button
-                sx={{
-                  bgcolor: grey[700],
-                  color: error.errorBackground,
-                  '&:hover': { bgcolor: grey[700], color: error.errorBackground },
-                  mr: 1,
-                }}
-              >
-                Bussiness
-              </Button>
-              <Button
-                sx={{
-                  bgcolor: error.errorBackground,
-                  color: grey[700],
-                  '&:hover': { bgcolor: grey[700], color: error.errorBackground },
-                }}
-              >
-                Evnets
-              </Button>
+              {tableRender === 'bussiness' ? (
+                <Button
+                  sx={{
+                    bgcolor: grey[700],
+                    color: error.errorBackground,
+                    '&:hover': { bgcolor: grey[700], color: error.errorBackground },
+                    mr: 1,
+                  }}
+                  disabled
+                >
+                  Bussiness
+                </Button>
+              ) : (
+                <Button
+                  sx={{
+                    bgcolor: error.errorBackground,
+                    color: grey[700],
+                    '&:hover': { bgcolor: grey[700], color: error.errorBackground },
+                    mr: 1,
+                  }}
+                  onClick={handleClickChangeTableBussiness}
+                >
+                  Bussiness
+                </Button>
+              )}
+              {tableRender === 'event' ? (
+                <Button
+                  sx={{
+                    bgcolor: grey[700],
+                    color: error.errorBackground,
+                    '&:hover': { bgcolor: grey[700], color: error.errorBackground },
+                    mr: 1,
+                  }}
+                  disabled
+                >
+                  Evnets
+                </Button>
+              ) : (
+                <Button
+                  sx={{
+                    bgcolor: error.errorBackground,
+                    color: grey[700],
+                    '&:hover': { bgcolor: grey[700], color: error.errorBackground },
+                  }}
+                  onClick={handleClickChangeTableEvent}
+                >
+                  Evnets
+                </Button>
+              )}
             </Box>
           </Box>
-          <BookingTable />
+          <BookingTable usId={profiledata?.data?._id} fromCall={tableRender} />
         </Paper>
       ) : null}
     </>
@@ -172,6 +211,30 @@ function SidePanle() {
   const location = useLocation().pathname.split('/');
   // console.log(location);
 
+  const [fetchedData, setFetchedData] = useState(false);
+  const [sidePanleData, setSidePanleData] = useState();
+
+  useEffect(() => {
+    if (!fetchedData) {
+      fetechSideData();
+    }
+    async function fetechSideData() {
+      if (location[1] === 'vendors') {
+        await getReq(`report/getVendorBookingCounts?vendorId=${location[3]}`).then((res) => {
+          setSidePanleData(res.data);
+          setFetchedData(true);
+        });
+      }
+      if (location[1] === 'customers') {
+        // report/getUserBookingCounts?userId=663228b1922313926ddfb953
+        await getReq(`report/getUserBookingCounts?userId=${location[3]}`).then((res) => {
+          setSidePanleData(res.data);
+          setFetchedData(true);
+        });
+      }
+    }
+  });
+  // console.log('sidePanleData', sidePanleData);
   return (
     <>
       {location[1] === 'customers' ? (
@@ -183,23 +246,43 @@ function SidePanle() {
           <Box display="flex" justifyContent="space-between" flexWrap="wrap">
             <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
               <Typography variant="h4" color={primary.main}>
-                12
+                {sidePanleData?.todaysBussinessBooking}
               </Typography>
-              <Typography variant="subtitle1">Today’s Bookings</Typography>
+              <Typography variant="subtitle1">Today’s Bussiness Bookings</Typography>
             </Box>
 
             <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
               <Typography variant="h4" color={primary.main}>
-                12
+                {sidePanleData?.todaysEventBooking}
               </Typography>
-              <Typography variant="subtitle1">Bookings This Month</Typography>
+              <Typography variant="subtitle1">Today’s Event Bookings</Typography>
             </Box>
 
             <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
               <Typography variant="h4" color={primary.main}>
-                12
+                {sidePanleData?.monthlyBussinessBooking}
               </Typography>
-              <Typography variant="subtitle1">All Bookings</Typography>
+              <Typography variant="subtitle1">Bussiness Bookings This Month</Typography>
+            </Box>
+
+            <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+              <Typography variant="h4" color={primary.main}>
+                {sidePanleData?.monthlyEventBooking}
+              </Typography>
+              <Typography variant="subtitle1">Event Bookings This Month</Typography>
+            </Box>
+
+            <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+              <Typography variant="h4" color={primary.main}>
+                {sidePanleData?.totalEventBooking}
+              </Typography>
+              <Typography variant="subtitle1">All Event Bookings</Typography>
+            </Box>
+            <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+              <Typography variant="h4" color={primary.main}>
+                {sidePanleData?.totalBussinessBooking}
+              </Typography>
+              <Typography variant="subtitle1">All Bussiness Bookings</Typography>
             </Box>
           </Box>
         </Paper>
@@ -215,14 +298,14 @@ function SidePanle() {
             <Box display="flex" justifyContent="space-between" flexWrap="wrap">
               <Box bgcolor={success.lighter} p={2} borderRadius={2} width="51.4%" mb={1}>
                 <Typography variant="h4" color={primary.main}>
-                  03
+                  {sidePanleData?.totalBussiness}
                 </Typography>
                 <Typography variant="subtitle1">Businesses</Typography>
               </Box>
 
               <Box bgcolor={success.lighter} p={2} borderRadius={2} width="48%" mb={1}>
                 <Typography variant="h4" color={primary.main}>
-                  01
+                  {sidePanleData?.totalEvent}
                 </Typography>
                 <Typography variant="subtitle1">Events</Typography>
               </Box>
@@ -237,23 +320,43 @@ function SidePanle() {
             <Box display="flex" justifyContent="space-between" flexWrap="wrap">
               <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
                 <Typography variant="h4" color={primary.main}>
-                  12
+                  {sidePanleData?.todaysBussinessBooking}
                 </Typography>
-                <Typography variant="subtitle1">Today’s Bookings</Typography>
+                <Typography variant="subtitle1">Today’s Bussiness Bookings</Typography>
               </Box>
 
               <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
                 <Typography variant="h4" color={primary.main}>
-                  12
+                  {sidePanleData?.monthlyBussinessBooking}
                 </Typography>
-                <Typography variant="subtitle1">Today’s Bookings</Typography>
+                <Typography variant="subtitle1">Monthly Bussiness Bookings</Typography>
               </Box>
 
               <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
                 <Typography variant="h4" color={primary.main}>
-                  12
+                  {sidePanleData?.totalBussinessBooking}
                 </Typography>
-                <Typography variant="subtitle1">Today’s Bookings</Typography>
+                <Typography variant="subtitle1">Total Bussiness Bookings</Typography>
+              </Box>
+
+              <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  {sidePanleData?.todaysEventBooking}
+                </Typography>
+                <Typography variant="subtitle1">Today’s Event Bookings</Typography>
+              </Box>
+
+              <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  {sidePanleData?.monthlyEventBooking}
+                </Typography>
+                <Typography variant="subtitle1">Monthly Event Bookings</Typography>
+              </Box>
+              <Box bgcolor={primary.lighter} p={2} borderRadius={2} mb={1}>
+                <Typography variant="h4" color={primary.main}>
+                  {sidePanleData?.totalEventBooking}
+                </Typography>
+                <Typography variant="subtitle1">Total Event Bookings</Typography>
               </Box>
             </Box>
           </Paper>
@@ -266,20 +369,20 @@ function SidePanle() {
             <Box display="flex" justifyContent="space-between" flexWrap="wrap">
               <Box bgcolor={primary.light} p={2} borderRadius={2} mb={1}>
                 <Typography variant="h4" color={primary.main}>
-                  ₹200
+                  {`₹${sidePanleData?.totalBussinessEarning}`}
                 </Typography>
-                <Typography variant="subtitle1">Today’s Earnings</Typography>
+                <Typography variant="subtitle1">Total Bussiness Earnings</Typography>
               </Box>
 
               <Box bgcolor={primary.light} p={2} borderRadius={2} mb={1}>
                 <Typography variant="h4" color={primary.main}>
-                  ₹500
+                  {`₹${sidePanleData?.totalEventEarning}`}
                 </Typography>
-                <Typography variant="subtitle1">Earnings This Month</Typography>
+                <Typography variant="subtitle1">Total Event Earnings</Typography>
               </Box>
               <Box bgcolor={primary.light} p={2} borderRadius={2} mb={1}>
                 <Typography variant="h4" color={primary.main}>
-                  ₹1050
+                  {`₹${sidePanleData?.totalEarning}`}
                 </Typography>
                 <Typography variant="subtitle1">Total Earnings</Typography>
               </Box>

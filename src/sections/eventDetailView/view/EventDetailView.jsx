@@ -24,6 +24,8 @@ import EventInfoDialogForm from '../EditEventDialogInfoForm';
 
 export default function EventDetailview() {
   const [dataFetched, setDataFetched] = useState(false);
+  const [pkgDataFetched, setPkgDataFetched] = useState(false);
+  const [pkageData, setPkageData] = useState();
   const [data, setData] = useState();
   const [openDialog, setOpenDialog] = useState(false);
   const [openAminiteDialog, setOpenAminiteDialog] = useState(false);
@@ -58,13 +60,24 @@ export default function EventDetailview() {
     if (!dataFetched) {
       fetchEventData();
     }
+    if (!pkgDataFetched) {
+      fetchPkgData();
+    }
     async function fetchEventData() {
       await getReq(`event/detail?Id=${id}`).then((res) => {
         setData(res.data);
         setDataFetched(true);
       });
     }
-  }, [dataFetched, id]);
+    async function fetchPkgData() {
+      await getReq(`event/packages?eventId=${data?._id}`).then((res) => {
+        if (res.statusCode === 200) {
+          setPkgDataFetched(true);
+          setPkageData(res.data);
+        }
+      });
+    }
+  }, [dataFetched, id, pkgDataFetched, data?._id]);
 
   const date = new Date();
 
@@ -206,9 +219,9 @@ export default function EventDetailview() {
         <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
           <Box display="flex" justifyContent="space-between" mb={1}>
             <Typography variant="h5">Packages</Typography>
-            <AddPackageForm eventId={data?._id} handleReload={setDataFetched} />
+            <AddPackageForm eventId={data?._id} handleReload={setPkgDataFetched} />
           </Box>
-          <PackageCard eventId={data?._id} handleReload={setDataFetched} />
+          <PackageCard eventId={data?._id} handleReload={setPkgDataFetched} pkgData={pkageData} />
         </Paper>
 
         <Grid container>

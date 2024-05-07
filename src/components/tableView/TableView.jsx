@@ -2,9 +2,11 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
+import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
+import { Typography } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
@@ -45,7 +47,10 @@ export default function TableView({ columns, actionbtn, tableData, fromCall, han
                     }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.fullName}
+                      <Box>
+                        <Typography>{row.fullName}</Typography>
+                        <Typography variant="caption">{row.uniqCode}</Typography>
+                      </Box>
                     </TableCell>
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{row.mobile}</TableCell>

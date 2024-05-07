@@ -22,15 +22,18 @@ import BussinessTimeForm from 'src/components/dialogueForm/BussinessHourDialog';
 
 // import { itemData } from './mockData';
 // import ContactDetailform from './ContactForm';
+import GalleryForm from './galleryImageForm';
+import AddActivityDialog from './AddActivites';
 import ContactInfoDialog from './ContactFormDialog';
 import { BussinessActivityView } from './BussinessActivityView';
 import { FoodAndItem, AddFoodAndItem } from './BussinessFoodItem';
 import AmenitiesManageForm from '../eventDetailView/AminitesManage';
 
-function BussinessInfoView({ bussinessData, handleReload, gallery }) {
+function BussinessInfoView({ bussinessData, handleReload, gallery, handleGalleryReload }) {
   const [open, setOpen] = useState(false);
+  const [openActivityDialog, setOpenActivityDialog] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
-
+  const [openGalleryForm, setOpenGalleryForm] = useState(false);
   const [openForm, setOpenForm] = useState(false);
 
   const [openAddonForm, setopenAddonForm] = useState({
@@ -38,6 +41,22 @@ function BussinessInfoView({ bussinessData, handleReload, gallery }) {
     type: '',
   });
   const [openAminiteDialog, setOpenAminiteDialog] = useState(false);
+
+  const handleOpenActivityDialog = () => {
+    setOpenActivityDialog(true);
+  };
+
+  const handleCloseActivityDialog = () => {
+    setOpenActivityDialog(false);
+  };
+
+  const handleOpenGalleryForm = () => {
+    setOpenGalleryForm(true);
+  };
+
+  const handleCloseGalleryForm = () => {
+    setOpenGalleryForm(false);
+  };
 
   const handleOpenForm = () => {
     setOpenForm(true);
@@ -188,6 +207,7 @@ function BussinessInfoView({ bussinessData, handleReload, gallery }) {
                   open={openForm}
                   handleClose={handleCloseForm}
                   fData={bussinessData}
+                  handleReload={handleReload}
                 />
               </Box>
             </Grid>
@@ -405,6 +425,7 @@ function BussinessInfoView({ bussinessData, handleReload, gallery }) {
             <Box mb={2} display="flex" justifyContent="space-between">
               <Typography variant="h5">Activities</Typography>
               <Button
+                onClick={handleOpenActivityDialog}
                 sx={{
                   bgcolor: 'white',
                   color: primary.main,
@@ -418,6 +439,11 @@ function BussinessInfoView({ bussinessData, handleReload, gallery }) {
                 <AddIcon />
                 Add More
               </Button>
+              <AddActivityDialog
+                open={openActivityDialog}
+                handleClose={handleCloseActivityDialog}
+                bussinessId={bussinessData._id}
+              />
             </Box>
             <Box>
               <BussinessActivityView bussinessId={bussinessData._id} />
@@ -428,6 +454,7 @@ function BussinessInfoView({ bussinessData, handleReload, gallery }) {
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h5">Gallery</Typography>
               <Button
+                onClick={handleOpenGalleryForm}
                 sx={{
                   bgcolor: 'white',
                   color: primary.main,
@@ -438,9 +465,15 @@ function BussinessInfoView({ bussinessData, handleReload, gallery }) {
                   },
                 }}
               >
-                <AddIcon />
-                Add Image
+                Manage Gallery
               </Button>
+              <GalleryForm
+                open={openGalleryForm}
+                handleClose={handleCloseGalleryForm}
+                gallery={gallery}
+                bussienessId={bussinessData._id}
+                handleReload={handleGalleryReload}
+              />
             </Box>
 
             <ImageList sx={{ width: '100%', height: 400 }} cols={4} rowHeight={200}>
@@ -536,6 +569,7 @@ BussinessInfoView.propTypes = {
   bussinessData: PropTypes.object,
   handleReload: PropTypes.func,
   gallery: PropTypes.array,
+  handleGalleryReload: PropTypes.func,
 };
 
 // TimingCards.propType = {

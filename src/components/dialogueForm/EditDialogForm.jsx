@@ -47,6 +47,7 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
         Id: mId,
         description,
       };
+
       const result = await patchReq(`${domainCall}`, dataToUpdate); // we have to handle the success and error
       if (result.statusCode === 200) {
         setAlert(true);

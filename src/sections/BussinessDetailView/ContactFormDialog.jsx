@@ -15,7 +15,7 @@ import {
 
 import { patchReq } from 'src/api/api';
 
-export default function ContactInfoDialog({ open, handleClose, fData }) {
+export default function ContactInfoDialog({ open, handleClose, fData, handleReload }) {
   const { register, handleSubmit } = useForm({});
 
   const activeStatusList = [
@@ -61,6 +61,20 @@ export default function ContactInfoDialog({ open, handleClose, fData }) {
     },
   ];
 
+  const inActiveStausList = [
+    {
+      value: 'in-active',
+      lable: 'in-active',
+    },
+    {
+      value: 'active',
+      lable: 'active',
+    },
+    {
+      value: 'delete',
+      lable: 'delete',
+    },
+  ];
   const onSubmit = async (data) => {
     // console.log('hello');
     data.Id = fData._id;
@@ -81,6 +95,7 @@ export default function ContactInfoDialog({ open, handleClose, fData }) {
 
     // console.log(data, data.coverImage[0]);
     handleClose();
+    handleReload(false);
   };
 
   // console.log(fData);
@@ -139,6 +154,15 @@ export default function ContactInfoDialog({ open, handleClose, fData }) {
               {fData?.status === 'reject' ? (
                 <TextField select defaultValue="reject" {...register('status')} name="status">
                   {rejectStatusList.map((opt) => (
+                    <MenuItem key={opt.value} value={opt.value}>
+                      {opt.lable}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              ) : null}
+              {fData?.status === 'in-active' ? (
+                <TextField select defaultValue="in-active" {...register('status')} name="status">
+                  {inActiveStausList.map((opt) => (
                     <MenuItem key={opt.value} value={opt.value}>
                       {opt.lable}
                     </MenuItem>
@@ -235,4 +259,5 @@ ContactInfoDialog.propTypes = {
   fData: PropTypes.object,
   handleClose: PropTypes.func,
   open: PropTypes.bool,
+  handleReload: PropTypes.func,
 };
