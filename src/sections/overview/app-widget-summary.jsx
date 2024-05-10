@@ -5,34 +5,44 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+import { RouterLink } from 'src/routes/components';
+
 import { fShortenNumber } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 
-export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
+export default function AppWidgetSummary({
+  title,
+  total,
+  icon,
+  color = 'primary',
+  sx,
+  pathRe,
+  ...other
+}) {
   return (
-    <Card
-      component={Stack}
-      spacing={3}
-      direction="row"
-      sx={{
-        px: 3,
-        py: 5,
-        borderRadius: 2,
-        ...sx,
-      }}
-      {...other}
-    >
-      {icon && <Box sx={{ width: 64, height: 64 }}>{icon}</Box>}
-
-      <Stack spacing={0.5}>
-        <Typography variant="h4">{fShortenNumber(total)}</Typography>
-
-        <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
-          {title}
-        </Typography>
-      </Stack>
-    </Card>
+    <Box component={RouterLink} href={pathRe}>
+      <Card
+        component={Stack}
+        spacing={3}
+        direction="row"
+        sx={{
+          px: 3,
+          py: 5,
+          borderRadius: 2,
+          ...sx,
+        }}
+        {...other}
+      >
+        {icon && <Box sx={{ width: 64, height: 64 }}>{icon}</Box>}
+        <Stack spacing={0.5}>
+          <Typography variant="h4">{fShortenNumber(total)}</Typography>
+          <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
+            {title}
+          </Typography>
+        </Stack>
+      </Card>
+    </Box>
   );
 }
 
@@ -42,4 +52,5 @@ AppWidgetSummary.propTypes = {
   sx: PropTypes.object,
   title: PropTypes.string,
   total: PropTypes.number,
+  pathRe: PropTypes.string,
 };

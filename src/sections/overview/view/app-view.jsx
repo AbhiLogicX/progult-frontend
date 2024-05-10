@@ -57,6 +57,7 @@ export default function AppView() {
             total={dashData?.monthlyBussiness}
             color="success"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
+            pathRe="/bookings/bussiness"
           />
         </Grid>
 
@@ -66,6 +67,7 @@ export default function AppView() {
             total={dashData?.totalCustomer}
             color="info"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+            pathRe="/customers"
           />
         </Grid>
 
@@ -75,6 +77,7 @@ export default function AppView() {
             total={dashData?.totalBussiness}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+            pathRe="/bussiness-list"
           />
         </Grid>
 
@@ -84,6 +87,7 @@ export default function AppView() {
             total={dashData?.totalEvent}
             color="error"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+            pathRe="/evnet-list"
           />
         </Grid>
 

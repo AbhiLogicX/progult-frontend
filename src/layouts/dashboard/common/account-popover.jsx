@@ -9,6 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { RouterLink } from 'src/routes/components';
+
 import { account } from 'src/_mock/account';
 
 // ----------------------------------------------------------------------
@@ -17,6 +19,9 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     icon: 'eva:person-fill',
+    path: '/admin/profile',
+    // component={RouterLink}
+    //
   },
   {
     label: 'Settings',
@@ -99,7 +104,11 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
+          <MenuItem
+            key={option.label}
+            href={option.path ? option.path : null}
+            component={RouterLink}
+          >
             {option.label}
           </MenuItem>
         ))}

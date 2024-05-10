@@ -1,3 +1,4 @@
+import format from 'date-fns/format';
 import { useState, useEffect, useContext } from 'react';
 
 import { Box } from '@mui/material';
@@ -15,10 +16,32 @@ export default function VendorListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
   const { setTitle } = useContext(TitleContext);
+  const [filterData, setFilterData] = useState({
+    fromDate: '',
+    toDate: format(new Date(), 'yyyy-MM-dd'),
+    vendorId: '',
+    activityId: '',
+    status: '',
+    domain: '',
+    state: '',
+    city: '',
+    bussinessId: '',
+    host: '',
+  });
+
+  const urlStr = `vendor/all?${
+    filterData.bussinessId !== '' ? `bussinessId=${filterData.bussinessId}` : ''
+  }${filterData.status !== '' ? `status=${filterData.status}` : ''}${
+    filterData.activityId !== '' ? `&activityId=${filterData.activityId}` : ''
+  }${filterData.state !== '' ? `&state=${filterData.state}` : ''}${
+    filterData.city !== '' ? `&city=${filterData.city}` : ''
+  }${filterData.fromDate !== '' ? `&fromDate=${filterData.fromDate}` : ''}${
+    filterData.toDate !== '' ? `&toDate=${filterData.toDate}` : ''
+  }${filterData.host !== '' ? `&hostName=${filterData.host}` : ''}`;
 
   useEffect(() => {
     async function fetchRowData() {
-      const result = await getReq('vendor/all');
+      const result = await getReq(urlStr);
       setRowData(result.data);
       setFetchedData(true);
     }
@@ -26,7 +49,7 @@ export default function VendorListView() {
     if (!fetchedData) {
       fetchRowData();
     }
-  }, [fetchedData]);
+  }, [fetchedData, urlStr]);
 
   const tableColumns = ['Name', 'Email', 'Mobile', 'Status'];
   const actionCol = ['View', 'Delete'];
@@ -41,7 +64,12 @@ export default function VendorListView() {
         </Button>
       </Box>
 
-      <TableFilterToolBar fromCall="vendor" />
+      <TableFilterToolBar
+        fromCall="vendor"
+        filterData={filterData}
+        handleReload={setFetchedData}
+        setFilterData={setFilterData}
+      />
 
       {fetchedData ? (
         <TableView

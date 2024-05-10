@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 import ImageListItem from '@mui/material/ImageListItem';
 
+import { getReq } from 'src/api/api';
 import properties from 'src/config/properties';
 import { grey, primary } from 'src/theme/palette';
 
@@ -30,11 +31,14 @@ import { FoodAndItem, AddFoodAndItem } from './BussinessFoodItem';
 import AmenitiesManageForm from '../eventDetailView/AminitesManage';
 
 function BussinessInfoView({ bussinessData, handleReload, gallery, handleGalleryReload }) {
+  const [fetchedActivityArr, setFetchedActivityArr] = useState(false);
   const [open, setOpen] = useState(false);
   const [openActivityDialog, setOpenActivityDialog] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
   const [openGalleryForm, setOpenGalleryForm] = useState(false);
   const [openForm, setOpenForm] = useState(false);
+  const [allActivity, setAllActivity] = useState();
+  const [ActivityDataFetched, setActivityDataFetched] = useState(false);
 
   const [openAddonForm, setopenAddonForm] = useState({
     open: false,
@@ -112,6 +116,23 @@ function BussinessInfoView({ bussinessData, handleReload, gallery, handleGallery
     // console.log('def', defaultAminites);
     return defaultAminites;
   }
+  useEffect(() => {
+    if (!fetchedActivityArr) {
+      fetchActivityArr();
+    }
+    async function fetchActivityArr() {
+      await getReq(`bussinessActivity?bussinessId=${bussinessData._id}`).then((res) => {
+        if (res.statusCode === 200) {
+          const tempObj = res.data.map((acarr) => ({
+            activityId: acarr.activityId._id,
+            id: acarr._id,
+          }));
+          setAllActivity(tempObj);
+          setFetchedActivityArr(true);
+        }
+      });
+    }
+  }, [fetchedActivityArr, bussinessData._id]);
 
   // console.log('bd', bussinessData);
   // console.log('gall', gallery);
@@ -443,10 +464,17 @@ function BussinessInfoView({ bussinessData, handleReload, gallery, handleGallery
                 open={openActivityDialog}
                 handleClose={handleCloseActivityDialog}
                 bussinessId={bussinessData._id}
+                dValue={fetchedActivityArr ? allActivity : []}
+                handleReloadVal={setFetchedActivityArr}
+                handleReloadActivityView={setActivityDataFetched}
               />
             </Box>
             <Box>
-              <BussinessActivityView bussinessId={bussinessData._id} />
+              <BussinessActivityView
+                bussinessId={bussinessData._id}
+                dataFetched={ActivityDataFetched}
+                handleFetchedData={setActivityDataFetched}
+              />
             </Box>
           </Paper>
 

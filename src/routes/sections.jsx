@@ -30,6 +30,8 @@ export const ContactPage = lazy(() => import('src/pages/contactUsPage'));
 export const MasterBannerPage = lazy(() => import('src/pages/masterBannerList'));
 export const ActivitySlotEdit = lazy(() => import('src/pages/activitySlotEdit'));
 export const BookingDetailsPage = lazy(() => import('src/pages/BookingDetailPage'));
+export const AdminProfilePage = lazy(() => import('src/pages/adminProfileView'));
+export const FeedbackPages = lazy(() => import('src/pages/Feedbackview'));
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -78,6 +80,7 @@ export default function Router() {
         { path: 'master/unit', element: <MasterUnitPage /> },
         { path: 'customers/detail/:Id', element: <ProfileViewPage /> },
         { path: 'vendors/detail/:Id', element: <ProfileViewPage /> },
+        { path: 'admin/profile', element: <AdminProfilePage /> },
         { path: 'bussiness/detail/:bussinessId', element: <BussinessDetailPage /> },
         { path: 'bussiness-list', element: <BussinessListPage /> },
         { path: 'evnet-list', element: <EventListPage /> },
@@ -95,6 +98,14 @@ export default function Router() {
         {
           path: 'bussiness/detail/:bussinessId/editSlots/:activityId',
           element: <ActivitySlotEdit />,
+        },
+        {
+          path: 'feedback/reviews',
+          element: <FeedbackPages />,
+        },
+        {
+          path: 'feedback/complains',
+          element: <FeedbackPages />,
         },
       ],
     },

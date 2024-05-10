@@ -1,7 +1,6 @@
 // import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
 
 import {
   Box,
@@ -18,58 +17,16 @@ import {
 import { patchReq } from 'src/api/api';
 import { error } from 'src/theme/palette';
 
-export default function ContatactDetails({ profileData, handleReload, handleClose, open }) {
+export default function ContatactDetailsEdit({ profileData, handleReload, handleClose, open }) {
   const { register, handleSubmit } = useForm({});
 
-  const location = useLocation().pathname.split('/');
-  // console.log(profileData.profileImage);
   async function onSubmit(data) {
-    data.fullName = profileData.data.fullName;
-    data.Id = profileData.data._id;
-    data.image = data.image[0] !== null ? data.image[0] : null;
-    // console.log(data.image[0] === undefined);
-    if (location[1] === 'vendors') {
-      if (data.status) {
-        const statusData = {
-          status: data.status,
-          Id: data.Id,
-        };
-        await patchReq('vendor/update-status', statusData);
+    // console.log('hello', data);
+    await patchReq('admin/detail', data).then((res) => {
+      if (res.statusCode === 200) {
+        handleClose();
       }
-      if (data.image !== null) {
-        const formData = new FormData();
-        formData.append('profileImage', data.image);
-        formData.append('Id', profileData.data._id);
-        await patchReq('vendor/update-image', formData);
-      }
-      await patchReq('vendor/detail', data).then((res) => {
-        if (res.statusCode === 200) {
-          handleClose();
-          handleReload(false);
-        }
-      });
-    }
-    if (location[1] === 'customers') {
-      if (data.status) {
-        const statusData = {
-          status: data.status,
-          Id: data.Id,
-        };
-        await patchReq('user/update-status  ', statusData);
-      }
-      if (data.image !== null) {
-        const formData = new FormData();
-        formData.append('profileImage', data.image);
-        formData.append('Id', profileData.data._id);
-        await patchReq('vendor/update-image', formData);
-      }
-      await patchReq('user/detail', data).then((res) => {
-        if (res.statusCode === 200) {
-          handleClose();
-          handleReload(false);
-        }
-      });
-    }
+    });
   }
   return (
     <Dialog
@@ -82,13 +39,23 @@ export default function ContatactDetails({ profileData, handleReload, handleClos
       <DialogTitle>Edit Contact Details</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
+          <Typography sx={{ fontWeight: 600 }}>FullName :</Typography>
+          <TextField
+            name="fullName"
+            variant="outlined"
+            {...register('fullName')}
+            required
+            defaultValue={profileData.fullName}
+            fullWidth
+          />
+
           <Typography sx={{ fontWeight: 600 }}>Email :</Typography>
           <TextField
             name="email"
             variant="outlined"
             {...register('email')}
             required
-            defaultValue={profileData.data.email}
+            defaultValue={profileData.email}
             fullWidth
           />
 
@@ -98,29 +65,25 @@ export default function ContatactDetails({ profileData, handleReload, handleClos
             variant="outlined"
             {...register('mobile')}
             required
-            defaultValue={profileData.data.mobile}
+            defaultValue={profileData.mobile}
             fullWidth
           />
-          <Typography sx={{ fontWeight: 600, mt: 2 }}>Image :</Typography>
-          <TextField type="file" {...register('image')} />
 
-          <Box display="flex">
-            <Box display="flex" alignItems="center" mt={2} mr={3}>
-              <Typography sx={{ fontWeight: 600 }}>Gender :</Typography>
-              <NativeSelect defaultValue={profileData.data.gender} {...register('gender')}>
-                <option value="male">male</option>
-                <option value="female">female</option>
-              </NativeSelect>
-            </Box>
-            <Box display="flex" alignItems="center" mt={2}>
-              <Typography sx={{ fontWeight: 600, mr: 1 }}>Status :</Typography>
-              <NativeSelect defaultValue={profileData.data.status} {...register('status')}>
-                <option value="active">active</option>
-                <option value="in-active">in-active</option>
-              </NativeSelect>
-            </Box>
+          <Box display="flex" alignItems="center" mt={2}>
+            <Typography sx={{ fontWeight: 600 }}>Gender :</Typography>
+            <NativeSelect defaultValue={profileData.gender} {...register('gender')}>
+              <option value="male">male</option>
+              <option value="female">female</option>
+            </NativeSelect>
           </Box>
-
+          <Box display="flex" alignItems="center" mt={2}>
+            <Typography sx={{ fontWeight: 600, mr: 1 }}>Status :</Typography>
+            <NativeSelect defaultValue={profileData.status} {...register('status')}>
+              <option value="active">active</option>
+              <option value="in-active">in-active</option>
+            </NativeSelect>
+          </Box>
+          {/* 
           <Box display="flex" mt={2} justifyContent="space-between">
             <Box>
               <Typography sx={{ fontWeight: 600 }}>City :</Typography>
@@ -173,7 +136,7 @@ export default function ContatactDetails({ profileData, handleReload, handleClos
             defaultValue={
               profileData.data?.address?.pincode ? profileData.data.address.pincode : ''
             }
-          />
+          /> */}
         </DialogContent>
         <DialogActions>
           <Button type="submit" onClick={handleClose} sx={{ color: error.main }}>
@@ -188,7 +151,7 @@ export default function ContatactDetails({ profileData, handleReload, handleClos
   );
 }
 
-ContatactDetails.propTypes = {
+ContatactDetailsEdit.propTypes = {
   profileData: PropTypes.object,
   handleReload: PropTypes.func,
   handleClose: PropTypes.func,

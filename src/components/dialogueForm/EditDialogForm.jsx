@@ -41,7 +41,31 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
   };
 
   const handleSubmit = async () => {
-    if (domainCall === 'master/unit' || domainCall === 'master/banner') {
+    const formData = new FormData();
+    if (domainCall === 'master/banner' || domainCall === 'master/advertise') {
+      if (title === '') {
+        formData.append('title', mtitle);
+      } else {
+        formData.append('title', title);
+      }
+      formData.append('description', description);
+      formData.append('image', selectedFile);
+      formData.append('Id', mId);
+      if (selectedFile !== null) {
+        const result = await patchReq(`${domainCall}`, formData); // we have to handle the success and error
+        if (result.statusCode === 200) {
+          setAlert(true);
+          setTimeout(() => {
+            handleReload(false);
+            setOpen(false);
+          }, 1000);
+        }
+      } else {
+        setOpen(false);
+      }
+    }
+
+    if (domainCall === 'master/unit') {
       const dataToUpdate = {
         title,
         Id: mId,
@@ -57,7 +81,7 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
         }, 1000);
       }
     }
-    const formData = new FormData();
+
     if (title === '') {
       formData.append('title', mtitle);
     } else {

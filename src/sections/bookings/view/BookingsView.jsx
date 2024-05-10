@@ -1,3 +1,4 @@
+import format from 'date-fns/format';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 // import { useState, useEffect } from 'react';
@@ -12,6 +13,7 @@ import { TitleContext } from 'src/context/mainContext';
 
 import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 import TableViewBooking from 'src/components/tableView/TableViewBooking';
+
 // import { Tab } from '@mui/material';
 
 export default function BookingsView() {
@@ -22,6 +24,42 @@ export default function BookingsView() {
   const { setTitle } = useContext(TitleContext);
 
   const location = useLocation().pathname.split('/')[2];
+  const [filterData, setFilterData] = useState({
+    fromDate: '',
+    toDate: format(new Date(), 'yyyy-MM-dd'),
+    vendorId: '',
+    activityId: '',
+    domain: '',
+    state: '',
+    city: '',
+    bussinessId: '',
+    userId: '',
+    hostName: '',
+  });
+
+  const bussinessUrlStr = `booking/business?${
+    filterData.bussinessId !== '' ? `bussinessId=${filterData.bussinessId}` : ''
+  }${filterData.activityId !== '' ? `&activityId=${filterData.activityId}` : ''}${
+    filterData.state !== '' ? `&state=${filterData.state}` : ''
+  }${filterData.city !== '' ? `&city=${filterData.city}` : ''}${
+    filterData.fromDate !== '' ? `&fromDate=${filterData.fromDate}` : ''
+  }${filterData.toDate !== '' ? `&toDate=${filterData.toDate}` : ''}
+  ${filterData.domain !== '' ? `&domain=${filterData.domain}` : ''}
+  ${filterData.userId !== '' ? `&userId=${filterData.userId}` : ''}${
+    filterData.vendorId !== '' ? `&vendorId=${filterData.vendorId}` : ''
+  }`;
+
+  const eventUrlStr = `booking/event?${
+    filterData.bussinessId !== '' ? `bussinessId=${filterData.bussinessId}` : ''
+  }${filterData.activityId !== '' ? `&activityId=${filterData.activityId}` : ''}${
+    filterData.state !== '' ? `&state=${filterData.state}` : ''
+  }${filterData.city !== '' ? `&city=${filterData.city}` : ''}${
+    filterData.fromDate !== '' ? `&fromDate=${filterData.fromDate}` : ''
+  }${filterData.toDate !== '' ? `&toDate=${filterData.toDate}` : ''}
+  ${filterData.domain !== '' ? `&domain=${filterData.domain}` : ''}
+  ${filterData.userId !== '' ? `&userId=${filterData.userId}` : ''}${
+    filterData.vendorId !== '' ? `&vendorId=${filterData.vendorId}` : ''
+  }${filterData.hostName !== '' ? `&hostName=${filterData.hostName}` : ''}`;
 
   const tableColumnsBussiness = [
     'Booking No.',
@@ -50,27 +88,41 @@ export default function BookingsView() {
     }
     async function fetchBookings() {
       if (location === 'bussiness') {
-        await getReq(`booking/business`).then((res) => {
+        await getReq(bussinessUrlStr).then((res) => {
           if (res.statusCode === 200) {
             // console.log('controll', res.data[0]);
 
             setRowBussinessData(res.data);
             setFetchedBussinessData(true);
           }
+          if (res.response.data.statusCode === 404) {
+            setRowBussinessData([]);
+            setFetchedBussinessData(true);
+          }
         });
       }
       if (location === 'event') {
-        await getReq(`booking/event`).then((res) => {
+        await getReq(eventUrlStr).then((res) => {
           if (res.statusCode === 200) {
             // console.log('controll', res.data[0]);
 
             setRowEventData(res.data);
             setFetchedEventData(true);
           }
+          if (res.response.data.statusCode === 404) {
+            setRowEventData([]);
+            setFetchedEventData(true);
+          }
         });
       }
     }
-  }, [location, fetchedBussinessData, fetchedEventData]);
+  }, [location, bussinessUrlStr, fetchedBussinessData, fetchedEventData, eventUrlStr]);
+
+  const handleReload = () => {
+    // console.log('reload called');
+    setFetchedEventData(false);
+    setFetchedBussinessData(false);
+  };
 
   // console.log(rowData);
   setTitle(location === 'bussiness' ? 'Bussiness Bookings' : 'Event Bookings');
@@ -89,7 +141,12 @@ export default function BookingsView() {
             New Bussinesss
           </Button> */}
       </Stack>
-      <TableFilterToolBar fromCall="bookings" />
+      <TableFilterToolBar
+        fromCall="bookings"
+        filterData={filterData}
+        setFilterData={setFilterData}
+        handleReload={handleReload}
+      />
 
       <TableViewBooking
         columns={location === 'bussiness' ? tableColumnsBussiness : tableColumnsEvent}

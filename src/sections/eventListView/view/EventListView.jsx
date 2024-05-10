@@ -1,3 +1,4 @@
+import format from 'date-fns/format';
 import { useState, useEffect, useContext } from 'react';
 
 import { Box } from '@mui/material';
@@ -15,16 +16,38 @@ export default function EventListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
   const { setTitle } = useContext(TitleContext);
+  const [filterData, setFilterData] = useState({
+    fromDate: '',
+    toDate: format(new Date(), 'yyyy-MM-dd'),
+    vendorId: '',
+    activityId: '',
+    status: '',
+    domain: '',
+    state: '',
+    city: '',
+    bussinessId: '',
+    host: '',
+  });
 
+  const eventUrlStr = `event?${
+    filterData.bussinessId !== '' ? `bussinessId=${filterData.bussinessId}` : ''
+  }${filterData.status !== '' ? `status=${filterData.status}` : ''}${
+    filterData.activityId !== '' ? `&activityId=${filterData.activityId}` : ''
+  }${filterData.state !== '' ? `&state=${filterData.state}` : ''}${
+    filterData.city !== '' ? `&city=${filterData.city}` : ''
+  }${filterData.fromDate !== '' ? `&fromDate=${filterData.fromDate}` : ''}${
+    filterData.toDate !== '' ? `&toDate=${filterData.toDate}` : ''
+  }${filterData.host !== '' ? `&hostName=${filterData.host}` : ''}`;
   useEffect(() => {
+    if (!fetchedData) {
+      fetchRowData();
+    }
     async function fetchRowData() {
-      const result = await getReq('event');
+      const result = await getReq(eventUrlStr);
       setRowData(result.data);
-
       setFetchedData(true);
     }
-    fetchRowData();
-  }, []);
+  }, [fetchedData, eventUrlStr]);
   const tableColumns = [
     'Image',
     'Titie',
@@ -46,7 +69,12 @@ export default function EventListView() {
         </Button>
       </Box>
 
-      <TableFilterToolBar fromCall="event" />
+      <TableFilterToolBar
+        fromCall="event"
+        filterData={filterData}
+        handleReload={setFetchedData}
+        setFilterData={setFilterData}
+      />
 
       {fetchedData ? (
         <TableViewEvent columns={tableColumns} actionbtn={actionCol} tableData={rowData} />

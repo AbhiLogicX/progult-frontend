@@ -42,9 +42,17 @@ export default function BookingDetails() {
   }, [fetchedData, location]);
   // console.log(bookingDetails);
 
-  // const activityTotal = 0;
-  // const AddonTotal = 0;
-  // const foodTotal = 0;
+  function billSum(arr) {
+    let tempSum = 0;
+    arr?.forEach((ele) => {
+      tempSum += ele.itemTotal;
+    });
+    return tempSum;
+  }
+
+  const activityTotal = billSum(bookingDetails?.activities);
+  const AddonTotal = billSum(bookingDetails?.addonFoods);
+  const foodTotal = billSum(bookingDetails?.addonItems);
 
   return (
     <Box width="99%" mt={1}>
@@ -89,7 +97,11 @@ export default function BookingDetails() {
                 </Grid>
                 <Grid xs={7}>
                   <Box p={1}>
-                    <Typography variant="h2">{bookingDetails?.bussinessId?.title}</Typography>
+                    <Typography variant="h2">
+                      {location[3] === 'bussiness'
+                        ? bookingDetails?.bussinessId?.title
+                        : bookingDetails?.eventId?.title}
+                    </Typography>
                     <Box display="flex">
                       <Box display="flex" mr={2}>
                         <Typography fontWeight={700} mr={1} color={grey[500]}>
@@ -115,6 +127,39 @@ export default function BookingDetails() {
               </Grid>
             </Box>
           </Paper>
+          {location[3] === 'event' ? (
+            <Paper sx={{ mr: 2, mb: 2 }}>
+              <Box p={1.7}>
+                <Typography variant="h6">Package Info:</Typography>
+                <Box
+                  bgcolor={grey[300]}
+                  p={1}
+                  borderRadius={1}
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <Typography variant="h6">{bookingDetails?.packageId.title}</Typography>
+                  <Typography fontWeight={700}>
+                    Price:{' '}
+                    <Typography
+                      variant="span"
+                      color={primary.dark}
+                    >{`₹${bookingDetails?.packageId.amount}`}</Typography>
+                  </Typography>
+                  <Typography
+                    fontWeight={700}
+                  >{`For People: ${bookingDetails?.packageId.forPeople}`}</Typography>
+                  <Typography fontWeight={700}>{`Qty: ${bookingDetails?.person}`}</Typography>
+                  <Typography>
+                    Total:{'  '}
+                    <Typography variant="span" fontWeight={700} color={primary.dark}>
+                      {`₹${bookingDetails?.totalPayable}`}
+                    </Typography>
+                  </Typography>
+                </Box>
+              </Box>
+            </Paper>
+          ) : null}
           {location[3] === 'bussiness' ? (
             <Paper sx={{ mr: 2, mb: 2 }}>
               <Box p={1.7}>
@@ -179,30 +224,31 @@ export default function BookingDetails() {
               <Typography color={grey[700]}>+91-9876543210</Typography>
             </Box>
           </Paper>
-          <Paper elevation={3} sx={{ p: 1.7 }}>
-            <Typography variant="h6" mr={3}>
-              Biling Information
-            </Typography>
-            <Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography>Activity Total</Typography>
-                <Typography>-</Typography>
-                <Typography>₹2550</Typography>
+          {location[3] === 'bussiness' ? (
+            <Paper elevation={3} sx={{ p: 1.7 }}>
+              <Typography variant="h6" mr={3}>
+                Biling Information
+              </Typography>
+              <Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography>Activity Total</Typography>
+                  <Typography>-</Typography>
+                  <Typography>{`₹${activityTotal}`}</Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography>Addons Total</Typography>
+                  <Typography>-</Typography>
+                  <Typography>{`₹${AddonTotal}`}</Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography>Food Total</Typography>
+                  <Typography>-</Typography>
+                  <Typography>{`₹${foodTotal}`}</Typography>
+                </Box>
               </Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography>Addons Total</Typography>
-                <Typography>-</Typography>
-                <Typography>₹260</Typography>
-              </Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography>Food Total</Typography>
-                <Typography>-</Typography>
-                <Typography>₹210</Typography>
-              </Box>
-            </Box>
-            <hr />
-            <Box>
-              <Box display="flex" justifyContent="space-between">
+              <hr />
+              <Box>
+                {/* <Box display="flex" justifyContent="space-between">
                 <Typography>Taxes & Charges</Typography>
                 <Typography>-</Typography>
                 <Typography>₹24</Typography>
@@ -211,18 +257,49 @@ export default function BookingDetails() {
                 <Typography>Platform Fee</Typography>
                 <Typography>-</Typography>
                 <Typography>₹10</Typography>
-              </Box>
-              <Box p={1} bgcolor={primary.light} borderRadius={1}>
-                <Box display="flex" justifyContent="space-between">
-                  <Typography fontWeight={700}>TotalPaid</Typography>
-                  <Typography>-</Typography>
-                  <Typography variant="h6" color={primary.dark}>
-                    ₹3054
-                  </Typography>
+              </Box> */}
+                <Box p={1} bgcolor={primary.light} borderRadius={1}>
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography fontWeight={700}>TotalPaid</Typography>
+                    <Typography>-</Typography>
+                    <Typography variant="h6" color={primary.dark}>
+                      {`₹${foodTotal + AddonTotal + activityTotal}`}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          </Paper>
+            </Paper>
+          ) : null}
+          {location[3] === 'event' ? (
+            <Paper elevation={3} sx={{ p: 1.7 }}>
+              <Typography variant="h6" mr={3}>
+                Biling Information
+              </Typography>
+
+              <hr />
+              <Box>
+                {/* <Box display="flex" justifyContent="space-between">
+                <Typography>Taxes & Charges</Typography>
+                <Typography>-</Typography>
+                <Typography>₹24</Typography>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography>Platform Fee</Typography>
+                <Typography>-</Typography>
+                <Typography>₹10</Typography>
+              </Box> */}
+                <Box p={1} bgcolor={primary.light} borderRadius={1}>
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography fontWeight={700}>Total Payable</Typography>
+                    <Typography>-</Typography>
+                    <Typography variant="h6" color={primary.dark}>
+                      {`₹${bookingDetails?.totalPayable}`}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Paper>
+          ) : null}
         </Grid>
       </Grid>
     </Box>

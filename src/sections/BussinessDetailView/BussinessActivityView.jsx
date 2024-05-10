@@ -17,8 +17,7 @@ import properties from 'src/config/properties';
 
 //  bussinessActivity?bussinessId=66069bfe7f083dba90191320
 
-export function BussinessActivityView({ bussinessId }) {
-  const [dataFetched, setDataFetched] = useState(false);
+export function BussinessActivityView({ bussinessId, dataFetched, handleFetchedData }) {
   const [activityData, setActivityData] = useState();
 
   useEffect(() => {
@@ -29,12 +28,12 @@ export function BussinessActivityView({ bussinessId }) {
       getReq(`bussinessActivity?bussinessId=${bussinessId}`).then((res) => {
         if (res.statusCode === 200) {
           setActivityData(res.data);
-          setDataFetched(true);
+          handleFetchedData(true);
           // console.log(res);
         }
       });
     }
-  });
+  }, [dataFetched, bussinessId, handleFetchedData]);
   // console.log('activityData', activityData);
   return (
     <Grid container>
@@ -117,6 +116,8 @@ function RenderCard({ crdData }) {
 
 BussinessActivityView.propTypes = {
   bussinessId: PropTypes.string,
+  dataFetched: PropTypes.bool,
+  handleFetchedData: PropTypes.func,
 };
 
 RenderCard.propTypes = {

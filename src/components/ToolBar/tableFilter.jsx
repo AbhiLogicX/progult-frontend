@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -7,9 +7,11 @@ import { alpha, styled } from '@mui/material/styles';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { Box, Paper, Button, MenuItem, TextField, Typography } from '@mui/material';
 
+import { getReq } from 'src/api/api';
 import { grey } from 'src/theme/palette';
 
 import FilterDrawer from './RightFilterDrwaer';
+
 // import label from '../label';
 
 const Search = styled('div')(({ theme }) => ({
@@ -49,84 +51,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Customer = [
-  {
-    value: 'Default',
-    label: 'All Customer',
-  },
-  {
-    value: 'Pramod Shukla',
-    label: 'Pramod Shukla',
-  },
-  {
-    value: 'Mukul',
-    label: 'Mukul',
-  },
-  {
-    value: 'Test user 1',
-    label: 'Test user 1',
-  },
-];
-
-// const Bussiness = [
-//   {
-//     value: 'Default',
-//     label: 'All Bussiness',
-//   },
-//   {
-//     value: 'M Bussiness',
-//     label: 'M Bussiness',
-//   },
-//   {
-//     value: 'Guitarist',
-//     label: 'Guitarist',
-//   },
-//   {
-//     value: 'Music classes',
-//     label: 'Music classes',
-//   },
-// ];
-
-// const Vendor = [
-//   {
-//     value: 'Default',
-//     label: 'All Vendors',
-//   },
-//   {
-//     value: 'Harsh Agrawal',
-//     label: 'Harsh Agrawal',
-//   },
-//   {
-//     value: 'Vendor 2415',
-//     label: 'Vendor 2415',
-//   },
-//   {
-//     value: 'Pramod Shukla',
-//     label: 'Pramod Shukla',
-//   },
-// ];
-
-// const Host = [
-//   {
-//     value: 'Default',
-//     label: 'All Hosts',
-//   },
-//   {
-//     value: 'M Bussiness',
-//     label: 'M Bussiness',
-//   },
-//   {
-//     value: 'M Bussiness',
-//     label: 'M Bussiness',
-//   },
-//   {
-//     value: 'M Bussiness',
-//     label: 'M Bussiness',
-//   },
-// ];
-
-export default function TableFilterToolBar({ fromCall }) {
+export default function TableFilterToolBar({ fromCall, filterData, setFilterData, handleReload }) {
   const [openFilterDialog, setOpenFilterDialog] = useState(false);
+  const [fetchedData, setFetchedData] = useState(false);
+  const [customerList, setCustomerList] = useState();
+
+  useEffect(() => {
+    if (!fetchedData) {
+      fetchCutomerList();
+    }
+    async function fetchCutomerList() {
+      await getReq(`user/list`).then((res) => {
+        if (res.statusCode === 200) {
+          setCustomerList(res.data);
+          setFetchedData(true);
+        }
+      });
+    }
+  });
+
+  const handleChangeFromDate = (e) => {
+    filterData.fromDate = e.target.value;
+    // console.log(filterData);
+  };
+
+  const handleChangeToDate = (e) => {
+    filterData.toDate = e.target.value;
+    // console.log('filterData at form', filterData);
+  };
+
+  const handleCutomerSelect = (e) => {
+    filterData.userId = e.target.value;
+    // console.log(filterData);
+  };
 
   const handleOpenFilter = () => {
     setOpenFilterDialog(true);
@@ -134,29 +91,40 @@ export default function TableFilterToolBar({ fromCall }) {
   const handleCloseFilter = () => {
     setOpenFilterDialog(false);
   };
+  // console.log('filterData', filterData);
+
+  const handleFilterBtn = () => {
+    handleReload(false);
+  };
 
   return (
     <Paper elevation={3} sx={{ width: '100%', p: 1, mb: 2 }}>
       <Box display="flex" justifyContent="space-between">
-        <Box display="flex" alignItems="flex-end">
+        <Box display="flex" alignItems="flex-end" width="35%">
           <Box mr={1}>
             <Typography>From Date</Typography>
-            <TextField type="date" inputProps={{ style: { padding: 7 } }} />
+            <TextField
+              type="date"
+              inputProps={{ style: { padding: 7 } }}
+              onChange={handleChangeFromDate}
+            />
           </Box>
           <Box mr={1}>
             <Typography>To Date</Typography>
-            <TextField type="date" inputProps={{ style: { padding: 7 } }} />
+            <TextField
+              type="date"
+              inputProps={{ style: { padding: 7 } }}
+              onChange={handleChangeToDate}
+            />
           </Box>
-          {fromCall === 'bookings' ? (
-            <Box>
-              <TextField select defaultValue="Default" InputProps={{ style: { padding: 0 } }}>
-                {Customer.map((opt) => (
-                  <MenuItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Box>
+          {fromCall === 'bookings' || fromCall === 'reports' ? (
+            <TextField select fullWidth label="Select Customer" onChange={handleCutomerSelect}>
+              {customerList?.map((opt) => (
+                <MenuItem key={opt._id} value={opt._id}>
+                  {opt.fullName}
+                </MenuItem>
+              ))}
+            </TextField>
           ) : null}
         </Box>
 
@@ -216,7 +184,7 @@ export default function TableFilterToolBar({ fromCall }) {
                 <SearchIcon />
               </SearchIconWrapper> */}
               <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-              <Button variant="contained">
+              <Button variant="contained" onClick={handleFilterBtn}>
                 <SearchIcon />
               </Button>
             </Search>
@@ -230,6 +198,9 @@ export default function TableFilterToolBar({ fromCall }) {
                 open={openFilterDialog}
                 handleClose={handleCloseFilter}
                 fromCall={fromCall}
+                filterData={filterData}
+                setFilterData={setFilterData}
+                handleReload={handleReload}
               />
               {/* <FilterDialog
                 open={openFilterDialog}
@@ -246,4 +217,7 @@ export default function TableFilterToolBar({ fromCall }) {
 
 TableFilterToolBar.propTypes = {
   fromCall: PropTypes.string,
+  handleReload: PropTypes.func,
+  filterData: PropTypes.object,
+  setFilterData: PropTypes.func,
 };

@@ -1,3 +1,4 @@
+import format from 'date-fns/format';
 import { useState, useEffect, useContext } from 'react';
 
 // import Stack from '@mui/material/Stack';
@@ -17,17 +18,41 @@ export default function BussinessListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [filterData, setFilterData] = useState({
+    fromDate: '',
+    toDate: format(new Date(), 'yyyy-MM-dd'),
+    vendorId: '',
+    activityId: '',
+    status: '',
+    domain: '',
+    state: '',
+    city: '',
+  });
   const { setTitle } = useContext(TitleContext);
-
+  const urlStr = `bussiness?${filterData.status !== '' ? `status=${filterData.status}` : ''}${
+    filterData.domain !== '' ? `&domain=${filterData.domain}` : ''
+  }${filterData.activityId !== '' ? `&activityId=${filterData.activityId}` : ''}${
+    filterData.state !== '' ? `&state=${filterData.state}` : ''
+  }${filterData.city !== '' ? `&city=${filterData.city}` : ''}${
+    filterData.fromDate !== '' ? `&fromDate=${filterData.fromDate}` : ''
+  }${filterData.toDate !== '' ? `&toDate=${filterData.toDate}` : ''}${
+    filterData.vendorId !== '' ? `&vendorId=${filterData.vendorId}` : ''
+  }`;
+  // console.log(urlStr);
+  // bussiness?status=active&domain=661915a88a1d92ba4ba83672&activityId=661aa8d70421b70e3e44ad5e&state=chh&city=Raipur&fromDate=2024-04-15&toDate=2024-04-16&vendorId=6604220d7e2d0d1e0a6c7fee
   useEffect(() => {
+    if (!fetchedData) {
+      fetchRowData();
+    }
     async function fetchRowData() {
-      const result = await getReq('bussiness');
+      // const result = await getReq('bussiness');
+      const result = await getReq(urlStr);
       setRowData(result.data);
       setFetchedData(true);
       setLoading(false);
     }
     fetchRowData();
-  }, []);
+  }, [fetchedData, urlStr]);
   const tableColumns = [
     'Image',
     'Titie',
@@ -49,12 +74,16 @@ export default function BussinessListView() {
         sx={{ mb: 5 }}
       >
         <Typography variant="h4">Bussinesses</Typography>
-
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
           New Bussinesss
         </Button>
       </Stack> */}
-      <TableFilterToolBar fromCall="bussiness" />
+      <TableFilterToolBar
+        fromCall="bussiness"
+        filterData={filterData}
+        handleReload={setFetchedData}
+        setFilterData={setFilterData}
+      />
 
       {fetchedData ? (
         <TableViewBussiness columns={tableColumns} actionbtn={actionCol} tableData={rowData} />
