@@ -37,6 +37,12 @@ const navConfig = [
     icon: icon('ic_celenderday'),
   },
   {
+    title: 'coupons',
+    path: '/coupons',
+    icon: icon('ic_celenderday'),
+  },
+  // coupons
+  {
     title: 'feedback',
     // path: '/evnet-list',
     icon: icon('ic_celenderday'),

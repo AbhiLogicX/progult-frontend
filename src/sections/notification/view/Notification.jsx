@@ -31,7 +31,7 @@ export default function NotificationView() {
       fetchedNotificationData();
     }
     async function fetchedNotificationData() {
-      await getReq(`master/notification`).then((res) => {
+      await getReq(`master/notification?`).then((res) => {
         if (res.statusCode) {
           setNotificationData(res.data);
           setFetchedData(true);
@@ -55,7 +55,11 @@ export default function NotificationView() {
         >
           Add Notification
         </Button>
-        <AddNotificationForm open={openAddForm} handleClose={handleCloseAddForm} />
+        <AddNotificationForm
+          open={openAddForm}
+          handleClose={handleCloseAddForm}
+          handleReload={setFetchedData}
+        />
       </Box>
       <NotificationTable tableCol={tableColumns} tableData={notificationData} />
     </Container>

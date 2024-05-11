@@ -32,6 +32,7 @@ export const ActivitySlotEdit = lazy(() => import('src/pages/activitySlotEdit'))
 export const BookingDetailsPage = lazy(() => import('src/pages/BookingDetailPage'));
 export const AdminProfilePage = lazy(() => import('src/pages/adminProfileView'));
 export const FeedbackPages = lazy(() => import('src/pages/Feedbackview'));
+export const CuponsPage = lazy(() => import('src/pages/cuponsPage'));
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -91,6 +92,8 @@ export default function Router() {
         { path: 'subscriptions', element: <SubscriptionPage /> },
         { path: 'notification', element: <NotificationPage /> },
         { path: 'reports', element: <ReportsPage /> },
+        { path: 'coupons', element: <CuponsPage /> },
+
         {
           path: 'booking/detail/:bookingType/:bookingId',
           element: <BookingDetailsPage />,

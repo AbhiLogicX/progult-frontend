@@ -8,13 +8,54 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, MenuItem, TextField, Typography } from '@mui/material';
 
-export default function AddNotificationForm({ open, handleClose }) {
+import { getReq, postReq } from 'src/api/api';
+
+export default function AddNotificationForm({ open, handleClose, handleReload }) {
+  const [fetchedData, setFetchedData] = useState(false);
   const [checkTo, setCheckTo] = useState('vendor');
   const { register, handleSubmit } = useForm();
-  const onSubmit = () => {
-    // console.log('hello');
+  const [vendorList, setVendorList] = useState();
+  const [userList, setUserList] = useState();
+
+  React.useEffect(() => {
+    const fetches = {
+      ven: false,
+      user: false,
+    };
+
+    if (!fetchedData) {
+      fetchLits();
+    }
+    async function fetchLits() {
+      await getReq(`vendor/list`).then((res) => {
+        if (res.statusCode === 200) {
+          setVendorList(res.data);
+          fetches.ven = true;
+        }
+      });
+      await getReq(`user/list`).then((res) => {
+        if (res.statusCode === 200) {
+          setUserList(res.data);
+          fetches.user = true;
+        }
+      });
+      if (fetches.user === true && fetches.ven === true) {
+        setFetchedData(true);
+      }
+    }
+  }, [fetchedData]);
+
+  const onSubmit = async (data) => {
+    data.from = items._id;
+    // console.log('hello', data);
+    await postReq(`master/notification`, data).then((res) => {
+      if (res.statusCode === 200) {
+        handleClose();
+        handleReload(false);
+      }
+    });
   };
 
   const items = JSON.parse(localStorage.getItem('items'));
@@ -24,6 +65,7 @@ export default function AddNotificationForm({ open, handleClose }) {
     // console.log(value);
     setCheckTo(value);
   };
+  // console.log(vendorList, userList);
   return (
     <Dialog
       open={open}
@@ -36,7 +78,7 @@ export default function AddNotificationForm({ open, handleClose }) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <Box display="flex" flexDirection="column">
-            <TextField label="Title" {...register('description')} margin="dense" />
+            <TextField label="Title" {...register('title')} margin="dense" />
             <TextField label="Description" {...register('description')} margin="dense" />
             <TextField
               label="From"
@@ -61,7 +103,11 @@ export default function AddNotificationForm({ open, handleClose }) {
                 <Typography>Customer</Typography>
               </Box>
             </Box>
-            <TextField label={checkTo} {...register('to')} margin="dense" />
+            <TextField label={`Select ${checkTo}`} select margin="dense" {...register('to')}>
+              {checkTo === 'vendor'
+                ? vendorList?.map((itm) => <MenuItem value={itm._id}>{itm.fullName}</MenuItem>)
+                : userList?.map((itm) => <MenuItem value={itm._id}>{itm.fullName}</MenuItem>)}
+            </TextField>
           </Box>
         </DialogContent>
         <DialogActions>
@@ -78,4 +124,5 @@ export default function AddNotificationForm({ open, handleClose }) {
 AddNotificationForm.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
+  handleReload: PropTypes.func,
 };
