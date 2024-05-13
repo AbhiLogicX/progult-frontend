@@ -6,10 +6,14 @@ import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 import TableContainer from '@mui/material/TableContainer';
 
 import { deleteReq } from 'src/api/api';
@@ -18,28 +22,9 @@ import { error } from 'src/theme/palette';
 import CouponDialogForm from '../dialogueForm/EditCuponDialog';
 
 export default function CouponTableView({ columns, actionbtn, tableData, handleReload }) {
-  const [openEditForm, setOpenEditForm] = React.useState(false);
-
-  const handleOpenForm = () => {
-    setOpenEditForm(true);
-  };
-
-  const handleCloseForm = () => {
-    setOpenEditForm(false);
-  };
-
-  const handleDelete = async (cupId) => {
-    // console.log(cupId);
-    await deleteReq(`domain/coupon?Id=${cupId}&status=delete`);
-    handleReload(false);
-    // domain/coupon?Id=663b69d2673fd6e8367b4096&status=delete
-  };
-
   if (actionbtn && !columns.includes('Action')) {
     columns.push('Action');
   }
-
-  // console.log('coupon', tableData);
 
   return (
     <Paper elevation={3} sx={{ width: '100%' }}>
@@ -113,37 +98,51 @@ export default function CouponTableView({ columns, actionbtn, tableData, handleR
                         {actionbtn.map((btnItm) => {
                           if (btnItm === 'Delete') {
                             return (
-                              <Button
-                                sx={{
-                                  mr: 2,
-                                  color: error.main,
-                                  backgroundColor: error.errorBackground,
-                                  '&:hover': {
-                                    backgroundColor: error.main,
-                                    color: error.errorBackground,
-                                  },
-                                }}
-                                onClick={() => {
-                                  handleDelete(row._id);
-                                }}
-                              >
-                                {btnItm}
-                              </Button>
+                              // <Button
+                              //   sx={{
+                              //     mr: 2,
+                              //     color: error.main,
+                              //     backgroundColor: error.errorBackground,
+                              //     '&:hover': {
+                              //       backgroundColor: error.main,
+                              //       color: error.errorBackground,
+                              //     },
+                              //   }}
+                              //   onClick={() => {
+                              //     handleDelete(row._id);
+                              //   }}
+                              // >
+                              //   {btnItm}
+                              // </Button>
+                              <DeleteDialog
+                                cupId={row._id}
+                                handleReload={handleReload}
+                                title={row.title}
+                                cupCode={row.code}
+                              />
                             );
                           }
                           return (
-                            <Button variant="contained" sx={{ mr: 1 }} onClick={handleOpenForm}>
-                              {btnItm}
-                            </Button>
+                            <>
+                              {/* <Button
+                                variant="contained"
+                                sx={{ mr: 1 }}
+                                onClick={() => {
+                                  handleOpenForm(row);
+                                }}
+                              >
+                                {btnItm}
+                              </Button> */}
+                              <CouponDialogForm
+                                // open={openEditForm}
+                                // handleClose={handleCloseForm}
+                                cupDetails={row}
+                                fromCall="edit"
+                                handleReload={handleReload}
+                              />
+                            </>
                           );
                         })}
-                        <CouponDialogForm
-                          open={openEditForm}
-                          handleClose={handleCloseForm}
-                          cupDetails={row}
-                          fromCall="edit"
-                          handleReload={handleReload}
-                        />
                       </Box>
                     </TableCell>
                   </TableRow>
@@ -168,9 +167,84 @@ export default function CouponTableView({ columns, actionbtn, tableData, handleR
   );
 }
 
+function DeleteDialog({ cupId, handleReload, ...details }) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = async () => {
+    // console.log('hello', cupId);
+    await deleteReq(`domain/coupon?Id=${cupId}&status=delete`).then((res) => {
+      if (res.statusCode === 200) {
+        handleReload(false);
+      }
+    });
+
+    // domain/coupon?Id=663b69d2673fd6e8367b4096&status=delete
+  };
+
+  return (
+    <>
+      <Button
+        sx={{
+          color: error.main,
+          backgroundColor: error.errorBackground,
+          '&:hover': {
+            backgroundColor: error.main,
+            color: error.errorBackground,
+          },
+        }}
+        onClick={handleClickOpen}
+      >
+        Delete
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Delete</DialogTitle>
+        <DialogContent>
+          {`Are you sure You want to Delete ${details.title} (coupon code: ${details.cupCode})`}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: error.main,
+              backgroundColor: error.errorBackground,
+              '&:hover': {
+                backgroundColor: error.main,
+                color: error.errorBackground,
+              },
+            }}
+          >
+            Disagree
+          </Button>
+          <Button onClick={handleDelete} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+
 CouponTableView.propTypes = {
   columns: PropTypes.array,
   actionbtn: PropTypes.array,
   tableData: PropTypes.array,
+  handleReload: PropTypes.func,
+};
+
+DeleteDialog.propTypes = {
+  cupId: PropTypes.string,
   handleReload: PropTypes.func,
 };

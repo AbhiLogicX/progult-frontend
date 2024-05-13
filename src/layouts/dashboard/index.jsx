@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 
-import { TitleProvider, EditSlotProvider } from 'src/context/mainContext';
+import { TitleProvider, BussinessDetailProvider } from 'src/context/mainContext';
 
 import Nav from './nav';
 import Main from './main';
@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }) {
 
   return (
     <TitleProvider>
-      <EditSlotProvider>
+      <BussinessDetailProvider>
         <Header onOpenNav={() => setOpenNav(true)} />
         <Box
           sx={{
@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }) {
           <Nav openNav={openNav} onCloseNav={() => setOpenNav(false)} />
           <Main>{children}</Main>
         </Box>
-      </EditSlotProvider>
+      </BussinessDetailProvider>
     </TitleProvider>
   );
 }

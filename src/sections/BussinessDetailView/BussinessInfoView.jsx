@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -14,6 +14,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import { getReq } from 'src/api/api';
 import properties from 'src/config/properties';
 import { grey, primary } from 'src/theme/palette';
+import { BussinessDetailsContext } from 'src/context/mainContext';
 
 import TimingCards from 'src/components/cards/TimingSlotCard';
 import MasterViewCard from 'src/components/cards/MasterViewCard';
@@ -39,6 +40,7 @@ function BussinessInfoView({ bussinessData, handleReload, gallery, handleGallery
   const [openForm, setOpenForm] = useState(false);
   const [allActivity, setAllActivity] = useState();
   const [ActivityDataFetched, setActivityDataFetched] = useState(false);
+  const { setBussinessDetails } = useContext(BussinessDetailsContext);
 
   const [openAddonForm, setopenAddonForm] = useState({
     open: false,
@@ -136,6 +138,7 @@ function BussinessInfoView({ bussinessData, handleReload, gallery, handleGallery
 
   // console.log('bd', bussinessData);
   // console.log('gall', gallery);
+  setBussinessDetails(bussinessData);
 
   return (
     <Box>
@@ -457,8 +460,7 @@ function BussinessInfoView({ bussinessData, handleReload, gallery, handleGallery
                   },
                 }}
               >
-                <AddIcon />
-                Add More
+                Manage activites
               </Button>
               <AddActivityDialog
                 open={openActivityDialog}

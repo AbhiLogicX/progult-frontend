@@ -1,27 +1,17 @@
 import { useState, useEffect, useContext } from 'react';
 
-import { Box, Paper, Button } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 
 import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
 
-import Iconify from 'src/components/iconify/iconify';
 import CouponTableView from 'src/components/tableView/TableCupon';
 import CouponDialogForm from 'src/components/dialogueForm/EditCuponDialog';
 
 export default function CouponsView() {
   const [fetchedData, setFetchedData] = useState(false);
   const [couponsData, setCouponsData] = useState();
-  const [openEditForm, setOpenEditForm] = useState(false);
   const { setTitle } = useContext(TitleContext);
-
-  const handleOpenForm = () => {
-    setOpenEditForm(true);
-  };
-
-  const handleCloseForm = () => {
-    setOpenEditForm(false);
-  };
 
   useEffect(() => {
     if (!fetchedData) {
@@ -45,18 +35,18 @@ export default function CouponsView() {
   return (
     <Box mx={2} mt={1}>
       <Box mb={1} textAlign="right">
-        <Button
+        {/* <Button
           variant="contained"
           onClick={handleOpenForm}
           color="inherit"
           startIcon={<Iconify icon="eva:plus-fill" />}
         >
           Add Coupon
-        </Button>
+        </Button> */}
 
         <CouponDialogForm
-          open={openEditForm}
-          handleClose={handleCloseForm}
+          // open={openEditForm}
+          // handleClose={handleCloseForm}
           fromCall="add"
           handleReload={setFetchedData}
         />

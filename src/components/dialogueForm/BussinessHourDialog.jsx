@@ -25,7 +25,7 @@ export default function BussinessTimeForm({
   Id,
   handleReload,
 }) {
-  // console.log(format(new Date(`2024-04-26 ${timeData?.startTime || ''}`), 'H:m:s'));
+  // console.log(     (new Date(`2024-04-26 ${timeData?.startTime || ''}`), 'H:m:s'));
   const [weekDays, setWeekDays] = useState(timeData?.days ? timeData?.days : []);
   const [endTime, setEndTime] = useState(timeData?.endTime);
   const [startTime, setStartTime] = useState(timeData?.startTime);
@@ -37,7 +37,7 @@ export default function BussinessTimeForm({
   // console.log('the week days', timings);
 
   const allWeekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
+  // console.log(timeData);
   function convertTime(timeStr) {
     if (!timeStr) {
       return '';

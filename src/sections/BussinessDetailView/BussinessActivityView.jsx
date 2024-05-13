@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,6 +12,7 @@ import { RouterLink } from 'src/routes/components';
 import { getReq } from 'src/api/api';
 import { primary } from 'src/theme/palette';
 import properties from 'src/config/properties';
+import { BussinessDetailsContext } from 'src/context/mainContext';
 
 // import BussinessActivityDialog from 'src/components/dialogueForm/BussinessActivityDialog';
 
@@ -24,8 +25,9 @@ export function BussinessActivityView({ bussinessId, dataFetched, handleFetchedD
     if (!dataFetched) {
       fetchActivites();
     }
+
     async function fetchActivites() {
-      getReq(`bussinessActivity?bussinessId=${bussinessId}`).then((res) => {
+      await getReq(`bussinessActivity?bussinessId=${bussinessId}`).then((res) => {
         if (res.statusCode === 200) {
           setActivityData(res.data);
           handleFetchedData(true);
@@ -45,6 +47,10 @@ export function BussinessActivityView({ bussinessId, dataFetched, handleFetchedD
 }
 
 function RenderCard({ crdData }) {
+  const { bussinessDetails } = useContext(BussinessDetailsContext);
+  const handleDetailsAct = (title) => {
+    bussinessDetails.selectedActiviytSlot = title;
+  };
   // const [open, setOpen] = useState(false);
 
   // const handleClickOpen = () => {
@@ -82,22 +88,27 @@ function RenderCard({ crdData }) {
           <Typography fontWeight={500} textAlign="center" mb={1}>
             {`Slots: ${crdData?.slots?.length === undefined ? '' : crdData?.slots?.length}`}
           </Typography>
-          <Button
-            sx={{
-              bgcolor: 'white',
-              color: primary.main,
-
-              '&:hover': {
-                backgroundColor: primary.main,
-                color: 'white',
-              },
+          <Box
+            onClick={() => {
+              handleDetailsAct(crdData?.activityId.title);
             }}
-            fullWidth
-            component={RouterLink}
-            href={`/bussiness/detail/${crdData.bussinessId}/editSlots/${crdData._id}`}
           >
-            <EditIcon /> Edit
-          </Button>
+            <Button
+              sx={{
+                bgcolor: 'white',
+                color: primary.main,
+                '&:hover': {
+                  backgroundColor: primary.main,
+                  color: 'white',
+                },
+              }}
+              fullWidth
+              component={RouterLink}
+              href={`/bussiness/detail/${crdData.bussinessId}/editSlots/${crdData._id}`}
+            >
+              <EditIcon /> Edit
+            </Button>
+          </Box>
           {/* <BussinessActivityDialog
             openDialog={open}
             handleClose={handleClose}

@@ -13,19 +13,26 @@ export const TitleProvider = ({ children }) => {
 
 // export { TitleContext, TitleProvider };
 
-export const EditSlotContext = createContext();
+export const BussinessDetailsContext = createContext();
 
-export const EditSlotProvider = ({ children }) => {
-  const [slotData, setSlotData] = useState({});
+export const BussinessDetailProvider = ({ children }) => {
+  const [bussinessDetails, setBussinessDetails] = useState({});
 
-  const contextValue = useMemo(() => ({ slotData, setSlotData }), [slotData, setSlotData]);
+  const contextValue = useMemo(
+    () => ({ bussinessDetails, setBussinessDetails }),
+    [bussinessDetails, setBussinessDetails]
+  );
 
-  return <EditSlotContext.Provider value={contextValue}>{children}</EditSlotContext.Provider>;
+  return (
+    <BussinessDetailsContext.Provider value={contextValue}>
+      {children}
+    </BussinessDetailsContext.Provider>
+  );
 };
 
 // export { TitleContext, TitleProvider };
 
-EditSlotProvider.propTypes = {
+BussinessDetailProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
