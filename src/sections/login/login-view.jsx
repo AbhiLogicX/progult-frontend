@@ -49,7 +49,7 @@ export default function LoginView() {
     try {
       const session = await postReq('admin/login', data);
       // console.log(session);
-      if (session.success) {
+      if (session.statusCode) {
         localStorage.setItem('items', JSON.stringify(session.data));
         localStorage.setItem('tokens', JSON.stringify(session.extra));
         // const cookieHeader = session.headers.get('Set-Cookie');

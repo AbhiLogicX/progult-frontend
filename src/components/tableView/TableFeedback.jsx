@@ -8,8 +8,11 @@ import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import { Box, Typography } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
+import StarIcon from '@mui/icons-material/Star';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
+
+import { primary } from 'src/theme/palette';
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -23,7 +26,7 @@ import TableContainer from '@mui/material/TableContainer';
 //   createData('Gingerbread', 356, 16.0, 49, 3.9),
 // ];
 
-export default function FeedbackTable({ tableData, tableCol }) {
+export default function FeedbackTable({ tableData, tableCol, fromCall }) {
   // console.log('tabledata', tableData);
   return (
     <TableContainer component={Paper}>
@@ -36,25 +39,57 @@ export default function FeedbackTable({ tableData, tableCol }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tableData?.map((row) => (
-            <TableRow
-              key={row.complaintNo}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row?.complaintNo}
-              </TableCell>
-              <TableCell>{row?.description}</TableCell>
-              <TableCell>{row?.owner?.fullName}</TableCell>
-              <TableCell>
-                <Box>
-                  <Typography>{row?.bussinessId?.title}</Typography>
-                  <Typography variant="caption">{row?.bussinessId?.uniqCode}</Typography>
-                </Box>
-              </TableCell>
-              <TableCell>{format(new Date(row.createdAt), 'dd-MMM-yyyy')}</TableCell>
-            </TableRow>
-          ))}
+          {fromCall === 'complaint' ? (
+            <>
+              {tableData?.map((row) => (
+                <TableRow
+                  key={row.complaintNo}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row?.complaintNo}
+                  </TableCell>
+                  <TableCell>{row?.description}</TableCell>
+                  <TableCell>{row?.owner?.fullName}</TableCell>
+                  <TableCell>
+                    <Box>
+                      <Typography>{row?.bussinessId?.title}</Typography>
+                      <Typography variant="caption">{row?.bussinessId?.uniqCode}</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>{format(new Date(row.createdAt), 'dd-MMM-yyyy')}</TableCell>
+                </TableRow>
+              ))}
+            </>
+          ) : (
+            <>
+              {tableData?.map((row) => (
+                <TableRow
+                  key={row.complaintNo}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell>{row?.owner?.fullName}</TableCell>
+                  <TableCell component="th" scope="row">
+                    {row?.content}
+                  </TableCell>
+                  <TableCell>
+                    <Box display="flex">
+                      <StarIcon fontSize="medium" sx={{ mr: 1, color: primary.main }} />
+                      {row.rating ? row.rating : 0}
+                    </Box>
+                  </TableCell>
+
+                  <TableCell>
+                    <Box>
+                      <Typography>{row?.bussinessId?.title}</Typography>
+                      <Typography variant="caption">{row?.bussinessId?.uniqCode}</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>{format(new Date(row.createdAt), 'dd-MMM-yyyy')}</TableCell>
+                </TableRow>
+              ))}
+            </>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
@@ -64,4 +99,5 @@ export default function FeedbackTable({ tableData, tableCol }) {
 FeedbackTable.propTypes = {
   tableData: PropTypes.array,
   tableCol: PropTypes.array,
+  fromCall: PropTypes.string,
 };

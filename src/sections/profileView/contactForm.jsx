@@ -1,10 +1,12 @@
 // import { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 
 import {
   Box,
+  Alert,
   Button,
   Dialog,
   TextField,
@@ -20,6 +22,9 @@ import { error } from 'src/theme/palette';
 
 export default function ContatactDetails({ profileData, handleReload, handleClose, open }) {
   const { register, handleSubmit } = useForm({});
+  const [alert, setAlert] = useState(false);
+  const [alertVisisble, setAlertVisible] = useState(false);
+  const [errMessage, setErrorMessage] = useState('');
 
   const location = useLocation().pathname.split('/');
   // console.log(profileData.profileImage);
@@ -29,14 +34,23 @@ export default function ContatactDetails({ profileData, handleReload, handleClos
     data.image = data.image[0] !== null ? data.image[0] : null;
     // console.log(data.image[0] === undefined);
     if (location[1] === 'vendors') {
+      const check = {
+        details: false,
+        status: false,
+      };
+
       if (data.status) {
         const statusData = {
           status: data.status,
           Id: data.Id,
         };
-        await patchReq('vendor/update-status', statusData);
+        await patchReq('vendor/update-status', statusData).then((res) => {
+          if (res.statusCode === 200) {
+            check.status = true;
+          }
+        });
       }
-      if (data.image !== null) {
+      if (data.image !== undefined) {
         const formData = new FormData();
         formData.append('profileImage', data.image);
         formData.append('Id', profileData.data._id);
@@ -44,20 +58,43 @@ export default function ContatactDetails({ profileData, handleReload, handleClos
       }
       await patchReq('vendor/detail', data).then((res) => {
         if (res.statusCode === 200) {
-          handleClose();
-          handleReload(false);
+          check.details = true;
         }
       });
+      if (check.details || check.status) {
+        setAlert(true);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlert(false);
+          setAlertVisible(false);
+          handleClose();
+          handleReload(false);
+        }, 1500);
+      } else {
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
+      }
     }
     if (location[1] === 'customers') {
+      const check = {
+        details: false,
+        status: false,
+      };
+
       if (data.status) {
         const statusData = {
           status: data.status,
           Id: data.Id,
         };
-        await patchReq('user/update-status  ', statusData);
+        await patchReq('user/update-status  ', statusData).then((res) => {
+          if (res.statusCode === 200) {
+            check.status = true;
+          }
+        });
       }
-      if (data.image !== null) {
+      if (data.image !== undefined) {
         const formData = new FormData();
         formData.append('profileImage', data.image);
         formData.append('Id', profileData.data._id);
@@ -65,10 +102,25 @@ export default function ContatactDetails({ profileData, handleReload, handleClos
       }
       await patchReq('user/detail', data).then((res) => {
         if (res.statusCode === 200) {
-          handleClose();
-          handleReload(false);
+          check.details = true;
         }
       });
+      if (check.details || check.status) {
+        setAlert(true);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlert(false);
+          setAlertVisible(false);
+          handleClose();
+          handleReload(false);
+        }, 1500);
+      } else {
+        setErrorMessage('Details not updated');
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
+      }
     }
   }
   return (
@@ -79,6 +131,24 @@ export default function ContatactDetails({ profileData, handleReload, handleClos
       aria-describedby="alert-dialog-description"
       fullWidth
     >
+      {alert ? (
+        <>
+          {alertVisisble ? (
+            <Alert variant="filled" severity="success">
+              Details updated successfully
+            </Alert>
+          ) : null}
+        </>
+      ) : null}
+      {alert ? null : (
+        <>
+          {alertVisisble ? (
+            <Alert variant="filled" severity="error">
+              {errMessage !== '' ? errMessage : `Details not updated`}
+            </Alert>
+          ) : null}
+        </>
+      )}
       <DialogTitle>Edit Contact Details</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
+import { Alert } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -30,6 +31,9 @@ export default function BussinessTimeForm({
   const [endTime, setEndTime] = useState(timeData?.endTime);
   const [startTime, setStartTime] = useState(timeData?.startTime);
   const [title, setTitle] = useState(timeData?.title);
+  const [alert, setAlert] = useState(false);
+  const [alertVisisble, setAlertVisible] = useState(false);
+  const [errMessage, setErrorMessage] = useState('');
   // const [timings, setTimings] = useState({
   //   startTime: timeData?.startTime,
   //   endTime: timeData?.endTime,
@@ -112,8 +116,21 @@ export default function BussinessTimeForm({
     };
     if (fromCall === 'Add Timings') {
       await postReq('bussiness/slots', data).then((res) => {
-        if (res.statuCode === 200) {
-          // console.log(res);
+        if (res.statusCode === 200) {
+          setAlert(true);
+          setAlertVisible(true);
+          setTimeout(() => {
+            handleClose();
+            handleReload(false);
+            setAlert(false);
+            setAlertVisible(false);
+          }, 1500);
+        } else {
+          setAlertVisible(true);
+          setErrorMessage(res?.response?.data?.message);
+          setTimeout(() => {
+            setAlertVisible(false);
+          }, 1000);
         }
       });
       // console.log(startTime, endTime, weekDays);
@@ -121,13 +138,24 @@ export default function BussinessTimeForm({
       handleReload(false);
     } else {
       await patchReq('bussiness/slots', data).then((res) => {
-        if (res.statuCode === 200) {
-          // console.log(res);
+        // console.log(res);
+        if (res.statusCode === 200) {
+          setAlert(true);
+          setAlertVisible(true);
+          setTimeout(() => {
+            handleClose();
+            handleReload(false);
+            setAlert(false);
+            setAlertVisible(false);
+          }, 1500);
+        } else {
+          setAlertVisible(true);
+          setErrorMessage(res?.response?.data?.message);
+          setTimeout(() => {
+            setAlertVisible(false);
+          }, 1000);
         }
       });
-      // console.log(startTime, endTime, weekDays);
-      handleClose();
-      handleReload(false);
     }
   }
 
@@ -202,12 +230,36 @@ export default function BussinessTimeForm({
           </Paper>
         </DialogContent>
         <DialogActions>
-          <Button color="error" onClick={handleClose}>
-            Cancle
-          </Button>
-          <Button variant="contained" type="submit" autoFocus>
-            Save
-          </Button>
+          {alert ? (
+            <>
+              {alertVisisble ? (
+                <Alert variant="filled" severity="success">
+                  {fromCall === 'Add Timings'
+                    ? `${title} added successfully`
+                    : `${title} updated successfully`}
+                </Alert>
+              ) : null}
+            </>
+          ) : null}
+          {alert ? null : (
+            <>
+              {alertVisisble ? (
+                <Alert variant="filled" severity="error">
+                  {errMessage !== '' ? errMessage : `${title} not updated`}
+                </Alert>
+              ) : null}
+            </>
+          )}
+          {alertVisisble ? null : (
+            <>
+              <Button color="error" onClick={handleClose}>
+                Cancle
+              </Button>
+              <Button variant="contained" type="submit" autoFocus>
+                Save
+              </Button>
+            </>
+          )}
         </DialogActions>
       </form>
     </Dialog>

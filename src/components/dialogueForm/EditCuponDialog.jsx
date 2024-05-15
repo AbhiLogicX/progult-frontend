@@ -9,7 +9,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { MenuItem, TextField, Typography } from '@mui/material';
+import { Alert, MenuItem, TextField, Typography } from '@mui/material';
 
 import { error } from 'src/theme/palette';
 import { postReq, patchReq } from 'src/api/api';
@@ -18,6 +18,9 @@ import Iconify from 'src/components/iconify/iconify';
 
 export default function CouponDialogForm({ cupDetails, fromCall, handleReload }) {
   const [openEditForm, setOpenEditForm] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
+  const [alertVisisble, setAlertVisible] = React.useState(false);
+  const [errMessage, setErrorMessage] = React.useState('');
   const handleOpenForm = () => {
     setOpenEditForm(true);
   };
@@ -40,8 +43,20 @@ export default function CouponDialogForm({ cupDetails, fromCall, handleReload })
       await patchReq(`domain/coupon`, data).then((res) => {
         if (res.statusCode === 200) {
           // console.log(res);
-          handleCloseForm();
-          handleReload(false);
+          setAlert(true);
+          setAlertVisible(true);
+          setTimeout(() => {
+            setAlert(false);
+            setAlertVisible(false);
+            handleCloseForm();
+            handleReload(false);
+          }, 1200);
+        } else {
+          setAlertVisible(true);
+          setErrorMessage(res?.response?.data?.message);
+          setTimeout(() => {
+            setAlertVisible(false);
+          }, 1000);
         }
       });
     }
@@ -57,8 +72,20 @@ export default function CouponDialogForm({ cupDetails, fromCall, handleReload })
       await postReq(`domain/coupon`, data).then((res) => {
         if (res.statusCode === 200) {
           // console.log(res);
-          handleCloseForm();
-          handleReload(false);
+          setAlert(true);
+          setAlertVisible(true);
+          setTimeout(() => {
+            setAlert(false);
+            setAlertVisible(false);
+            handleCloseForm();
+            handleReload(false);
+          }, 1200);
+        } else {
+          setAlertVisible(true);
+          setErrorMessage(res?.response?.data?.message);
+          setTimeout(() => {
+            setAlertVisible(false);
+          }, 1000);
         }
       });
     }
@@ -90,6 +117,26 @@ export default function CouponDialogForm({ cupDetails, fromCall, handleReload })
         aria-describedby="alert-dialog-description"
         fullWidth
       >
+        {alert ? (
+          <>
+            {alertVisisble ? (
+              <Alert variant="filled" severity="success">
+                {fromCall === 'add'
+                  ? 'Cupon Added Sucessfully'
+                  : `${cupDetails?.code} updated successfully`}
+              </Alert>
+            ) : null}
+          </>
+        ) : null}
+        {alert ? null : (
+          <>
+            {alertVisisble ? (
+              <Alert variant="filled" severity="error">
+                {errMessage !== '' ? errMessage : `${cupDetails?.code} not updated`}
+              </Alert>
+            ) : null}
+          </>
+        )}
         <DialogTitle id="alert-dialog-title">
           {fromCall === 'edit' ? 'Edit Coupon Details' : 'Add Coupon'}
         </DialogTitle>
@@ -205,22 +252,26 @@ export default function CouponDialogForm({ cupDetails, fromCall, handleReload })
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button
-              sx={{
-                color: error.main,
-                backgroundColor: error.errorBackground,
-                '&:hover': {
-                  backgroundColor: error.main,
-                  color: error.errorBackground,
-                },
-              }}
-              onClick={handleCloseForm}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" autoFocus variant="contained">
-              {fromCall === 'edit' ? 'Update' : 'Add'}
-            </Button>
+            {alertVisisble ? null : (
+              <>
+                <Button
+                  sx={{
+                    color: error.main,
+                    backgroundColor: error.errorBackground,
+                    '&:hover': {
+                      backgroundColor: error.main,
+                      color: error.errorBackground,
+                    },
+                  }}
+                  onClick={handleCloseForm}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" autoFocus variant="contained">
+                  {fromCall === 'edit' ? 'Update' : 'Add'}
+                </Button>
+              </>
+            )}
           </DialogActions>
         </form>
       </Dialog>

@@ -36,7 +36,7 @@ export default function FeedbackView() {
         });
       }
       if (location[2] === 'reviews') {
-        await getReq(`master/reviews`).then((res) => {
+        await getReq(`bussiness/review`).then((res) => {
           if (res.statusCode === 200) {
             setReviewData(res.data);
             setFetchedReviewData(true);
@@ -47,13 +47,17 @@ export default function FeedbackView() {
   }, [location, fetchedComplainData, fetchedReviewData]);
   // console.log(ComplainData);
 
+  console.log('data', reviewData);
+
   const complainCol = ['Complaint No', 'Complaint', 'User', 'Complaint On', 'Created On'];
+  const reviwCol = ['Name', 'Review', 'Rating', 'Review On', 'Created On'];
   setTitle(location[2] === 'complains' ? 'Complaints' : 'Reviews');
   return (
     <Box sx={{ mx: 2, mt: 1 }}>
       <FeedBackTable
-        tableCol={location[2] === 'complains' ? complainCol : null}
+        tableCol={location[2] === 'complains' ? complainCol : reviwCol}
         tableData={location[2] === 'complains' ? ComplainData : reviewData}
+        fromCall={location[2] === 'complains' ? 'complains' : 'review'}
       />
     </Box>
   );

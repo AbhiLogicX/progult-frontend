@@ -25,6 +25,8 @@ export default function DialogComponent({
 }) {
   const [open, setOpen] = React.useState(false);
   const [alert, setAlert] = React.useState(false);
+  const [alertVisisble, setAlertVisible] = React.useState(false);
+  const [errMessage, setErrorMessage] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,19 +47,37 @@ export default function DialogComponent({
       const result = await patchReq(`${domainCall}`, dataToDelete);
       if (result.statusCode === 200) {
         setAlert(true);
+        setAlertVisible(true);
         setTimeout(() => {
+          setAlert(false);
           handleReload(false);
+          setAlertVisible(false);
           setOpen(false);
         }, 1000);
+      } else {
+        setErrorMessage(result?.response?.data?.message);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
       }
     } else {
       const result = await patchReq(`${domainCall}/detail?Id=${id}&status=delete`);
       if (result.statusCode === 200) {
         setAlert(true);
+        setAlertVisible(true);
         setTimeout(() => {
+          setAlert(false);
+          setAlertVisible(false);
           handleReload(false);
           setOpen(false);
         }, 1000);
+      } else {
+        setErrorMessage(result?.response?.data?.message);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
       }
     }
   }
@@ -67,19 +87,37 @@ export default function DialogComponent({
       const result = await patchReq(`${domainCall}/detail?Id=${id}&status=in-active`);
       if (result.statusCode === 200) {
         setAlert(true);
+        setAlertVisible(true);
         setTimeout(() => {
+          setAlertVisible(false);
+          setAlert(false);
           handleReload(false);
           setOpen(false);
         }, 1000);
+      } else {
+        setErrorMessage(result?.response?.data?.message);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
       }
     } else {
       const result = await patchReq(`${domainCall}/detail?Id=${id}&status=active`);
       if (result.statusCode === 200) {
         setAlert(true);
+        setAlertVisible(true);
         setTimeout(() => {
+          setAlertVisible(false);
+          setAlert(false);
           handleReload(false);
           setOpen(false);
         }, 1000);
+      } else {
+        setErrorMessage(result?.response?.data?.message);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
       }
     }
   }
@@ -170,10 +208,25 @@ export default function DialogComponent({
           </DialogContent>
           <DialogActions>
             {alert ? (
-              <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                {`${splitDomain[1]} status updated successfully`}
-              </Alert>
-            ) : (
+              <>
+                {alertVisisble ? (
+                  <Alert severity="success">
+                    {`${splitDomain[1]} status updated successfully`}
+                  </Alert>
+                ) : null}
+              </>
+            ) : null}
+            {alert ? null : (
+              <>
+                {alertVisisble ? (
+                  <Alert variant="filled" severity="error">
+                    {errMessage !== '' ? errMessage : `${splitDomain[1]}status not updated `}
+                  </Alert>
+                ) : null}
+              </>
+            )}
+
+            {alertVisisble ? null : (
               <>
                 <Button onClick={handleCloseDialog} color="error">
                   Disagree

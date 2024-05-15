@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import CheckIcon from '@mui/icons-material/Check';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -17,6 +16,8 @@ export default function AddMasterDialog({ open, domainCall, handleClose, handleR
   const [description, setdescription] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [alert, setAlert] = useState(false);
+  const [alertVisisble, setAlertVisible] = useState(false);
+  const [errMessage, setErrorMessage] = useState('');
 
   const handleChange = (event) => {
     setTitle(event.target.value);
@@ -40,23 +41,44 @@ export default function AddMasterDialog({ open, domainCall, handleClose, handleR
       const result = await postReq(`${domainCall}`, dataAdd); // we have to handle the success and error
       if (result.statusCode === 200) {
         setAlert(true);
+        setAlertVisible(true);
         setTimeout(() => {
+          setAlertVisible(false);
+          setAlert(false);
           handleClose();
           handleReload(false);
-        }, 3000);
+        }, 1500);
+      } else {
+        setErrorMessage(result?.response?.data?.message);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
       }
     }
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('image', selectedFile);
-    const result = await postReq(`${domainCall}`, formData);
-    if (result.statusCode === 200) {
-      setAlert(true);
-      setTimeout(() => {
-        handleClose();
-        handleReload(false);
-      }, 3000);
+
+    if (domainCall !== 'master/unit') {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('image', selectedFile);
+      const result = await postReq(`${domainCall}`, formData);
+      // console.log('result', result);
+      if (result.statusCode === 200) {
+        setAlert(true);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+          handleClose();
+          handleReload(false);
+        }, 1500);
+      } else {
+        setErrorMessage(result?.response?.data?.message);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
+      }
     }
   };
 
@@ -70,10 +92,23 @@ export default function AddMasterDialog({ open, domainCall, handleClose, handleR
       aria-describedby="alert-dialog-description"
     >
       {alert ? (
-        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-          {`${splitFromCall[1]} Added successfully`}
-        </Alert>
+        <>
+          {alertVisisble ? (
+            <Alert variant="filled" severity="success">
+              {`${splitFromCall[1]} Added successfully`}
+            </Alert>
+          ) : null}
+        </>
       ) : null}
+      {alert ? null : (
+        <>
+          {alertVisisble ? (
+            <Alert variant="filled" severity="error">
+              {errMessage !== '' ? errMessage : `${splitFromCall[1]} not Added`}
+            </Alert>
+          ) : null}
+        </>
+      )}
       <DialogTitle id="alert-dialog-title">Add</DialogTitle>
       <DialogContent>
         <TextField

@@ -15,10 +15,12 @@ import { customColors } from 'src/theme/palette';
 
 export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, handleReload }) {
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState('');
-  const [description, setdescription] = useState('');
+  const [title, setTitle] = useState(mtitle);
+  const [description, setdescription] = useState(mdescription);
   const [selectedFile, setSelectedFile] = useState(null);
   const [alert, setAlert] = useState(false);
+  const [alertVisisble, setAlertVisible] = useState(false);
+  const [errMessage, setErrorMessage] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -43,25 +45,37 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
   const handleSubmit = async () => {
     const formData = new FormData();
     if (domainCall === 'master/banner' || domainCall === 'master/advertise') {
-      if (title === '') {
-        formData.append('title', mtitle);
-      } else {
-        formData.append('title', title);
-      }
+      formData.append('title', title);
       formData.append('description', description);
       formData.append('image', selectedFile);
       formData.append('Id', mId);
       if (selectedFile !== null) {
         const result = await patchReq(`${domainCall}`, formData); // we have to handle the success and error
+        // console.log(result);
         if (result.statusCode === 200) {
           setAlert(true);
+          setAlertVisible(true);
           setTimeout(() => {
             handleReload(false);
             setOpen(false);
+            setAlert(false);
+            setAlertVisible(false);
+          }, 1000);
+        } else {
+          setErrorMessage(result?.response?.data?.message);
+          setAlertVisible(true);
+          setTimeout(() => {
+            setErrorMessage('');
+            setAlertVisible(false);
           }, 1000);
         }
       } else {
-        setOpen(false);
+        setErrorMessage('Image is required');
+        setAlertVisible(true);
+        setTimeout(() => {
+          setErrorMessage('');
+          setAlertVisible(false);
+        }, 1000);
       }
     }
 
@@ -75,28 +89,49 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
       const result = await patchReq(`${domainCall}`, dataToUpdate); // we have to handle the success and error
       if (result.statusCode === 200) {
         setAlert(true);
+        setAlertVisible(true);
         setTimeout(() => {
+          setAlertVisible(false);
           handleReload(false);
           setOpen(false);
+          setAlert(false);
+        }, 1000);
+      } else {
+        setAlertVisible(true);
+        setErrorMessage(result?.response?.data?.message);
+        setTimeout(() => {
+          setAlertVisible(false);
         }, 1000);
       }
     }
 
-    if (title === '') {
-      formData.append('title', mtitle);
-    } else {
+    if (
+      domainCall !== 'master/unit' &&
+      domainCall !== 'master/banner' &&
+      domainCall !== 'master/advertise'
+    ) {
       formData.append('title', title);
-    }
-    formData.append('description', description);
-    formData.append('image', selectedFile);
-    formData.append('domainId', mId);
-    const result = await patchReq(`${domainCall}`, formData); // we have to handle the success and error
-    if (result.statusCode === 200) {
-      setAlert(true);
-      setTimeout(() => {
-        handleReload(false);
-        setOpen(false);
-      }, 1000);
+      formData.append('description', description);
+      formData.append('image', selectedFile);
+      formData.append('domainId', mId);
+      const result = await patchReq(`${domainCall}`, formData); // we have to handle the success and error
+      if (result.statusCode === 200) {
+        setAlert(true);
+        setAlertVisible(true);
+        setTimeout(() => {
+          handleReload(false);
+          setOpen(false);
+          setAlert(false);
+          setAlertVisible(false);
+        }, 1500);
+      } else {
+        // console.log('result', result);
+        setAlertVisible(true);
+        setErrorMessage(result?.response?.data?.message);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1000);
+      }
     }
   };
 
@@ -122,10 +157,23 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
         aria-describedby="alert-dialog-description"
       >
         {alert ? (
-          <Alert icon={<CheckIcon fontSize="inherit" />} variant="filled" severity="success">
-            {`${splitFromCall[1]} updated success fully`}
-          </Alert>
+          <>
+            {alertVisisble ? (
+              <Alert icon={<CheckIcon fontSize="inherit" />} variant="filled" severity="success">
+                {`${splitFromCall[1]} updated successfully`}
+              </Alert>
+            ) : null}
+          </>
         ) : null}
+        {alert ? null : (
+          <>
+            {alertVisisble ? (
+              <Alert variant="filled" severity="error">
+                {errMessage !== '' ? errMessage : `${splitFromCall[1]} not updated`}
+              </Alert>
+            ) : null}
+          </>
+        )}
         <DialogTitle id="alert-dialog-title">Edit</DialogTitle>
         <DialogContent>
           <TextField
@@ -158,17 +206,25 @@ export default function EditDialogForm({ domainCall, mtitle, mdescription, mId, 
           {splitFromCall[1] === 'unit' ? null : (
             <Box>
               <Typography>upload image(512 px* 512px)</Typography>
-              <TextField type="file" accept="image/*" onChange={handleFileChange} />
+              {domainCall === 'master/banner' || domainCall === 'master/advertise' ? (
+                <TextField type="file" accept="image/*" onChange={handleFileChange} required />
+              ) : (
+                <TextField type="file" accept="image/*" onChange={handleFileChange} />
+              )}
             </Box>
           )}
         </DialogContent>
         <DialogActions>
-          <Button color="error" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} autoFocus>
-            Save
-          </Button>
+          {alertVisisble ? null : (
+            <>
+              <Button color="error" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button onClick={handleSubmit} autoFocus>
+                Save
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </>

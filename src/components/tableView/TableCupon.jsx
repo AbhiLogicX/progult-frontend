@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
+import { Alert } from '@mui/material';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -169,6 +170,9 @@ export default function CouponTableView({ columns, actionbtn, tableData, handleR
 
 function DeleteDialog({ cupId, handleReload, ...details }) {
   const [open, setOpen] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
+  const [alertVisisble, setAlertVisible] = React.useState(false);
+  const [errMessage, setErrorMessage] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -182,7 +186,21 @@ function DeleteDialog({ cupId, handleReload, ...details }) {
     // console.log('hello', cupId);
     await deleteReq(`domain/coupon?Id=${cupId}&status=delete`).then((res) => {
       if (res.statusCode === 200) {
-        handleReload(false);
+        // console.log(res);
+        setAlert(true);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlert(false);
+          setAlertVisible(false);
+          handleClose();
+          handleReload(false);
+        }, 1200);
+      } else {
+        setAlertVisible(true);
+        setErrorMessage(res?.response?.data?.message);
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1000);
       }
     });
 
@@ -215,22 +233,44 @@ function DeleteDialog({ cupId, handleReload, ...details }) {
           {`Are you sure You want to Delete ${details.title} (coupon code: ${details.cupCode})`}
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleClose}
-            sx={{
-              color: error.main,
-              backgroundColor: error.errorBackground,
-              '&:hover': {
-                backgroundColor: error.main,
-                color: error.errorBackground,
-              },
-            }}
-          >
-            Disagree
-          </Button>
-          <Button onClick={handleDelete} autoFocus>
-            Agree
-          </Button>
+          {alert ? (
+            <>
+              {alertVisisble ? (
+                <Alert variant="filled" severity="success">
+                  {`${details.title} Coupon Deleted successfully`}
+                </Alert>
+              ) : null}
+            </>
+          ) : null}
+          {alert ? null : (
+            <>
+              {alertVisisble ? (
+                <Alert variant="filled" severity="error">
+                  {errMessage !== '' ? errMessage : `${details.title} coupon not deleted`}
+                </Alert>
+              ) : null}
+            </>
+          )}
+          {alertVisisble ? null : (
+            <>
+              <Button
+                onClick={handleClose}
+                sx={{
+                  color: error.main,
+                  backgroundColor: error.errorBackground,
+                  '&:hover': {
+                    backgroundColor: error.main,
+                    color: error.errorBackground,
+                  },
+                }}
+              >
+                Disagree
+              </Button>
+              <Button onClick={handleDelete} autoFocus>
+                Agree
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </>

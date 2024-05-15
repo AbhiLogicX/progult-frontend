@@ -41,16 +41,20 @@ export default function Router() {
 
   useEffect(() => {
     if (authStatus) {
-      getVerify();
-      setIsLoggedIn(true);
+      verfication();
     } else {
       setIsLoggedIn(false);
     }
+    async function verfication() {
+      const verify = await getVerify();
+      setIsLoggedIn(verify);
+    }
   }, [authStatus, isLoggedIn]);
 
-  function getVerify() {
+  async function getVerify() {
     let verified = false;
-    getReq(`admin/detail`).then((res) => {
+    await getReq(`admin/detail`).then((res) => {
+      console.log(res.statusCode);
       if (res.statusCode === 200) {
         verified = true;
       }

@@ -39,7 +39,7 @@ const navConfig = [
   {
     title: 'coupons',
     path: '/coupons',
-    icon: icon('ic_celenderday'),
+    icon: icon('ic_tickets'),
   },
   // coupons
   {

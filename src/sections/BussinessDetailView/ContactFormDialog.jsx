@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 
 import {
   Box,
+  Alert,
   Button,
   Dialog,
   MenuItem,
@@ -17,6 +19,9 @@ import { patchReq } from 'src/api/api';
 
 export default function ContactInfoDialog({ open, handleClose, fData, handleReload }) {
   const { register, handleSubmit } = useForm({});
+  const [alert, setAlert] = useState(false);
+  const [alertVisisble, setAlertVisible] = useState(false);
+  const [errMessage, setErrorMessage] = useState('');
 
   const activeStatusList = [
     {
@@ -77,14 +82,22 @@ export default function ContactInfoDialog({ open, handleClose, fData, handleRelo
   ];
   const onSubmit = async (data) => {
     // console.log('hello');
+    const check = {
+      status: false,
+      details: false,
+    };
     data.Id = fData._id;
     data.category = fData.domain[0]._id;
     await patchReq(`bussiness`, data).then((res) => {
-      // console.log(res);
+      if (res.statusCode === 200) {
+        check.details = true;
+      }
     });
 
     await patchReq(`bussiness/detail?Id=${fData._id}&status=${data.status}`).then((res) => {
-      // console.log(res);
+      if (res.statusCode === 200) {
+        check.status = true;
+      }
     });
 
     if (data.coverImage.length !== 0 || data.brandLogo.length !== 0) {
@@ -94,8 +107,22 @@ export default function ContactInfoDialog({ open, handleClose, fData, handleRelo
     }
 
     // console.log(data, data.coverImage[0]);
-    handleClose();
-    handleReload(false);
+    if (check.status && check.details) {
+      setAlert(true);
+      setAlertVisible(true);
+      setTimeout(() => {
+        handleClose();
+        handleReload(false);
+        setAlert(false);
+        setAlertVisible(false);
+      }, 1500);
+    } else {
+      setAlertVisible(true);
+      setErrorMessage('');
+      setTimeout(() => {
+        setAlertVisible(false);
+      }, 1500);
+    }
   };
 
   // console.log(fData);
@@ -108,6 +135,24 @@ export default function ContactInfoDialog({ open, handleClose, fData, handleRelo
       aria-describedby="alert-dialog-description"
       fullWidth
     >
+      {alert ? (
+        <>
+          {alertVisisble ? (
+            <Alert variant="filled" severity="success">
+              Bussiness details updated successfully
+            </Alert>
+          ) : null}
+        </>
+      ) : null}
+      {alert ? null : (
+        <>
+          {alertVisisble ? (
+            <Alert variant="filled" severity="error">
+              {errMessage !== '' ? errMessage : 'Bussiness Not updated'}
+            </Alert>
+          ) : null}
+        </>
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>Edit Info</DialogTitle>
         <DialogContent>
