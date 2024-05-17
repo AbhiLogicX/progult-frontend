@@ -157,6 +157,7 @@ export default function EventDetailview() {
                     openDialog={openDialog}
                     handleClose={handleDialogClose}
                     dValues={data}
+                    fromCall="edit"
                     handleReload={setDataFetched}
                   />
                 </Box>

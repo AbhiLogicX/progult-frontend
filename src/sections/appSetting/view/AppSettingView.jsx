@@ -31,7 +31,9 @@ export default function AppSettingView() {
       {/* <Typography variant="h4" sx={{ mb: 5 }}>
         App Settings
       </Typography> */}
-      <AppSettingForm AppData={appSettingData} />
+      {fetchedData ? (
+        <AppSettingForm AppData={appSettingData} handleReload={setFetchedData} />
+      ) : null}
     </Box>
   );
 }

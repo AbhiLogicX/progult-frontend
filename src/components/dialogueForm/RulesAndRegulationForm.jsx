@@ -61,7 +61,7 @@ export default function RulesForm({ open, handleClose, rules, handleReload, Id, 
               <li key={item.id}>
                 <TextField
                   {...register(`test.${index}.rule`, { required: true })}
-                  defaultValue={item.rule} // Set default value here
+                  defaultValue={item.rule}
                   placeholder="Enter rule"
                   sx={{ mr: 1, mb: 1, maxWidth: 600, minWidth: 300 }}
                 />

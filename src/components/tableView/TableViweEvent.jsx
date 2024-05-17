@@ -68,12 +68,12 @@ export default function TableViewEvent({ columns, actionbtn, tableData }) {
                       </Box>
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      {row.title}
+                      {row?.title}
                     </TableCell>
                     <TableCell>{`${row.address.city} / ${row.address.state}`}</TableCell>
                     <TableCell>{row.owner[0].fullName}</TableCell>
                     <TableCell>
-                      <Box>{row.bussinessId.title}</Box>
+                      <Box>{row?.bussinessId?.title}</Box>
                     </TableCell>
                     <TableCell>{row.status}</TableCell>
                     <TableCell>

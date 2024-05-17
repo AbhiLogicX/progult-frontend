@@ -6,6 +6,33 @@ const icon = (name) => (
   <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
 );
 
+export const navVendorConfig = [
+  {
+    title: 'dashboard',
+    path: '/',
+    icon: icon('ic_analytics'),
+  },
+  {
+    title: 'bookings',
+    path: '/bookings',
+    icon: icon('ic_booking'),
+    subNav: [
+      { title: 'Bussiness', icon: icon('ic_masterCategoery'), path: '/bookings/bussiness' },
+      { title: 'Event', icon: icon('ic_masterCategoery'), path: '/bookings/event' },
+    ],
+  },
+  {
+    title: 'businesses',
+    path: '/bussiness-list',
+    icon: icon('ic_city'),
+  },
+  {
+    title: 'events',
+    path: '/evnet-list',
+    icon: icon('ic_celenderday'),
+  },
+];
+
 const navConfig = [
   {
     title: 'dashboard',
@@ -45,7 +72,7 @@ const navConfig = [
   {
     title: 'feedback',
     // path: '/evnet-list',
-    icon: icon('ic_celenderday'),
+    icon: icon('ic_feedback'),
     subNav: [
       { title: 'Reviews', icon: icon('ic_masterCategoery'), path: '/feedback/reviews' },
       { title: 'Complains', icon: icon('ic_masterCategoery'), path: '/feedback/complains' },

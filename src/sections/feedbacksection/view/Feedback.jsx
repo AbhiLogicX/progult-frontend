@@ -47,7 +47,7 @@ export default function FeedbackView() {
   }, [location, fetchedComplainData, fetchedReviewData]);
   // console.log(ComplainData);
 
-  console.log('data', reviewData);
+  // console.log('data', reviewData);
 
   const complainCol = ['Complaint No', 'Complaint', 'User', 'Complaint On', 'Created On'];
   const reviwCol = ['Name', 'Review', 'Rating', 'Review On', 'Created On'];
@@ -57,7 +57,7 @@ export default function FeedbackView() {
       <FeedBackTable
         tableCol={location[2] === 'complains' ? complainCol : reviwCol}
         tableData={location[2] === 'complains' ? ComplainData : reviewData}
-        fromCall={location[2] === 'complains' ? 'complains' : 'review'}
+        fromCall={location[2] === 'complains' ? 'complaint' : 'review'}
       />
     </Box>
   );

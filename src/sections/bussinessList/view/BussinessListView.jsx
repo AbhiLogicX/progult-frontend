@@ -1,8 +1,8 @@
 import format from 'date-fns/format';
 import { useState, useEffect, useContext } from 'react';
 
-// import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import Container from '@mui/material/Container';
 // import Typography from '@mui/material/Typography';
@@ -11,12 +11,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
 
+import Iconify from 'src/components/iconify/iconify';
 import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 import TableViewBussiness from 'src/components/tableView/TableViewBussiness';
+
+import ContactInfoDialog from 'src/sections/BussinessDetailView/ContactFormDialog';
 
 export default function BussinessListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filterData, setFilterData] = useState({
     fromDate: '',
@@ -53,6 +57,14 @@ export default function BussinessListView() {
     }
     fetchRowData();
   }, [fetchedData, urlStr]);
+
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
   const tableColumns = [
     'Image',
     'Titie',
@@ -62,7 +74,7 @@ export default function BussinessListView() {
     'Status',
     'Ratings',
   ];
-  const actionCol = ['View', 'Delete'];
+  const actionCol = ['View'];
   setTitle('Bussinesses');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
@@ -78,6 +90,24 @@ export default function BussinessListView() {
           New Bussinesss
         </Button>
       </Stack> */}
+
+      <Box mb={1} textAlign="right">
+        <Button
+          onClick={handleDialogOpen}
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+        >
+          Add New Bussiness
+        </Button>
+        <ContactInfoDialog
+          open={openDialog}
+          handleClose={handleDialogClose}
+          fromCall="add"
+          handleReload={setFetchedData}
+        />
+      </Box>
+
       <TableFilterToolBar
         fromCall="bussiness"
         filterData={filterData}

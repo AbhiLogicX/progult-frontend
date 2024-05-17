@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -18,13 +18,24 @@ import {
 
 import { convertTime24, changeTimeFormat12 } from 'src/utils/format-time';
 
-import { patchReq } from 'src/api/api';
+import { getReq, postReq, patchReq } from 'src/api/api';
 
-export default function EventInfoDialogForm({ openDialog, handleClose, dValues, handleReload }) {
+export default function EventInfoDialogForm({
+  openDialog,
+  handleClose,
+  dValues,
+  handleReload,
+  fromCall,
+}) {
   const { register, handleSubmit } = useForm({});
   const [alert, setAlert] = useState(false);
+  const [fetchedData, setFetchedData] = useState(false);
+  const [bussList, setBussList] = useState();
   const [alertVisisble, setAlertVisible] = useState(false);
   // const [errMessage, setErrorMessage] = useState('');
+
+  const localVar = JSON.parse(localStorage.getItem('items'));
+  // console.log(localVar);
 
   const activeStatusList = [
     {
@@ -83,44 +94,105 @@ export default function EventInfoDialogForm({ openDialog, handleClose, dValues, 
     },
   ];
 
+  useEffect(() => {
+    if (!fetchedData) {
+      fetchBussinessList();
+    }
+    async function fetchBussinessList() {
+      await getReq(`bussiness/list?vendorId=${localVar._id}`).then((res) => {
+        if (res.statusCode === 200) {
+          // console.log(res);
+          setFetchedData(true);
+          setBussList(res.data);
+        }
+      });
+    }
+  });
+
   async function onSubmit(data) {
     const check = {
       details: false,
       status: false,
     };
 
-    data.Id = dValues._id;
-    data.bussinessId = dValues.bussinessId._id;
-    data.startTime = changeTimeFormat12(data.startTime);
-    data.endTime = changeTimeFormat12(data.endTime);
-    await patchReq(`event`, data).then((res) => {
-      if (res.statusCode === 200) {
-        check.details = true;
-      }
-    });
-    // console.log('submited', data);
+    if (fromCall !== 'add') {
+      data.Id = dValues._id;
+      data.bussinessId = dValues.bussinessId._id;
+      data.startTime = changeTimeFormat12(data.startTime);
+      data.endTime = changeTimeFormat12(data.endTime);
+      await patchReq(`event`, data).then((res) => {
+        if (res.statusCode === 200) {
+          check.details = true;
+        }
+      });
+      // console.log('submited', data);
 
-    await patchReq(`event/detail?Id=${dValues._id}&status=${data.status}`).then((res) => {
-      if (res.statusCode === 200) {
-        check.status = true;
+      await patchReq(`event/detail?Id=${dValues._id}&status=${data.status}`).then((res) => {
+        if (res.statusCode === 200) {
+          check.status = true;
+        }
+      });
+      if (check.status && check.details) {
+        setAlert(true);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+          setAlert(false);
+          handleClose();
+          handleReload(false);
+        }, 1500);
+      } else {
+        setAlert(true);
+        setAlertVisible(true);
+        setTimeout(() => {
+          setAlertVisible(false);
+          setAlert(false);
+        }, 1500);
       }
-    });
-    if (check.status && check.details) {
-      setAlert(true);
-      setAlertVisible(true);
-      setTimeout(() => {
-        setAlertVisible(false);
-        setAlert(false);
-        handleClose();
-        handleReload(false);
-      }, 1500);
-    } else {
-      setAlert(true);
-      setAlertVisible(true);
-      setTimeout(() => {
-        setAlertVisible(false);
-        setAlert(false);
-      }, 1500);
+    }
+
+    if (fromCall !== 'edit') {
+      // console.log('add call');
+      data.startTime = changeTimeFormat12(data.startTime);
+      data.endTime = changeTimeFormat12(data.endTime);
+      await postReq(`event`, data).then((res) => {
+        if (res.statusCode === 200) {
+          setAlert(true);
+          setAlertVisible(true);
+          setTimeout(() => {
+            setAlertVisible(false);
+            setAlert(false);
+            handleClose();
+            handleReload(false);
+          }, 1500);
+        } else {
+          setAlert(true);
+          setAlertVisible(true);
+          setTimeout(() => {
+            setAlertVisible(false);
+            setAlert(false);
+          }, 1500);
+        }
+      });
+      // console.log('submited', data);
+
+      // if (check.status && check.details) {
+      //   setAlert(true);
+      //   setAlertVisible(true);
+      //   setTimeout(() => {
+      //     setAlertVisible(false);
+      //     setAlert(false);
+      //     handleClose();
+      //     handleReload(false);
+      //   }, 1500);
+      // } else {
+      //   setAlert(true);
+      //   setAlertVisible(true);
+      //   setTimeout(() => {
+      //     setAlertVisible(false);
+      //     setAlert(false);
+      //   }, 1500);
+      // }
     }
   }
   // console.log(dValues);
@@ -139,7 +211,7 @@ export default function EventInfoDialogForm({ openDialog, handleClose, dValues, 
         <>
           {alertVisisble ? (
             <Alert variant="filled" severity="success">
-              Event Details are updated
+              {fromCall === 'edit' ? 'Event Details are updated' : 'Event added'}
             </Alert>
           ) : null}
         </>
@@ -157,7 +229,7 @@ export default function EventInfoDialogForm({ openDialog, handleClose, dValues, 
         id="alert-dialog-title"
         sx={{ display: 'flex', justifyContent: 'space-between' }}
       >
-        Edit Info
+        {fromCall !== 'add' ? 'Edit Info' : 'Add Event'}
       </DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
@@ -189,46 +261,51 @@ export default function EventInfoDialogForm({ openDialog, handleClose, dValues, 
             sx={{ mr: 1, mb: 1 }}
           />
 
-          <Box display="flex" mr={1} alignItems="center">
-            <Box mb={1} mr={1}>
-              <Typography>Status</Typography>
-              {dValues?.status === 'active' ? (
-                <TextField select defaultValue="active" {...register('status')} name="status">
-                  {activeStatusList.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.lable}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              ) : null}
-              {dValues?.status === 'pending' ? (
-                <TextField select defaultValue="pending" {...register('status')} name="status">
-                  {pendingStausList.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.lable}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              ) : null}
-              {dValues?.status === 'reject' ? (
-                <TextField select defaultValue="reject" {...register('status')} name="status">
-                  {rejectStatusList.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.lable}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              ) : null}
-              {dValues?.status === 'in-active' ? (
-                <TextField select defaultValue="in-active" {...register('status')} name="status">
-                  {inActiveStausList.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.lable}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              ) : null}
+          {dValues?.status ? (
+            <Box display="flex" mr={1} alignItems="center">
+              <Box mb={1} mr={1}>
+                <Typography>Status</Typography>
+                {dValues?.status === 'active' ? (
+                  <TextField select defaultValue="active" {...register('status')} name="status">
+                    {activeStatusList.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.lable}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : null}
+                {dValues?.status === 'pending' ? (
+                  <TextField select defaultValue="pending" {...register('status')} name="status">
+                    {pendingStausList.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.lable}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : null}
+                {dValues?.status === 'reject' ? (
+                  <TextField select defaultValue="reject" {...register('status')} name="status">
+                    {rejectStatusList.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.lable}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : null}
+                {dValues?.status === 'in-active' ? (
+                  <TextField select defaultValue="in-active" {...register('status')} name="status">
+                    {inActiveStausList.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.lable}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : null}
+              </Box>
             </Box>
+          ) : null}
+
+          <Box display="flex">
             <Box>
               <Typography>Start Date</Typography>
               <TextField
@@ -257,6 +334,25 @@ export default function EventInfoDialogForm({ openDialog, handleClose, dValues, 
                 }
               />
             </Box>
+          </Box>
+
+          <Box>
+            {fromCall === 'add' ? (
+              <TextField
+                select
+                label="Select Bussiness"
+                {...register('bussiness')}
+                name="bussiness"
+                sx={{ width: '50%' }}
+                margin="dense"
+              >
+                {bussList?.map((opt) => (
+                  <MenuItem key={opt._id} value={opt._id}>
+                    {opt.title}
+                  </MenuItem>
+                ))}
+              </TextField>
+            ) : null}
           </Box>
           <Box display="flex">
             <Box>
@@ -350,4 +446,5 @@ EventInfoDialogForm.propTypes = {
   handleClose: PropTypes.func,
   dValues: PropTypes.object,
   handleReload: PropTypes.func,
+  fromCall: PropTypes.string,
 };

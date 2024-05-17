@@ -7,6 +7,7 @@ import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
 import ThemeProvider from 'src/theme';
 import Router from 'src/routes/sections';
+import { UserDetailProvider } from './context/mainContext';
 
 // axios.defaults.withCredentials = true;
 // ----------------------------------------------------------------------
@@ -16,7 +17,9 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <Router />
+      <UserDetailProvider>
+        <Router />
+      </UserDetailProvider>
     </ThemeProvider>
   );
 }

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -21,16 +21,18 @@ import { useResponsive } from 'src/hooks/use-responsive';
 // import { account } from 'src/_mock/account';
 
 import { customColors } from 'src/theme/palette';
+import { UserDetailsContext } from 'src/context/mainContext';
 
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
-import navConfig from './config-navigation';
+import navConfig, { navVendorConfig } from './config-navigation';
 
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
+  const { userDetails } = useContext(UserDetailsContext);
 
   const upLg = useResponsive('up', 'lg');
 
@@ -65,12 +67,22 @@ export default function Nav({ openNav, onCloseNav }) {
   //     </Box>
   //   </Box>
   // );
-
+  // const usert = 'vendor';
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
-        <NavItem key={item.title} item={item} />
-      ))}
+      {userDetails.usertype === 'admin' ? (
+        <>
+          {navConfig.map((item) => (
+            <NavItem key={item.title} item={item} />
+          ))}
+        </>
+      ) : (
+        <>
+          {navVendorConfig.map((item) => (
+            <NavItem key={item.title} item={item} />
+          ))}
+        </>
+      )}
     </Stack>
   );
 

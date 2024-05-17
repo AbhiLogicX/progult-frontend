@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { RouterLink } from 'src/routes/components';
 
+import { postReq } from 'src/api/api';
 import { account } from 'src/_mock/account';
 
 // ----------------------------------------------------------------------
@@ -42,10 +43,14 @@ export default function AccountPopover() {
     setOpen(null);
   };
 
-  const handleLogOut = () => {
-    localStorage.removeItem('items');
-    localStorage.removeItem('tokens');
-    window.location.href = '/';
+  const handleLogOut = async () => {
+    await postReq('admin/logout').then((res) => {
+      if (res.statusCode === 200) {
+        localStorage.removeItem('items');
+        localStorage.removeItem('tokens');
+        window.location.href = '/';
+      }
+    });
   };
 
   const adminDetail = JSON.parse(localStorage.getItem('items'));

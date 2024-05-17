@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -15,13 +15,17 @@ import {
   DialogContent,
 } from '@mui/material';
 
-import { patchReq } from 'src/api/api';
+import { getReq, postReq, patchReq } from 'src/api/api';
 
-export default function ContactInfoDialog({ open, handleClose, fData, handleReload }) {
+export default function ContactInfoDialog({ open, handleClose, fData, handleReload, fromCall }) {
   const { register, handleSubmit } = useForm({});
   const [alert, setAlert] = useState(false);
   const [alertVisisble, setAlertVisible] = useState(false);
   const [errMessage, setErrorMessage] = useState('');
+  const [fetchedData, setFetchedData] = useState(false);
+  const [categoryList, setCategoryList] = useState();
+
+  // const
 
   const activeStatusList = [
     {
@@ -80,52 +84,92 @@ export default function ContactInfoDialog({ open, handleClose, fData, handleRelo
       lable: 'delete',
     },
   ];
+
+  useEffect(() => {
+    if (!fetchedData) {
+      fetchCategoryList();
+    }
+    async function fetchCategoryList() {
+      await getReq(`domain/category`).then((res) => {
+        if (res.statusCode === 200) {
+          setFetchedData(true);
+          setCategoryList(res.data);
+        }
+      });
+    }
+  });
+
   const onSubmit = async (data) => {
     // console.log('hello');
     const check = {
       status: false,
       details: false,
     };
-    data.Id = fData._id;
-    data.category = fData.domain[0]._id;
-    await patchReq(`bussiness`, data).then((res) => {
-      if (res.statusCode === 200) {
-        check.details = true;
-      }
-    });
 
-    await patchReq(`bussiness/detail?Id=${fData._id}&status=${data.status}`).then((res) => {
-      if (res.statusCode === 200) {
-        check.status = true;
-      }
-    });
-
-    if (data.coverImage.length !== 0 || data.brandLogo.length !== 0) {
-      await patchReq('bussiness/logo', data).then((res) => {
-        // console.log(res);
+    if (fromCall === 'edit') {
+      data.Id = fData._id;
+      data.category = fData.domain[0]._id;
+      await patchReq(`bussiness`, data).then((res) => {
+        if (res.statusCode === 200) {
+          check.details = true;
+        }
       });
+
+      await patchReq(`bussiness/detail?Id=${fData._id}&status=${data.status}`).then((res) => {
+        if (res.statusCode === 200) {
+          check.status = true;
+        }
+      });
+
+      if (data.coverImage.length !== 0 || data.brandLogo.length !== 0) {
+        await patchReq('bussiness/logo', data).then((res) => {
+          // console.log(res);
+        });
+      }
+
+      // console.log(data, data.coverImage[0]);
+      if (check.status && check.details) {
+        setAlert(true);
+        setAlertVisible(true);
+        setTimeout(() => {
+          handleClose();
+          handleReload(false);
+          setAlert(false);
+          setAlertVisible(false);
+        }, 1500);
+      } else {
+        setAlertVisible(true);
+        setErrorMessage('');
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 1500);
+      }
     }
 
-    // console.log(data, data.coverImage[0]);
-    if (check.status && check.details) {
-      setAlert(true);
-      setAlertVisible(true);
-      setTimeout(() => {
-        handleClose();
-        handleReload(false);
-        setAlert(false);
-        setAlertVisible(false);
-      }, 1500);
-    } else {
-      setAlertVisible(true);
-      setErrorMessage('');
-      setTimeout(() => {
-        setAlertVisible(false);
-      }, 1500);
+    if (fromCall === 'add') {
+      await postReq(`bussiness`, data).then((res) => {
+        if (res.statusCode === 200) {
+          setAlert(true);
+          setAlertVisible(true);
+          setTimeout(() => {
+            handleClose();
+            handleReload(false);
+            setAlert(false);
+            setAlertVisible(false);
+          }, 1500);
+        } else {
+          setAlertVisible(true);
+          setErrorMessage('');
+          setTimeout(() => {
+            setAlertVisible(false);
+          }, 1500);
+        }
+      });
     }
   };
 
-  // console.log(fData);
+  // console.log('buss', categoryList);
+  // console.log('userDetails', userDetails);
 
   return (
     <Dialog
@@ -139,7 +183,9 @@ export default function ContactInfoDialog({ open, handleClose, fData, handleRelo
         <>
           {alertVisisble ? (
             <Alert variant="filled" severity="success">
-              Bussiness details updated successfully
+              {fromCall === 'edit'
+                ? 'Bussiness details updated successfully'
+                : 'Bussiness Added SuccessFully'}
             </Alert>
           ) : null}
         </>
@@ -154,7 +200,7 @@ export default function ContactInfoDialog({ open, handleClose, fData, handleRelo
         </>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle>Edit Info</DialogTitle>
+        <DialogTitle>{fromCall === 'edit' ? 'Edit Info' : 'Add Bussiness'}</DialogTitle>
         <DialogContent>
           <Box p={1}>
             <TextField
@@ -176,45 +222,59 @@ export default function ContactInfoDialog({ open, handleClose, fData, handleRelo
               fullWidth
               margin="dense"
             />
-            <Box mt={1} mb={1}>
-              <Typography>Status</Typography>
-              {fData?.status === 'active' ? (
-                <TextField select defaultValue="active" {...register('status')} name="status">
-                  {activeStatusList.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.lable}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              ) : null}
-              {fData?.status === 'pending' ? (
-                <TextField select defaultValue="pending" {...register('status')} name="status">
-                  {pendingStausList.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.lable}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              ) : null}
-              {fData?.status === 'reject' ? (
-                <TextField select defaultValue="reject" {...register('status')} name="status">
-                  {rejectStatusList.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.lable}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              ) : null}
-              {fData?.status === 'in-active' ? (
-                <TextField select defaultValue="in-active" {...register('status')} name="status">
-                  {inActiveStausList.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.lable}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              ) : null}
-            </Box>
+
+            {fromCall === 'add' ? (
+              <TextField label="Category" select margin="dense" fullWidth {...register('category')}>
+                {categoryList?.map((opt) => (
+                  <MenuItem value={opt._id} key={opt._id}>
+                    {opt.title}
+                  </MenuItem>
+                ))}
+              </TextField>
+            ) : null}
+
+            {fromCall !== 'add' ? (
+              <Box mt={1} mb={1}>
+                <Typography>Status</Typography>
+                {fData?.status === 'active' ? (
+                  <TextField select defaultValue="active" {...register('status')} name="status">
+                    {activeStatusList.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.lable}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : null}
+                {fData?.status === 'pending' ? (
+                  <TextField select defaultValue="pending" {...register('status')} name="status">
+                    {pendingStausList.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.lable}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : null}
+                {fData?.status === 'reject' ? (
+                  <TextField select defaultValue="reject" {...register('status')} name="status">
+                    {rejectStatusList.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.lable}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : null}
+                {fData?.status === 'in-active' ? (
+                  <TextField select defaultValue="in-active" {...register('status')} name="status">
+                    {inActiveStausList.map((opt) => (
+                      <MenuItem key={opt.value} value={opt.value}>
+                        {opt.lable}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : null}
+              </Box>
+            ) : null}
+
             <TextField
               label="City"
               name="city"
@@ -267,28 +327,30 @@ export default function ContactInfoDialog({ open, handleClose, fData, handleRelo
               margin="dense"
             />
 
-            <Box display="flex">
-              <Box mr={1}>
-                <Typography>Brand Logo</Typography>
-                <TextField
-                  name="brandLogo"
-                  variant="outlined"
-                  {...register('brandLogo')}
-                  type="file"
-                  fullWidth
-                />
+            {fromCall !== 'add' ? (
+              <Box display="flex">
+                <Box mr={1}>
+                  <Typography>Brand Logo</Typography>
+                  <TextField
+                    name="brandLogo"
+                    variant="outlined"
+                    {...register('brandLogo')}
+                    type="file"
+                    fullWidth
+                  />
+                </Box>
+                <Box>
+                  <Typography>Cover Image</Typography>
+                  <TextField
+                    name="coverImage"
+                    variant="outlined"
+                    {...register('coverImage')}
+                    type="file"
+                    fullWidth
+                  />
+                </Box>
               </Box>
-              <Box>
-                <Typography>Cover Image</Typography>
-                <TextField
-                  name="coverImage"
-                  variant="outlined"
-                  {...register('coverImage')}
-                  type="file"
-                  fullWidth
-                />
-              </Box>
-            </Box>
+            ) : null}
           </Box>
         </DialogContent>
         <DialogActions>
@@ -305,4 +367,5 @@ ContactInfoDialog.propTypes = {
   handleClose: PropTypes.func,
   open: PropTypes.bool,
   handleReload: PropTypes.func,
+  fromCall: PropTypes.string,
 };

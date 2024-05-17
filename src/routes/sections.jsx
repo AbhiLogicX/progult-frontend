@@ -54,7 +54,7 @@ export default function Router() {
   async function getVerify() {
     let verified = false;
     await getReq(`admin/detail`).then((res) => {
-      console.log(res.statusCode);
+      // console.log(res.statusCode);
       if (res.statusCode === 200) {
         verified = true;
       }

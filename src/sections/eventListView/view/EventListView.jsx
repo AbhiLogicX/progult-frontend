@@ -12,8 +12,11 @@ import Iconify from 'src/components/iconify';
 import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 import TableViewEvent from 'src/components/tableView/TableViweEvent';
 
+import EventInfoDialogForm from 'src/sections/eventDetailView/EditEventDialogInfoForm';
+
 export default function EventListView() {
   const [rowData, setRowData] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
   const [fetchedData, setFetchedData] = useState(false);
   const { setTitle } = useContext(TitleContext);
   const [filterData, setFilterData] = useState({
@@ -28,6 +31,12 @@ export default function EventListView() {
     bussinessId: '',
     host: '',
   });
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
 
   const eventUrlStr = `event?${
     filterData.bussinessId !== '' ? `bussinessId=${filterData.bussinessId}` : ''
@@ -57,16 +66,27 @@ export default function EventListView() {
     'Status',
     'Rating/ReviewCount',
   ];
-  const actionCol = ['View', 'Delete'];
+  const actionCol = ['View'];
   setTitle('Events');
   return (
     <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
       <Box mb={2} width="100%" textAlign="right">
         {/* <Typography variant="h4">Events</Typography> */}
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button
+          onClick={handleDialogOpen}
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+        >
           New Event
         </Button>
+        <EventInfoDialogForm
+          openDialog={openDialog}
+          handleClose={handleDialogClose}
+          handleReload={setFetchedData}
+          fromCall="add"
+        />
       </Box>
 
       <TableFilterToolBar
