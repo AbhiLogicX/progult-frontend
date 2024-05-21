@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
@@ -13,6 +14,7 @@ import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 export default function CustomerListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { setTitle } = useContext(TitleContext);
   const [filterData, setFilterData] = useState({
     fromDate: '',
@@ -45,6 +47,7 @@ export default function CustomerListView() {
       const result = await getReq(urlStr);
       setRowData(result.data);
       setFetchedData(true);
+      setLoading(false);
     }
   }, [fetchedData, urlStr]);
   const tableColumns = ['Name', 'Email', 'Mobile', 'City/State', 'Status'];
@@ -68,7 +71,11 @@ export default function CustomerListView() {
           actionbtn={actionCol}
           tableData={rowData}
         />
-      ) : null}
+      ) : (
+        <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
     </Container>
   );
 }

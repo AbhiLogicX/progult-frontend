@@ -3,7 +3,9 @@ import { useState, useEffect, useContext } from 'react';
 
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
+import Backdrop from '@mui/material/Backdrop';
 import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
@@ -15,6 +17,7 @@ import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 export default function VendorListView() {
   const [rowData, setRowData] = useState([]);
   const [fetchedData, setFetchedData] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { setTitle } = useContext(TitleContext);
   const [filterData, setFilterData] = useState({
     fromDate: '',
@@ -44,6 +47,7 @@ export default function VendorListView() {
       const result = await getReq(urlStr);
       setRowData(result.data);
       setFetchedData(true);
+      setLoading(false);
     }
 
     if (!fetchedData) {
@@ -79,7 +83,11 @@ export default function VendorListView() {
           fromCall="vendor"
           handleReload={setFetchedData}
         />
-      ) : null}
+      ) : (
+        <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
     </Container>
   );
 }

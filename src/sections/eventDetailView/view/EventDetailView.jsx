@@ -4,11 +4,12 @@ import { useState, useEffect, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 // import AddIcon from '@mui/icons-material/Add';
+import Backdrop from '@mui/material/Backdrop';
 import EditIcon from '@mui/icons-material/Edit';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Paper, Button, Container, Typography } from '@mui/material';
 // import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 // import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
-
 import { getReq } from 'src/api/api';
 import { grey, primary } from 'src/theme/palette';
 import { TitleContext } from 'src/context/mainContext';
@@ -27,6 +28,7 @@ export default function EventDetailview() {
   const [pkgDataFetched, setPkgDataFetched] = useState(false);
   const [pkageData, setPkageData] = useState();
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [openAminiteDialog, setOpenAminiteDialog] = useState(false);
   const [openRulesForm, setOpenRulesForm] = useState(false);
@@ -65,8 +67,11 @@ export default function EventDetailview() {
     }
     async function fetchEventData() {
       await getReq(`event/detail?Id=${id}`).then((res) => {
-        setData(res.data);
-        setDataFetched(true);
+        if (res.statusCode === 200 || res.statusCode === 201) {
+          setData(res.data);
+          setDataFetched(true);
+          setLoading(false);
+        }
       });
     }
     async function fetchPkgData() {
@@ -96,20 +101,22 @@ export default function EventDetailview() {
 
   setTitle('Events');
   return (
-    <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
-      <Box width="100%">
-        {/* <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
+    <>
+      {dataFetched ? (
+        <Container sx={{ p: '1%', overflowX: 'auto', maxWidth: 'unset !important' }}>
+          <Box width="100%">
+            {/* <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
           <EventCarousel imgData={data?.coverImages} />
         </Paper> */}
-        <Paper elevation={3} sx={{ mb: 1 }}>
-          <Box mb={5}>
-            <EventCarousel imgData={data?.coverImages} />
-          </Box>
+            <Paper elevation={3} sx={{ mb: 1 }}>
+              <Box mb={5}>
+                <EventCarousel imgData={data?.coverImages} />
+              </Box>
 
-          <Box p="2%" sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
-            <Grid container mb={2}>
-              <Grid xs={12}>
-                {/* <Typography variant="h3">{data?.title}</Typography>
+              <Box p="2%" sx={{ borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+                <Grid container mb={2}>
+                  <Grid xs={12}>
+                    {/* <Typography variant="h3">{data?.title}</Typography>
                 <Box display="flex">
                   <Typography variant="h5" mr={1}>
                     Hosted By:
@@ -118,93 +125,93 @@ export default function EventDetailview() {
                     {data?.hostName}
                   </Typography>
                 </Box> */}
-                <Typography variant="h2">{data?.title}</Typography>
-              </Grid>
+                    <Typography variant="h2">{data?.title}</Typography>
+                  </Grid>
 
-              <Grid xs={12}>
-                <Box display="flex" justifyContent="space-between">
-                  <Box display="flex">
-                    <Typography fontWeight={700} mr={1} color={grey[400]}>
-                      Status:
-                    </Typography>
-                    <Typography fontWeight={700} color={primary.main}>
-                      {data?.status}
-                    </Typography>
-                  </Box>
-                  <Box display="flex">
-                    <Typography fontWeight={700} mr={1} color={grey[400]}>
-                      Host Name:
-                    </Typography>
-                    <Typography fontWeight={700} color={primary.main}>
-                      {data?.hostName}
-                    </Typography>
-                  </Box>
-                  <Button
-                    onClick={handleDialogOpen}
-                    sx={{
-                      bgcolor: 'white',
-                      color: primary.main,
+                  <Grid xs={12}>
+                    <Box display="flex" justifyContent="space-between">
+                      <Box display="flex">
+                        <Typography fontWeight={700} mr={1} color={grey[400]}>
+                          Status:
+                        </Typography>
+                        <Typography fontWeight={700} color={primary.main}>
+                          {data?.status}
+                        </Typography>
+                      </Box>
+                      <Box display="flex">
+                        <Typography fontWeight={700} mr={1} color={grey[400]}>
+                          Host Name:
+                        </Typography>
+                        <Typography fontWeight={700} color={primary.main}>
+                          {data?.hostName}
+                        </Typography>
+                      </Box>
+                      <Button
+                        onClick={handleDialogOpen}
+                        sx={{
+                          bgcolor: 'white',
+                          color: primary.main,
 
-                      '&:hover': {
-                        backgroundColor: primary.main,
-                        color: 'white',
-                      },
-                    }}
-                  >
-                    Edit Details
-                  </Button>
-                  <EventInfoDialogForm
-                    openDialog={openDialog}
-                    handleClose={handleDialogClose}
-                    dValues={data}
-                    fromCall="edit"
-                    handleReload={setDataFetched}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
+                          '&:hover': {
+                            backgroundColor: primary.main,
+                            color: 'white',
+                          },
+                        }}
+                      >
+                        Edit Details
+                      </Button>
+                      <EventInfoDialogForm
+                        openDialog={openDialog}
+                        handleClose={handleDialogClose}
+                        dValues={data}
+                        fromCall="edit"
+                        handleReload={setDataFetched}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
 
-            <Grid container alignItems="stretch">
-              <Grid xs={2}>
-                <Typography variant="h6">Event Starts:</Typography>
-                <Box p={2} bgcolor={grey[300]} borderRadius={1} width="98%" height="80%">
-                  <Typography fontWeight={700}>{`${date.getDate(
-                    data?.dateTime?.startDate
-                  )}/${date.getMonth(data?.dateTime?.startDate)}/${date.getFullYear(
-                    data?.dateTime?.startDate
-                  )}`}</Typography>
-                  <Typography fontWeight={700}>{data?.dateTime?.startTime}</Typography>
-                </Box>
-              </Grid>
+                <Grid container alignItems="stretch">
+                  <Grid xs={2}>
+                    <Typography variant="h6">Event Starts:</Typography>
+                    <Box p={2} bgcolor={grey[300]} borderRadius={1} width="98%" height="80%">
+                      <Typography fontWeight={700}>{`${date.getDate(
+                        data?.dateTime?.startDate
+                      )}/${date.getMonth(data?.dateTime?.startDate)}/${date.getFullYear(
+                        data?.dateTime?.startDate
+                      )}`}</Typography>
+                      <Typography fontWeight={700}>{data?.dateTime?.startTime}</Typography>
+                    </Box>
+                  </Grid>
 
-              <Grid xs={2} alignItems="">
-                <Typography variant="h6">Event End:</Typography>
-                <Box p={2} bgcolor={grey[300]} borderRadius={1} width="98%" height="80%">
-                  <Typography fontWeight={700}>{`${date.getDate(
-                    data?.dateTime?.endDate
-                  )}/${date.getMonth(data?.dateTime?.endDate)}/${date.getFullYear(
-                    data?.dateTime?.endDate
-                  )}`}</Typography>
-                  <Typography fontWeight={700}>{data?.dateTime?.endTime}</Typography>
-                </Box>
-              </Grid>
+                  <Grid xs={2} alignItems="">
+                    <Typography variant="h6">Event End:</Typography>
+                    <Box p={2} bgcolor={grey[300]} borderRadius={1} width="98%" height="80%">
+                      <Typography fontWeight={700}>{`${date.getDate(
+                        data?.dateTime?.endDate
+                      )}/${date.getMonth(data?.dateTime?.endDate)}/${date.getFullYear(
+                        data?.dateTime?.endDate
+                      )}`}</Typography>
+                      <Typography fontWeight={700}>{data?.dateTime?.endTime}</Typography>
+                    </Box>
+                  </Grid>
 
-              <Grid xs={8}>
-                <Typography variant="h6">Event Venue:</Typography>
-                <Box p={2} bgcolor={grey[300]} borderRadius={1} minHeight="110px">
-                  <Typography fontWeight={700}>{data?.address?.fullAddress}</Typography>
-                  <Typography>{`${data?.address?.state}/${data?.address?.city}/${
-                    data?.address?.area === undefined ? '' : data?.address?.area
-                  }`}</Typography>
-                  <Typography>{`Pincode: ${
-                    data?.address?.pincode === undefined ? '' : data?.address?.pincode
-                  }`}</Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
+                  <Grid xs={8}>
+                    <Typography variant="h6">Event Venue:</Typography>
+                    <Box p={2} bgcolor={grey[300]} borderRadius={1} minHeight="110px">
+                      <Typography fontWeight={700}>{data?.address?.fullAddress}</Typography>
+                      <Typography>{`${data?.address?.state}/${data?.address?.city}/${
+                        data?.address?.area === undefined ? '' : data?.address?.area
+                      }`}</Typography>
+                      <Typography>{`Pincode: ${
+                        data?.address?.pincode === undefined ? '' : data?.address?.pincode
+                      }`}</Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
 
-          {/* <Box textAlign="right">
+              {/* <Box textAlign="right">
             <Button variant="contained" onClick={handleDialogOpen}>
               Edit event Info
             </Button>
@@ -215,89 +222,99 @@ export default function EventDetailview() {
               handleReload={setDataFetched}
             />
           </Box> */}
-        </Paper>
+            </Paper>
 
-        <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <Typography variant="h5">Packages</Typography>
-            <AddPackageForm eventId={data?._id} handleReload={setPkgDataFetched} />
+            <Paper elevation={3} sx={{ p: '1%', mb: 1 }}>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography variant="h5">Packages</Typography>
+                <AddPackageForm eventId={data?._id} handleReload={setPkgDataFetched} />
+              </Box>
+              <PackageCard
+                eventId={data?._id}
+                handleReload={setPkgDataFetched}
+                pkgData={pkageData}
+              />
+            </Paper>
+
+            <Grid container>
+              <Grid xs={6}>
+                <Paper elevation={3} sx={{ p: '2%', mb: 1, width: '98%' }}>
+                  <Box display="flex" justifyContent="space-between" mb={1}>
+                    <Typography variant="h5">About the Event</Typography>
+                  </Box>
+                  <Typography>{data?.description}</Typography>
+                </Paper>
+
+                <Paper elevation={3} sx={{ p: '2%', mb: 1, width: '98%' }}>
+                  <Box display="flex" justifyContent="space-between" mb={1}>
+                    <Typography variant="h5">Rules and Regulations</Typography>
+                    <Button variant="contained" onClick={handleClickOpenRule}>
+                      Manage Rules
+                    </Button>
+                    <RulesForm
+                      Id={data?._id}
+                      handleClose={handleClickCloseRule}
+                      open={openRulesForm}
+                      rules={data?.rules}
+                      handleReload={setDataFetched}
+                      fromCall="event"
+                    />
+                  </Box>
+                  <Box>
+                    <ul>
+                      {data?.rules?.map((itm) => (
+                        <li key={`${itm}`}>{itm}</li>
+                      ))}
+                    </ul>
+                  </Box>
+                </Paper>
+              </Grid>
+
+              <Grid xs={6}>
+                <Paper elevation={3} sx={{ p: '2%', mb: 1 }}>
+                  <Box display="flex" alignItems="center" justifyContent="space-between" mb={5}>
+                    <Typography variant="h5">Highlights</Typography>
+                    <Button
+                      onClick={handleAminitieDialogOpen}
+                      sx={{
+                        bgcolor: 'white',
+                        color: primary.main,
+
+                        '&:hover': {
+                          backgroundColor: primary.main,
+                          color: 'white',
+                        },
+                      }}
+                    >
+                      <EditIcon sx={{ mr: 1 }} />
+                      Edit Aminities
+                    </Button>
+                    <AmenitiesManageForm
+                      openDialog={openAminiteDialog}
+                      handleClose={handleAminitieDialogClose}
+                      dValues={addDefaultValues()}
+                      handleReload={setDataFetched}
+                      Id={data?._id}
+                      fromCall="event"
+                    />
+                  </Box>
+                  <Box sx={{ px: '1%' }}>
+                    <Grid container>
+                      {data?.amenities.map((itm) => (
+                        <EventAminitieCard cardData={itm} />
+                      ))}
+                    </Grid>
+                  </Box>
+                </Paper>
+              </Grid>
+            </Grid>
           </Box>
-          <PackageCard eventId={data?._id} handleReload={setPkgDataFetched} pkgData={pkageData} />
-        </Paper>
-
-        <Grid container>
-          <Grid xs={6}>
-            <Paper elevation={3} sx={{ p: '2%', mb: 1, width: '98%' }}>
-              <Box display="flex" justifyContent="space-between" mb={1}>
-                <Typography variant="h5">About the Event</Typography>
-              </Box>
-              <Typography>{data?.description}</Typography>
-            </Paper>
-
-            <Paper elevation={3} sx={{ p: '2%', mb: 1, width: '98%' }}>
-              <Box display="flex" justifyContent="space-between" mb={1}>
-                <Typography variant="h5">Rules and Regulations</Typography>
-                <Button variant="contained" onClick={handleClickOpenRule}>
-                  Manage Rules
-                </Button>
-                <RulesForm
-                  Id={data?._id}
-                  handleClose={handleClickCloseRule}
-                  open={openRulesForm}
-                  rules={data?.rules}
-                  handleReload={setDataFetched}
-                  fromCall="event"
-                />
-              </Box>
-              <Box>
-                <ul>
-                  {data?.rules?.map((itm) => (
-                    <li key={`${itm}`}>{itm}</li>
-                  ))}
-                </ul>
-              </Box>
-            </Paper>
-          </Grid>
-
-          <Grid xs={6}>
-            <Paper elevation={3} sx={{ p: '2%', mb: 1 }}>
-              <Box display="flex" alignItems="center" justifyContent="space-between" mb={5}>
-                <Typography variant="h5">Highlights</Typography>
-                <Button
-                  onClick={handleAminitieDialogOpen}
-                  sx={{
-                    bgcolor: 'white',
-                    color: primary.main,
-
-                    '&:hover': {
-                      backgroundColor: primary.main,
-                      color: 'white',
-                    },
-                  }}
-                >
-                  <EditIcon sx={{ mr: 1 }} />
-                  Edit Aminities
-                </Button>
-                <AmenitiesManageForm
-                  openDialog={openAminiteDialog}
-                  handleClose={handleAminitieDialogClose}
-                  dValues={addDefaultValues()}
-                  handleReload={setDataFetched}
-                  Id={data?._id}
-                  fromCall="event"
-                />
-              </Box>
-              <Box sx={{ px: '1%' }}>
-                <Grid container>
-                  {data?.amenities.map((itm) => (
-                    <EventAminitieCard cardData={itm} />
-                  ))}
-                </Grid>
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Box>
-    </Container>
+        </Container>
+      ) : (
+        <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
+    </>
   );
 }

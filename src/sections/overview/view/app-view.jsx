@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
+import { Backdrop, CircularProgress } from '@mui/material';
 // import Typography from '@mui/material/Typography';
 
 // import Iconify from 'src/components/iconify';
@@ -25,6 +26,7 @@ export default function AppView() {
   const [fetchedData, setFetchedData] = useState(false);
   const [dashData, setDashData] = useState();
   const [monthWiseData, setMonthWiseData] = useState();
+  const [loading, setLoading] = useState(true);
   const [categoryWiseData, setcategoryWiseData] = useState();
   const { setTitle } = useContext(TitleContext);
 
@@ -42,6 +44,7 @@ export default function AppView() {
       });
       await getReq(`report/categoryWiseBussiness`).then((res) => {
         setcategoryWiseData(res.data);
+        setLoading(false);
       });
       setFetchedData(true);
     }
@@ -49,78 +52,80 @@ export default function AppView() {
 
   setTitle('Dashboard');
   return (
-    <Container maxWidth="xl" sx={{ mt: 1 }}>
-      <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Monthly Booking"
-            total={dashData?.monthlyBussiness}
-            color="success"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
-            pathRe="/bookings/bussiness"
-          />
-        </Grid>
+    <>
+      {fetchedData ? (
+        <Container maxWidth="xl" sx={{ mt: 1 }}>
+          <Grid container spacing={3}>
+            <Grid xs={12} sm={6} md={3}>
+              <AppWidgetSummary
+                title="Monthly Booking"
+                total={dashData?.monthlyBussiness}
+                color="success"
+                icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
+                pathRe="/bookings/bussiness"
+              />
+            </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Total Coustmers"
-            total={dashData?.totalCustomer}
-            color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
-            pathRe="/customers"
-          />
-        </Grid>
+            <Grid xs={12} sm={6} md={3}>
+              <AppWidgetSummary
+                title="Total Coustmers"
+                total={dashData?.totalCustomer}
+                color="info"
+                icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+                pathRe="/customers"
+              />
+            </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Bussiness Listed"
-            total={dashData?.totalBussiness}
-            color="warning"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
-            pathRe="/bussiness-list"
-          />
-        </Grid>
+            <Grid xs={12} sm={6} md={3}>
+              <AppWidgetSummary
+                title="Bussiness Listed"
+                total={dashData?.totalBussiness}
+                color="warning"
+                icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+                pathRe="/bussiness-list"
+              />
+            </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Event Listed"
-            total={dashData?.totalEvent}
-            color="error"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
-            pathRe="/evnet-list"
-          />
-        </Grid>
+            <Grid xs={12} sm={6} md={3}>
+              <AppWidgetSummary
+                title="Event Listed"
+                total={dashData?.totalEvent}
+                color="error"
+                icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+                pathRe="/evnet-list"
+              />
+            </Grid>
 
-        <Grid xs={12} md={6} lg={12}>
-          <AppWebsiteVisits
-            title="Bussinesses"
-            chart={{
-              labels: monthWiseData?.label,
-              series: [
-                {
-                  name: 'Monthly bussiness',
-                  type: 'column',
-                  fill: 'solid',
-                  data: monthWiseData?.data1,
-                },
-                {
-                  name: 'Monthly Event',
-                  type: 'area',
-                  fill: 'gradient',
-                  data: monthWiseData?.data2,
-                },
-                {
-                  name: 'Monthly Bussiness Booking',
-                  type: 'line',
-                  fill: 'solid',
-                  data: monthWiseData?.data3,
-                },
-              ],
-            }}
-          />
-        </Grid>
+            <Grid xs={12} md={6} lg={12}>
+              <AppWebsiteVisits
+                title="Bussinesses"
+                chart={{
+                  labels: monthWiseData?.label,
+                  series: [
+                    {
+                      name: 'Monthly bussiness',
+                      type: 'column',
+                      fill: 'solid',
+                      data: monthWiseData?.data1,
+                    },
+                    {
+                      name: 'Monthly Event',
+                      type: 'area',
+                      fill: 'gradient',
+                      data: monthWiseData?.data2,
+                    },
+                    {
+                      name: 'Monthly Bussiness Booking',
+                      type: 'line',
+                      fill: 'solid',
+                      data: monthWiseData?.data3,
+                    },
+                  ],
+                }}
+              />
+            </Grid>
 
-        {/* <Grid xs={12} md={6} lg={4}>
+            {/* <Grid xs={12} md={6} lg={4}>
           <AppCurrentVisits
             title="Bussinesses in States"
             chart={{
@@ -133,24 +138,24 @@ export default function AppView() {
             }}
           />
         </Grid> */}
-        <Grid xs={12}>
-          <AppWebsiteVisits
-            title="Categories"
-            chart={{
-              labels: categoryWiseData?.label,
-              series: [
-                {
-                  name: 'Dance',
-                  type: 'column',
-                  fill: 'solid',
-                  data: categoryWiseData?.data,
-                },
-              ],
-            }}
-          />
-        </Grid>
+            <Grid xs={12}>
+              <AppWebsiteVisits
+                title="Categories"
+                chart={{
+                  labels: categoryWiseData?.label,
+                  series: [
+                    {
+                      name: 'Dance',
+                      type: 'column',
+                      fill: 'solid',
+                      data: categoryWiseData?.data,
+                    },
+                  ],
+                }}
+              />
+            </Grid>
 
-        {/* <Grid xs={12} md={6} lg={8}>
+            {/* <Grid xs={12} md={6} lg={8}>
           <AppConversionRates
             title="Conversion Rates"
             subheader="(+43%) than last year"
@@ -171,7 +176,7 @@ export default function AppView() {
           />
         </Grid> */}
 
-        {/* <Grid xs={12} md={6} lg={4}>
+            {/* <Grid xs={12} md={6} lg={4}>
           <AppCurrentSubject
             title="Current Subject"
             chart={{
@@ -185,7 +190,7 @@ export default function AppView() {
           />
         </Grid> */}
 
-        {/* <Grid xs={12} md={6} lg={8}>
+            {/* <Grid xs={12} md={6} lg={8}>
           <AppNewsUpdate
             title="News Update"
             list={[...Array(5)].map((_, index) => ({
@@ -198,7 +203,7 @@ export default function AppView() {
           />
         </Grid> */}
 
-        {/* <Grid xs={12} md={6} lg={4}>
+            {/* <Grid xs={12} md={6} lg={4}>
           <AppOrderTimeline
             title="Order Timeline"
             list={[...Array(5)].map((_, index) => ({
@@ -216,7 +221,7 @@ export default function AppView() {
           />
         </Grid> */}
 
-        {/* <Grid xs={12} md={6} lg={4}>
+            {/* <Grid xs={12} md={6} lg={4}>
           <AppTrafficBySite
             title="Traffic by Site"
             list={[
@@ -244,7 +249,7 @@ export default function AppView() {
           />
         </Grid> */}
 
-        {/* <Grid xs={12} md={6} lg={8}>
+            {/* <Grid xs={12} md={6} lg={8}>
           <AppTasks
             title="Tasks"
             list={[
@@ -256,7 +261,13 @@ export default function AppView() {
             ]}
           />
         </Grid> */}
-      </Grid>
-    </Container>
+          </Grid>
+        </Container>
+      ) : (
+        <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
+    </>
   );
 }

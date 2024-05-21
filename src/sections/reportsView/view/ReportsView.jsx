@@ -1,7 +1,7 @@
 import format from 'date-fns/format';
 import { useState, useEffect, useContext } from 'react';
 
-import { Container } from '@mui/material';
+import { Backdrop, Container, CircularProgress } from '@mui/material';
 
 import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
@@ -12,6 +12,7 @@ import TableFilterToolBar from 'src/components/ToolBar/tableFilter';
 export default function ReportsView() {
   const { setTitle } = useContext(TitleContext);
   const [fetchedData, setFetchedData] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [reportsData, setReportsData] = useState();
   const [filterData, setFilterData] = useState({
     fromDate: '',
@@ -49,6 +50,7 @@ export default function ReportsView() {
         if (res.statusCode === 200) {
           setReportsData(res.data);
           setFetchedData(true);
+          setLoading(false);
         }
         if (res.response.data.statusCode === 404) {
           setReportsData([]);
@@ -68,7 +70,13 @@ export default function ReportsView() {
         handleReload={setFetchedData}
       />
 
-      {fetchedData ? <ReportTable reportData={reportsData} /> : null}
+      {fetchedData ? (
+        <ReportTable reportData={reportsData} />
+      ) : (
+        <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
     </Container>
   );
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Backdrop, CircularProgress } from '@mui/material';
 
 import { getReq } from 'src/api/api';
 import { TitleContext } from 'src/context/mainContext';
@@ -10,6 +10,7 @@ import CouponDialogForm from 'src/components/dialogueForm/EditCuponDialog';
 
 export default function CouponsView() {
   const [fetchedData, setFetchedData] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [couponsData, setCouponsData] = useState();
   const { setTitle } = useContext(TitleContext);
 
@@ -23,6 +24,7 @@ export default function CouponsView() {
           // console.log(res);
           setCouponsData(res.data);
           setFetchedData(true);
+          setLoading(false);
         }
       });
     }
@@ -60,7 +62,14 @@ export default function CouponsView() {
             actionbtn={Actionbtn}
             handleReload={setFetchedData}
           />
-        ) : null}
+        ) : (
+          <Backdrop
+            open={loading}
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        )}
       </Box>
     </Box>
   );

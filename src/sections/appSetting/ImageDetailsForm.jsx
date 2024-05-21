@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 
-import { Box, Alert, Button, TextField, Typography } from '@mui/material';
+import { Box, Grid, Alert, Button, TextField, Typography } from '@mui/material';
 
 import { patchReq } from 'src/api/api';
 import properties from 'src/config/properties';
@@ -48,72 +48,80 @@ export default function ImageForm({ AppData, handleReload }) {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Banner:
-        </Typography>
-        {alert ? (
-          <>
-            {alertVisisble ? (
-              <Alert variant="filled" severity="success">
-                updated successfully
-              </Alert>
-            ) : null}
-          </>
-        ) : null}
-        {alert ? null : (
-          <>
-            {alertVisisble ? (
-              <Alert variant="filled" severity="error">
-                {errMessage !== '' ? errMessage : ` not updated`}
-              </Alert>
-            ) : null}
-          </>
-        )}
-        <Box display="flex" alignItems="end">
-          <Box mr={5} width="10%">
-            <img
-              src={`${properties.BASE_ADMIN_IMAGE_URL}${AppData?.banner}`}
-              alt="Admin Logo"
-              style={{ aspectRatio: 1 / 1, objectFit: 'cover', borderRadius: 10 }}
-            />
+      {alert ? (
+        <>
+          {alertVisisble ? (
+            <Alert variant="filled" severity="success">
+              updated successfully
+            </Alert>
+          ) : null}
+        </>
+      ) : null}
+      {alert ? null : (
+        <>
+          {alertVisisble ? (
+            <Alert variant="filled" severity="error">
+              {errMessage !== '' ? errMessage : ` not updated`}
+            </Alert>
+          ) : null}
+        </>
+      )}
+      <Grid container>
+        <Grid xs={4}>
+          <Box>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Banner:
+            </Typography>
+            <Box>
+              <Box mb={4} width="25%">
+                <img
+                  src={`${properties.BASE_ADMIN_IMAGE_URL}${AppData?.banner}`}
+                  alt="Admin Logo"
+                  style={{ aspectRatio: 1 / 1, objectFit: 'cover', borderRadius: 10 }}
+                />
+              </Box>
+              <TextField type="file" {...register('banner')} />
+            </Box>
           </Box>
-          <TextField type="file" {...register('banner')} />
-        </Box>
-      </Box>
+        </Grid>
 
-      <Box>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Logo:
-        </Typography>
-        <Box display="flex" alignItems="end">
-          <Box mr={5}>
-            <img
-              src={`${properties.BASE_ADMIN_IMAGE_URL}${AppData?.logo}`}
-              alt="Admin Logo"
-              style={{ aspectRatio: 1 / 1, objectFit: 'cover', borderRadius: 10 }}
-            />
+        <Grid xs={4}>
+          <Box>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Logo:
+            </Typography>
+            <Box>
+              <Box mb={4} width="25%">
+                <img
+                  src={`${properties.BASE_ADMIN_IMAGE_URL}${AppData?.logo}`}
+                  alt="Admin Logo"
+                  style={{ aspectRatio: 1 / 1, objectFit: 'cover', borderRadius: 10 }}
+                />
+              </Box>
+              <TextField type="file" {...register('logo')} />
+            </Box>
           </Box>
-          <TextField type="file" {...register('logo')} />
-        </Box>
-      </Box>
+        </Grid>
 
-      <Box>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Icon:
-        </Typography>
-        <Box display="flex" alignItems="end">
-          <Box mr={5}>
-            <img
-              src={`${properties.BASE_ADMIN_IMAGE_URL}${AppData?.icon}`}
-              //   src="/assets/images/imgPlace.png"
-              alt="Admin Logo"
-              style={{ aspectRatio: 1 / 1, objectFit: 'cover', borderRadius: 10 }}
-            />
+        <Grid xs={4}>
+          <Box>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Icon:
+            </Typography>
+            <Box>
+              <Box mb={4} width="25%">
+                <img
+                  src={`${properties.BASE_ADMIN_IMAGE_URL}${AppData?.icon}`}
+                  //   src="/assets/images/imgPlace.png"
+                  alt="Admin Logo"
+                  style={{ aspectRatio: 1 / 1, objectFit: 'cover', borderRadius: 10 }}
+                />
+              </Box>
+              <TextField type="file" {...register('icon')} />
+            </Box>
           </Box>
-          <TextField type="file" {...register('icon')} />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
       <Box textAlign="right">
         <Button type="submit" variant="contained">
           Save

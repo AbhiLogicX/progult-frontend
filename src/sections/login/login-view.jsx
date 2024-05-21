@@ -200,6 +200,8 @@ export default function LoginView() {
                       setUserDetails={setUserDetails}
                       setLoading={setLoading}
                       setSendOTP={setSendOTP}
+                      setError={setError}
+                      error={error}
                     />
                   ) : null}
                 </>
@@ -213,6 +215,8 @@ export default function LoginView() {
               userDetails={userDetails}
               setLoading={setLoading}
               setSendOTP={setSendOTP}
+              setError={setError}
+              error={error}
             />
           ) : null}
         </Card>
@@ -221,16 +225,15 @@ export default function LoginView() {
   );
 }
 
-function RevnderVendorForm({ setLoading, setUserDetails, setSendOTP }) {
+function RevnderVendorForm({ setLoading, setUserDetails, setSendOTP, setError, error }) {
   const { register, handleSubmit } = useForm();
-  const [error, setError] = useState('');
+  // const [error, setError] = useState(null);
   const loginVendor = async (data) => {
     // console.log('hello', data);
     setLoading(true);
     try {
       const session = await postReq('vendor/sendOTP', data);
-      // console.log(session);
-      if (session.statusCode) {
+      if (session.statusCode && (session.statusCode === 200 || session.statusCode === 201)) {
         localStorage.setItem('items', JSON.stringify(session.data));
         localStorage.setItem('tokens', JSON.stringify(session.extra));
         // const cookieHeader = session.headers.get('Set-Cookie');
@@ -288,12 +291,13 @@ RevnderVendorForm.propTypes = {
   setLoading: PropTypes.func,
   setUserDetails: PropTypes.func,
   setSendOTP: PropTypes.func,
-  // error: PropTypes.string,
+  setError: PropTypes.func,
+  error: PropTypes.string,
 };
 
-function RenderVendorOTPForm({ setLoading, userDetails, setSendOTP }) {
+function RenderVendorOTPForm({ setLoading, userDetails, setSendOTP, setError, error }) {
   const { register, handleSubmit } = useForm();
-  const [error, setError] = useState('');
+  // const [error, setError] = useState('');
   const router = useRouter();
   const loginVendorOtp = async (data) => {
     data.mobile = userDetails.mobile;
@@ -378,5 +382,7 @@ RenderVendorOTPForm.propTypes = {
   setLoading: PropTypes.func,
   userDetails: PropTypes.object,
   setSendOTP: PropTypes.func,
+  setError: PropTypes.func,
+  error: PropTypes.string,
   // error: PropTypes.string,
 };
